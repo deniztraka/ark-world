@@ -1,7 +1,13 @@
 import {
     MainMenu
 } from "../ui/mainMenu";
-import { MenuPosition } from "../ui/menuPosition";
+import {
+    MenuPosition
+} from "../ui/menuPosition";
+
+import {
+    Player
+} from "../core/player";
 
 export class CharacterSelectionScene extends Phaser.Scene {
     constructor() {
@@ -21,6 +27,8 @@ export class CharacterSelectionScene extends Phaser.Scene {
         var mainMenu = new MainMenu(this, MenuPosition.Bottom);
         mainMenu.addMenuItem("Back", this.onBackClick, this);
         mainMenu.addMenuItem("Enter", this.onEnterClick, this);
+
+        //var player = new Player(this, { x: this.scene.manager.game.renderer.width / 2, y: this.scene.manager.game.renderer.height / 2 - 100 });
     }
 
     onBackClick() {
