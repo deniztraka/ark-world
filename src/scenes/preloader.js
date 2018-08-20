@@ -33,11 +33,15 @@ export class PreloaderScene extends Phaser.Scene {
         versionText.setText(this.scene.manager.game.config.gameVersion);
 
         this.load.image("menuBackground", "menuBackground.png");
+        this.load.image("humanBody", "mobiles/human/body.png");
+        this.load.image("humanHead", "mobiles/human/head.png");
+        this.load.image("humanEyes", "mobiles/human/eyes.png");
+        this.load.image("humanLegs", "mobiles/human/legs.png");
 
         //add files from here
-        for (var i = 0; i < 500; i++) {
-            this.load.image('phaserLogo' + i, 'phaser3-logo.png');
-        }
+        // for (var i = 0; i < 500; i++) {
+        //     this.load.image('phaserLogo' + i, 'phaser3-logo.png');
+        // }
     }
 
     create() {
