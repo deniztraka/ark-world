@@ -17,6 +17,8 @@
         "webpack-dev-server": "^2.0.0"
     },
     "dependencies": {
+        "libnoise": "^0.2.1",
+        "noisejs": "^2.1.0",
         "phaser": "^3.11.0"
     },
     "scripts": {

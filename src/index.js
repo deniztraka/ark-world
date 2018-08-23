@@ -15,13 +15,17 @@ import {
 import {
     CharacterSelectionScene
 } from './scenes/characterSelectionScene';
+import {
+    GameScene
+} from './scenes/gameScene';
 
 const gameConfig = {
-    width: 680,
-    height: 400,
+    width: window.innerWidth,
+	height: window.innerHeight,
+	pixelArt: true,
     title: 'World.IO', // 'My Phaser 3 Game'    
     version: '0.0.1',
-    scene: [BootScene, PreloaderScene, MainMenuScene, SettingsScene, CharacterSelectionScene],
+    scene: [BootScene, PreloaderScene, MainMenuScene, SettingsScene, CharacterSelectionScene,GameScene],
     loader: {
         // baseURL: '',
         path: 'assets/',
@@ -31,4 +35,5 @@ const gameConfig = {
     }
 };
 
-new Phaser.Game(gameConfig);
+var mygame = new Phaser.Game(gameConfig);
+
