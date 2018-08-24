@@ -34,36 +34,18 @@ export class GameScene extends Phaser.Scene {
             zoomOut: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E),
         };
         this.controls = new Phaser.Cameras.Controls.FixedKeyControl(controlConfig);
-
-        var noiseDataArray = this.createNoiseArray(false);
-
-        // var gradientArray = [...Array(this.mapSize)].map(x => Array(this.mapSize).fill(0));
-        // for (var x = 0; x < this.mapSize; x++) {
-        //     for (var y = 0; y < this.mapSize; y++) {
-
-
-        //         var distanceX = (this.mapSize / 2 - x) * (this.mapSize / 2 - x);
-        //         var distanceY = (this.mapSize / 2 - y) * (this.mapSize / 2 - y);
-
-        //         var distanceToCenter = Math.sqrt(distanceX + distanceY);
-        //         distanceToCenter = distanceToCenter / this.mapSize;
-
-        //         gradientArray[x][y] = -((distanceToCenter - 0.5) * 2);
-
-        //         gradientArray[x][y] = noiseDataArray[x][y] * gradientArray[x][y];
-        //     }
-        // }
-
+        
+        var noiseDataArray = this.createNoiseArray(false, 0.001, 2, 0.5, 6, this.time.now, libnoise.QualityMode.LOW);
         noiseDataArray = this.normalizeValues(noiseDataArray);
 
-        this.createTexture(noiseDataArray, true);
+        var moistureDataArray = this.createNoiseArray(false, 0.001, 2.0, 0.5, 6, this.time.now + 1231232, libnoise.QualityMode.LOW);
+        moistureDataArray = this.normalizeValues(moistureDataArray);
+
+        this.createTexture(noiseDataArray, moistureDataArray, true);
 
         //this.createTileMap(noiseDataArray);
 
         //console.table(noiseDataArray);
-
-
-
 
     }
 
@@ -105,13 +87,13 @@ export class GameScene extends Phaser.Scene {
         }
     }
 
-    createTexture(noiseDataArray, useColor) {
+    createTexture(noiseDataArray, moistureDataArray, useColor) {
         var gridSize = 1;
 
         var texture = this.textures.createCanvas('mapTexture', this.mapSize * gridSize, this.mapSize * gridSize);
         for (var x = 0; x < this.mapSize; x++) {
             for (var y = 0; y < this.mapSize; y++) {
-                texture.context.fillStyle = this.generateRGBcolor(noiseDataArray[x][y], useColor);
+                texture.context.fillStyle = this.generateRGBcolor(noiseDataArray[x][y], moistureDataArray[x][y], useColor);
 
                 texture.context.fillRect(x * gridSize, y * gridSize, gridSize, gridSize);
             }
@@ -121,7 +103,7 @@ export class GameScene extends Phaser.Scene {
         image.setOrigin(0.5, 0.5);
     }
 
-    createNoiseArray(useIslandMap) {
+    createNoiseArray(useIslandMap, frequency, lacunarity, persistence, octaves, seed, quality) {
         //noise
         var noiseDataArray = [...Array(this.mapSize)].map(x => Array(this.mapSize).fill(0));
 
@@ -133,11 +115,13 @@ export class GameScene extends Phaser.Scene {
 
         //Perlin(frequency, lacunarity, persistence, octaves, quality)
         //var noise = new libnoise.generator.Perlin(.01, 2.0, 0.5, 8, "deniz", libnoise.QualityMode.LOW);
-        //var noise = new libnoise.generator.Perlin(.01, 2.0, .6, 10, "deniz", libnoise.QualityMode.LOW); //THİS İS WHAT I WANT
-        var noise = new libnoise.generator.Perlin(.01, 2.0, 0.5, 6, this.time.now, libnoise.QualityMode.LOW);
+        //var noise = new libnoise.generator.Perlin(.01, 2.0, .6, 10, this.time.now, libnoise.QualityMode.LOW); //THİS İS WHAT I WANT
+        //var noise = new libnoise.generator.Perlin(.01, 2.0, 0.5, 6, "deniz", libnoise.QualityMode.LOW);
 
-        var frequency = 1;
-        var power = 1;
+        var noise = new libnoise.generator.Perlin(frequency, lacunarity, persistence, octaves, seed, quality);
+
+        var frequency = 10;
+        var power = 1.001;
 
 
         var a = 0.04;
@@ -145,7 +129,7 @@ export class GameScene extends Phaser.Scene {
         var c = 2.20;
         var d = 1;
 
-        //var amplitude = 5;
+        var amplitude = 2;
 
         for (var x = 0; x < this.mapSize; x++) {
             for (var y = 0; y < this.mapSize; y++) {
@@ -180,7 +164,7 @@ export class GameScene extends Phaser.Scene {
                     // if (distanceToCenter > 0.3){
                     //     noiseDataArray[x][y] *= -0.1;
                     // }
-            
+
                     noiseDataArray[x][y] = noiseDataArray[x][y] * distanceToCenter;
                 }
             }
@@ -221,27 +205,80 @@ export class GameScene extends Phaser.Scene {
         return '#' + ((0.5 + 0.5 * x) * 0xFFFFFF << 0).toString(16);
     }
 
-    generateRGBcolor(x, useColor) {
-        if(x == 0){
-            debugger;
-        }
+    generateRGBcolor(e, m, useColor) {
+
+        var DEEPSEA = "rgb(60,60,102)";
+        var SEA = "rgb(68,68,122)";
+        var BEACH = "rgb(160,144,119)";
+        var SCORCHED = "rgb(85,85,85)";
+        var BARE = "rgb(136,136,136)";
+        var TUNDRA = "rgb(187,187,170)";
+        var SNOW = "rgb(221,221,221)";
+        var TEMPERATE_DESERT = "rgb(201,210,155)";
+        var SHRUBLAND = "rgb(136,153,119)";
+        var TAIGA = "rgb(153,170,119)";
+        var GRASSLAND = "rgb(136,170,85)";
+        var TEMPERATE_DECIDUOUS_FOREST = "rgb(103,148,89)";
+        var TEMPERATE_RAIN_FOREST = "rgb(68,136,85)";
+        var SUBTROPICAL_DESERT = "rgb(210,185,139)";
+        var TROPICAL_SEASONAL_FOREST = "rgb(85,153,68)";
+        var TROPICAL_RAIN_FOREST = "rgb(51,119,85)";
+
+
+
         if (useColor) {
-            if (x < 0.4) {
-                return "rgb(" + 0 + ", " + 51 + ", " + 102 + ")"; //deep blue
-            } else if (x < 0.5) {
-                return "rgb(" + 0 + ", " + 102 + ", " + 204 + ")"; //blue
-            } else if (x < 0.52) {
-                return "rgb(" + 255 + ", " + 255 + ", " + 153 + ")"; //yellow
-            } else if (x < 0.675) {
-                return "rgb(" + 76 + ", " + 153 + ", " + 0 + ")"; //green
-            } else if (x < 0.8) {
-                return "rgb(" + 128 + ", " + 128 + ", " + 128 + ")"; //gray
-            } else if (x <= 1) {
-                return "rgb(" + 255 + ", " + 255 + ", " + 255 + ")"; //white
+            if (e < 0.4) return DEEPSEA; // 0.1
+            if (e < 0.5) return SEA; // 0.1
+            if (e < 0.52) return BEACH;// 0.12
+
+            if (e > 0.77) { // 0.8
+                if (m < 0.5) return SCORCHED; // 0.1
+                if (m < 0.55) return BARE; // 0.2
+                if (m < 0.6) return TUNDRA; // 0.5
+                return SNOW;
             }
+
+            if (e > 0.7) { // 0.6
+                if (m < 0.625) return TEMPERATE_DESERT; // 0.33
+                if (m < 0.8) return SHRUBLAND; // 0.66
+                return TAIGA;
+            }
+
+            if (e > 0.58) { // 0.3 
+                if (m < 0.54) return TEMPERATE_DESERT; // 0.16
+                if (m < 0.675) return GRASSLAND; // 0.50
+                if (m < 0.8) return TEMPERATE_DECIDUOUS_FOREST; //0.83
+                return TEMPERATE_RAIN_FOREST; 
+            }
+
+            if (m < 0.54) return SUBTROPICAL_DESERT; // 0.16
+            if (m < 0.625) return GRASSLAND; // 0.33
+            if (m < 0.675) return TROPICAL_SEASONAL_FOREST; // 0.66
+            return TROPICAL_RAIN_FOREST;
+
         }
 
-        var color = Math.round((255 * x));
+
+
+
+
+        // if (useColor) {
+        //     if (x < 0.4) {
+        //         return "rgb(" + 0 + ", " + 51 + ", " + 102 + ")"; //deep blue
+        //     } else if (x < 0.5) {
+        //         return "rgb(" + 0 + ", " + 102 + ", " + 204 + ")"; //blue
+        //     } else if (x < 0.52) {
+        //         return "rgb(" + 255 + ", " + 255 + ", " + 153 + ")"; //yellow
+        //     } else if (x < 0.675) {
+        //         return "rgb(" + 76 + ", " + 153 + ", " + 0 + ")"; //green
+        //     } else if (x < 0.8) {
+        //         return "rgb(" + 128 + ", " + 128 + ", " + 128 + ")"; //gray
+        //     } else if (x <= 1) {
+        //         return "rgb(" + 255 + ", " + 255 + ", " + 255 + ")"; //white
+        //     }
+        // }
+
+        var color = Math.round((255 * e));
         return "rgb(" + color + ", " + color + ", " + color + ")";
     }
 }
