@@ -6,6 +6,8 @@ import {
     libnoise
 } from 'libnoise';
 
+import PoissonDiskSampling from 'poisson-disk-sampling'
+
 export class GameScene extends Phaser.Scene {
     constructor() {
         super({
@@ -34,7 +36,7 @@ export class GameScene extends Phaser.Scene {
             zoomOut: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E),
         };
         this.controls = new Phaser.Cameras.Controls.FixedKeyControl(controlConfig);
-        
+
         var noiseDataArray = this.createNoiseArray(false, 0.001, 2, 0.5, 6, this.time.now, libnoise.QualityMode.LOW);
         noiseDataArray = this.normalizeValues(noiseDataArray);
 
@@ -88,16 +90,59 @@ export class GameScene extends Phaser.Scene {
     }
 
     createTexture(noiseDataArray, moistureDataArray, useColor) {
+        var self = this;
         var gridSize = 1;
+
+        var DEEPSEA = "rgb(60,60,102)";
+        var SEA = "rgb(68,68,122)";
+        var BEACH = "rgb(160,144,119)";
+        var SCORCHED = "rgb(85,85,85)";
+        var BARE = "rgb(136,136,136)";
+        var TUNDRA = "rgb(187,187,170)";
+        var SNOW = "rgb(221,221,221)";
+        var TEMPERATE_DESERT = "rgb(201,210,155)";
+        var SHRUBLAND = "rgb(136,153,119)";
+        var TAIGA = "rgb(153,170,119)";
+        var GRASSLAND = "rgb(136,170,85)";
+        var TEMPERATE_DECIDUOUS_FOREST = "rgb(103,148,89)";
+        var TEMPERATE_RAIN_FOREST = "rgb(68,136,85)";
+        var SUBTROPICAL_DESERT = "rgb(210,185,139)";
+        var TROPICAL_SEASONAL_FOREST = "rgb(85,153,68)";
+        var TROPICAL_RAIN_FOREST = "rgb(51,119,85)";
 
         var texture = this.textures.createCanvas('mapTexture', this.mapSize * gridSize, this.mapSize * gridSize);
         for (var x = 0; x < this.mapSize; x++) {
             for (var y = 0; y < this.mapSize; y++) {
-                texture.context.fillStyle = this.generateRGBcolor(noiseDataArray[x][y], moistureDataArray[x][y], useColor);
+                texture.context.fillStyle = this.getBiome(noiseDataArray[x][y], moistureDataArray[x][y], useColor);
 
                 texture.context.fillRect(x * gridSize, y * gridSize, gridSize, gridSize);
             }
         }
+
+        var treePlacementPointsForTropicalRainForest = new PoissonDiskSampling([this.mapSize, this.mapSize], 2, 10, 10);
+        var points = treePlacementPointsForTropicalRainForest.fill();
+        points.forEach(point => {
+            var biome = self.getBiome(noiseDataArray[Math.floor(point[0])][Math.floor(point[1])], moistureDataArray[Math.floor(point[0])][Math.floor(point[1])], useColor);
+            if (biome == TROPICAL_RAIN_FOREST) {
+                texture.context.fillStyle = "rgb(0,0,0)"
+
+                texture.context.fillRect(Math.floor(point[0]) * gridSize, Math.floor(point[1]) * gridSize, gridSize, gridSize);
+            }
+        });
+
+        var treePlacementPointsForTemperateDesert = new PoissonDiskSampling([this.mapSize, this.mapSize], 15, 30, 10);
+        var pointsx = treePlacementPointsForTemperateDesert.fill();
+        pointsx.forEach(point => {
+            var biome = self.getBiome(noiseDataArray[Math.floor(point[0])][Math.floor(point[1])], moistureDataArray[Math.floor(point[0])][Math.floor(point[1])], useColor);
+            if (biome == TEMPERATE_DESERT) {
+                texture.context.fillStyle = "rgb(0,0,0)"
+
+                texture.context.fillRect(Math.floor(point[0]) * gridSize, Math.floor(point[1]) * gridSize, gridSize, gridSize);
+            }
+        });
+
+
+
         texture.refresh();
         var image = this.add.image(this.scene.manager.game.renderer.width / 2, this.scene.manager.game.renderer.height / 2, 'mapTexture');
         image.setOrigin(0.5, 0.5);
@@ -205,7 +250,7 @@ export class GameScene extends Phaser.Scene {
         return '#' + ((0.5 + 0.5 * x) * 0xFFFFFF << 0).toString(16);
     }
 
-    generateRGBcolor(e, m, useColor) {
+    getBiome(e, m, useColor) {
 
         var DEEPSEA = "rgb(60,60,102)";
         var SEA = "rgb(68,68,122)";
@@ -229,7 +274,7 @@ export class GameScene extends Phaser.Scene {
         if (useColor) {
             if (e < 0.4) return DEEPSEA; // 0.1
             if (e < 0.5) return SEA; // 0.1
-            if (e < 0.52) return BEACH;// 0.12
+            if (e < 0.52) return BEACH; // 0.12
 
             if (e > 0.77) { // 0.8
                 if (m < 0.5) return SCORCHED; // 0.1
@@ -248,7 +293,7 @@ export class GameScene extends Phaser.Scene {
                 if (m < 0.54) return TEMPERATE_DESERT; // 0.16
                 if (m < 0.675) return GRASSLAND; // 0.50
                 if (m < 0.8) return TEMPERATE_DECIDUOUS_FOREST; //0.83
-                return TEMPERATE_RAIN_FOREST; 
+                return TEMPERATE_RAIN_FOREST;
             }
 
             if (m < 0.54) return SUBTROPICAL_DESERT; // 0.16
@@ -257,6 +302,7 @@ export class GameScene extends Phaser.Scene {
             return TROPICAL_RAIN_FOREST;
 
         }
+
 
 
 
