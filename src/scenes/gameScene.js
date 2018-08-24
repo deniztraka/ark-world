@@ -35,11 +35,28 @@ export class GameScene extends Phaser.Scene {
         };
         this.controls = new Phaser.Cameras.Controls.FixedKeyControl(controlConfig);
 
-        var noiseDataArray = this.createNoiseArray();
+        var noiseDataArray = this.createNoiseArray(false);
+
+        // var gradientArray = [...Array(this.mapSize)].map(x => Array(this.mapSize).fill(0));
+        // for (var x = 0; x < this.mapSize; x++) {
+        //     for (var y = 0; y < this.mapSize; y++) {
+
+
+        //         var distanceX = (this.mapSize / 2 - x) * (this.mapSize / 2 - x);
+        //         var distanceY = (this.mapSize / 2 - y) * (this.mapSize / 2 - y);
+
+        //         var distanceToCenter = Math.sqrt(distanceX + distanceY);
+        //         distanceToCenter = distanceToCenter / this.mapSize;
+
+        //         gradientArray[x][y] = -((distanceToCenter - 0.5) * 2);
+
+        //         gradientArray[x][y] = noiseDataArray[x][y] * gradientArray[x][y];
+        //     }
+        // }
 
         noiseDataArray = this.normalizeValues(noiseDataArray);
 
-        this.createTexture(noiseDataArray);
+        this.createTexture(noiseDataArray, true);
 
         //this.createTileMap(noiseDataArray);
 
@@ -68,18 +85,18 @@ export class GameScene extends Phaser.Scene {
         layer.cullPaddingY = -1;
         layer.setScrollFactor(1);
 
-        
+
         for (var x = 0; x < this.mapSize; x++) {
             for (var y = 0; y < this.mapSize; y++) {
-                if (noiseDataArray[x][y] < 0.35) {
+                if (noiseDataArray[x][y] < 0.4) {
                     map.putTileAt(0, x, y, true, layer); //deep blue
                 } else if (noiseDataArray[x][y] < 0.5) {
                     map.putTileAt(1, x, y, true, layer); //blue
                 } else if (noiseDataArray[x][y] < 0.52) {
                     map.putTileAt(2, x, y, true, layer); //yellow
-                } else if (noiseDataArray[x][y] < 0.8) {
+                } else if (noiseDataArray[x][y] < 0.675) {
                     map.putTileAt(3, x, y, true, layer); //green
-                } else if (noiseDataArray[x][y] < 0.9) {
+                } else if (noiseDataArray[x][y] < 0.8) {
                     map.putTileAt(5, x, y, true, layer); //gray
                 } else if (noiseDataArray[x][y] <= 1) {
                     map.putTileAt(6, x, y, true, layer); //white
@@ -88,13 +105,13 @@ export class GameScene extends Phaser.Scene {
         }
     }
 
-    createTexture(noiseDataArray) {
+    createTexture(noiseDataArray, useColor) {
         var gridSize = 1;
 
         var texture = this.textures.createCanvas('mapTexture', this.mapSize * gridSize, this.mapSize * gridSize);
         for (var x = 0; x < this.mapSize; x++) {
             for (var y = 0; y < this.mapSize; y++) {
-                texture.context.fillStyle = this.generateRGBcolor(noiseDataArray[x][y], true);
+                texture.context.fillStyle = this.generateRGBcolor(noiseDataArray[x][y], useColor);
 
                 texture.context.fillRect(x * gridSize, y * gridSize, gridSize, gridSize);
             }
@@ -104,7 +121,7 @@ export class GameScene extends Phaser.Scene {
         image.setOrigin(0.5, 0.5);
     }
 
-    createNoiseArray() {
+    createNoiseArray(useIslandMap) {
         //noise
         var noiseDataArray = [...Array(this.mapSize)].map(x => Array(this.mapSize).fill(0));
 
@@ -117,11 +134,24 @@ export class GameScene extends Phaser.Scene {
         //Perlin(frequency, lacunarity, persistence, octaves, quality)
         //var noise = new libnoise.generator.Perlin(.01, 2.0, 0.5, 8, "deniz", libnoise.QualityMode.LOW);
         //var noise = new libnoise.generator.Perlin(.01, 2.0, .6, 10, "deniz", libnoise.QualityMode.LOW); //THİS İS WHAT I WANT
-        var noise = new libnoise.generator.Perlin(.01, 2.0, 0.5, 6, 2, libnoise.QualityMode.LOW);
+        var noise = new libnoise.generator.Perlin(.01, 2.0, 0.5, 6, this.time.now, libnoise.QualityMode.LOW);
+
+        var frequency = 1;
+        var power = 1;
+
+
+        var a = 0.04;
+        var b = 1.06;
+        var c = 2.20;
+        var d = 1;
+
+        //var amplitude = 5;
 
         for (var x = 0; x < this.mapSize; x++) {
             for (var y = 0; y < this.mapSize; y++) {
-                var noiseVal = noise.getValue(x, y, 0);
+                var noiseVal = noise.getValue(x * frequency, y * frequency, 0);
+                //noiseVal = noiseVal * amplitude;
+                //noiseVal = Math.pow(noiseVal, power);            
 
                 if (noiseVal > this.defaultMaxVal) {
                     this.defaultMaxVal = noiseVal;
@@ -132,6 +162,27 @@ export class GameScene extends Phaser.Scene {
                 }
 
                 noiseDataArray[x][y] = noiseVal;
+            }
+        }
+
+        //this is not finished yet. it is not working well.
+        if (useIslandMap) {
+            for (var x = 0; x < this.mapSize; x++) {
+                for (var y = 0; y < this.mapSize; y++) {
+
+                    var distanceX = (this.mapSize / 2 - x) * (this.mapSize / 2 - x);
+                    var distanceY = (this.mapSize / 2 - y) * (this.mapSize / 2 - y);
+
+                    var distanceToCenter = Math.sqrt(distanceX + distanceY);
+                    distanceToCenter = distanceToCenter / this.mapSize;
+                    distanceToCenter = ((distanceToCenter - 0.5) * 2);
+                    debugger;
+                    // if (distanceToCenter > 0.3){
+                    //     noiseDataArray[x][y] *= -0.1;
+                    // }
+            
+                    noiseDataArray[x][y] = noiseDataArray[x][y] * distanceToCenter;
+                }
             }
         }
 
@@ -171,16 +222,19 @@ export class GameScene extends Phaser.Scene {
     }
 
     generateRGBcolor(x, useColor) {
+        if(x == 0){
+            debugger;
+        }
         if (useColor) {
-            if (x < 0.35) {
+            if (x < 0.4) {
                 return "rgb(" + 0 + ", " + 51 + ", " + 102 + ")"; //deep blue
             } else if (x < 0.5) {
                 return "rgb(" + 0 + ", " + 102 + ", " + 204 + ")"; //blue
             } else if (x < 0.52) {
                 return "rgb(" + 255 + ", " + 255 + ", " + 153 + ")"; //yellow
-            } else if (x < 0.8) {
+            } else if (x < 0.675) {
                 return "rgb(" + 76 + ", " + 153 + ", " + 0 + ")"; //green
-            } else if (x < 0.9) {
+            } else if (x < 0.8) {
                 return "rgb(" + 128 + ", " + 128 + ", " + 128 + ")"; //gray
             } else if (x <= 1) {
                 return "rgb(" + 255 + ", " + 255 + ", " + 255 + ")"; //white
