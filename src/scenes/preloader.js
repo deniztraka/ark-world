@@ -38,6 +38,11 @@ export class PreloaderScene extends Phaser.Scene {
         this.load.image("humanEyes", "mobiles/human/eyes.png");
         this.load.image("humanLegs", "mobiles/human/legs.png");
         this.load.image('base_tiles', 'tiles/tileBase.png');
+        this.load.image('base_tiles_extended', 'tiles/tileBaseExtended.png');
+        this.load.image('real_tiles_extended', 'tiles/tileRealExtended.png');
+        this.load.image('tree', 'tiles/testTree.png');
+        this.load.image('mountains', 'tiles/mountains_asd.png');
+        this.load.image('snowyMountains', 'tiles/mountainsSnowyTest.png');
 
         //add files from here
         // for (var i = 0; i < 500; i++) {
