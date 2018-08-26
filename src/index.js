@@ -20,6 +20,7 @@ import {
 } from './scenes/gameScene';
 
 const gameConfig = {
+    type: Phaser.WEBGL,
     width: window.innerWidth,
 	height: window.innerHeight,
 	pixelArt: true,
