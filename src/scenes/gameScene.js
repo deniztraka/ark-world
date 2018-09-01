@@ -38,7 +38,7 @@ export class GameScene extends Phaser.Scene {
         };
         this.controls = new Phaser.Cameras.Controls.FixedKeyControl(controlConfig);
 
-        var worldData = new WorldData(4, 50, 50, 32, 32);
+        var worldData = new WorldData(1, 10, 10, 32, 32);
         worldData.generate();
         worldData.generateTreePositions();
 
@@ -46,7 +46,7 @@ export class GameScene extends Phaser.Scene {
 
         this.createTileMap(worldData);
 
-        //console.table(noiseDataArray);
+        //console.table(worldData.elevationData);
 
     }
 
@@ -64,18 +64,20 @@ export class GameScene extends Phaser.Scene {
         var tiles = map.addTilesetImage('real_tiles_extended');
         var layers = {
             layer0: map.createBlankDynamicLayer('layer0', tiles),
+            layer0object: map.createBlankDynamicLayer('layer0object', tiles),
             layer1: map.createBlankDynamicLayer('layer1', tiles),
+            layer1object: map.createBlankDynamicLayer('layer1object', tiles),
             layer2: map.createBlankDynamicLayer('layer2', tiles),
+            layer2object: map.createBlankDynamicLayer('layer2object', tiles),
             layer3: map.createBlankDynamicLayer('layer3', tiles),
+            layer3object: map.createBlankDynamicLayer('layer3object', tiles),
             layer4: map.createBlankDynamicLayer('layer4', tiles),
-            layer5: map.createBlankDynamicLayer('layer5', tiles)
-        };
+            layer4object: map.createBlankDynamicLayer('layer4object', tiles),
+            layer5: map.createBlankDynamicLayer('layer5', tiles),
+            layer5object: map.createBlankDynamicLayer('layer5object', tiles),
+        };        
 
-        layers.layer1.setScrollFactor(1);
-
-
-
-
+        //return;
         for (var x = 0; x < worldData.width; x++) {
             for (var y = 0; y < worldData.height; y++) {
                 var biome = worldData.getBiome(worldData.elevationData[x][y], worldData.moistureData[x][y]);
@@ -85,62 +87,33 @@ export class GameScene extends Phaser.Scene {
                 }
                 map.putTileAt(biome.tileIndex, x, y, true, layers["layer" + baseElevation]);
 
-                //continue;
                 //generating height tiles
-                for (let i = 0; i < baseElevation; i++) {
+                    for (let i = 0; i < baseElevation; i++) {
 
-                    var brick = new Brick(this, (x * worldData.cellWidth), (y * worldData.cellHeight) - (i * 16));
-                    brick.depth = baseElevation*10;
-                    if (i == 0) {
-                        brick.setTint(0xffffff);
-                    } else if (i == 1) {
-                        brick.setTint(0xdddddd);
-                    } else if (i == 2) {
-                        brick.setTint(0xbbbbbb);
-                    } else if (i == 3) {
-                        brick.setTint(0x999999);
-                    } else if (i == 4) {
-                        brick.setTint(0x666666);
-                    } else if (i == 5) {
+                        var brick = new Brick(this, (x * worldData.cellWidth) + (worldData.cellWidth / 2), (y * worldData.cellHeight) + (worldData.cellHeight / 2) - i * worldData.cellHeight);
 
-                        brick.setTint(0x333333);
+                        if (i == 0) {
+                            brick.setTint(0xffffff);
+                        } else if (i == 1) {
+                            brick.setTint(0xdddddd);
+                        } else if (i == 2) {
+                            brick.setTint(0xbbbbbb);
+                        } else if (i == 3) {
+                            brick.setTint(0x999999);
+                        } else if (i == 4) {
+                            brick.setTint(0x666666);
+                        } else if (i == 5) {
+                            brick.setTint(0x333333);
+                        }
                     }
-                    //brick.setAlpha(0.5);
-                }
 
             }
         }
+        
+        // worldData.treePositions.forEach(position => {
+        //     new Tree(this, (position.x * worldData.cellWidth) + worldData.cellWidth / 2, (position.y * worldData.cellHeight) + worldData.cellHeight / 2);
+        // });
 
-        // layers.layer1.setDepth(5);
-        // layers.layer1.setDepth(6);
-        // layers.layer2.setDepth(7);
-        // layers.layer3.setDepth(8);
-        // layers.layer4.setDepth(9);
-        // layers.layer5.setDepth(10);
-
-        // // layers.layer0.depth = 0;
-        // //  layers.layer1.depth = 1;
-        // layers.layer2.tint = "#999999";
-        // layers.layer3.tint = "#bbbbbb";
-        // layers.layer4.tint = "#dddddd";
-        // layers.layer5.tint = "#ffffff";
-
-        worldData.treePositions.forEach(position => {
-            new Tree(this, (position.x * worldData.cellWidth) + worldData.cellWidth / 2, (position.y * worldData.cellHeight) + worldData.cellHeight / 2);
-        });
-
-        //place mountains
-        // for (var x = 0; x < worldData.width; x++) {
-        //     for (var y = 0; y < worldData.height; y++) {
-        //         var biome = worldData.getBiome(worldData.elevationData[x][y], worldData.moistureData[x][y]);
-        //         if(biome.tileIndex == Biomes.Scorched.tileIndex){
-        //             new Mountain(this, (x * worldData.cellWidth), (y * worldData.cellHeight));  
-        //         } else if (biome.tileIndex == Biomes.Snow.tileIndex){
-        //             var snowyMountain = new Mountain(this, (x * worldData.cellWidth) + worldData.cellWidth / 2, (y * worldData.cellHeight) - worldData.cellHeight / 2);  
-        //             snowyMountain.setTexture("snowyMountains");
-        //         }
-        //     }
-        // }
     }
 
     createTexture(worldData, useColor) {

@@ -78,7 +78,7 @@ export class WorldData {
 
         var moistureNoise = new libnoise.generator.Perlin(frequency * 0.5, lacunarity, persistence, octaves, this.seed + 1231232, quality);
 
-        //filling noiseData
+        //filling mouisture data
         for (var x = 0; x < this.width; x++) {
             for (var y = 0; y < this.height; y++) {
                 var noiseVal = moistureNoise.getValue(x * 10, y * 10, 0);
@@ -94,8 +94,6 @@ export class WorldData {
                 this.moistureData[x][y] = noiseVal;
             }
         }
-
-
 
         //normalize
         for (var x = 0; x < this.width; x++) {
