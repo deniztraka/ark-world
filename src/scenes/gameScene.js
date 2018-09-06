@@ -9,8 +9,7 @@ import {
 } from '../entities/brick';
 import {
     Biomes
-} from '../data/biomes'
-
+} from '../data/biomes';
 
 export class GameScene extends Phaser.Scene {
     constructor() {
@@ -44,7 +43,7 @@ export class GameScene extends Phaser.Scene {
 
         //this.createTexture(worldData, true);
 
-        this.createTileMap(worldData);
+        this.createIsoTileMap(worldData);
 
         //console.table(worldData.elevationData);
 
@@ -53,6 +52,47 @@ export class GameScene extends Phaser.Scene {
     update(time, delta) {
         this.controls.update(delta);
     }
+
+    createIsoTileMap(worldData) {
+
+
+        var map = this.make.tilemap({
+            tileWidth: worldData.cellWidth,
+            tileHeight: worldData.cellHeight,
+            width: worldData.width,
+            height: worldData.height
+        });
+
+        var isoTiles = map.addTilesetImage('isoGrass');
+
+        var layers = {
+            layer0: map.createBlankDynamicLayer('layer0', isoTiles),
+            layer0object: map.createBlankDynamicLayer('layer0object', isoTiles),
+            layer1: map.createBlankDynamicLayer('layer1', isoTiles),
+            layer1object: map.createBlankDynamicLayer('layer1object', isoTiles),
+            layer2: map.createBlankDynamicLayer('layer2', isoTiles),
+            layer2object: map.createBlankDynamicLayer('layer2object', isoTiles),
+            layer3: map.createBlankDynamicLayer('layer3', isoTiles),
+            layer3object: map.createBlankDynamicLayer('layer3object', isoTiles),
+            layer4: map.createBlankDynamicLayer('layer4', isoTiles),
+            layer4object: map.createBlankDynamicLayer('layer4object', isoTiles),
+            layer5: map.createBlankDynamicLayer('layer5', isoTiles),
+            layer5object: map.createBlankDynamicLayer('layer5object', isoTiles)
+        };
+
+        for (var x = 0; x < worldData.width; x++) {
+            for (var y = 0; y < worldData.height; y++) {
+
+                map.putTileAt(0, x, y, true, layers.layer0);
+
+
+
+            }
+        }
+
+    }
+
+
 
     createTileMap(worldData) {
         var map = this.make.tilemap({
@@ -74,8 +114,8 @@ export class GameScene extends Phaser.Scene {
             layer4: map.createBlankDynamicLayer('layer4', tiles),
             layer4object: map.createBlankDynamicLayer('layer4object', tiles),
             layer5: map.createBlankDynamicLayer('layer5', tiles),
-            layer5object: map.createBlankDynamicLayer('layer5object', tiles),
-        };        
+            layer5object: map.createBlankDynamicLayer('layer5object', tiles)
+        };
 
         //return;
         for (var x = 0; x < worldData.width; x++) {
@@ -88,28 +128,28 @@ export class GameScene extends Phaser.Scene {
                 map.putTileAt(biome.tileIndex, x, y, true, layers["layer" + baseElevation]);
 
                 //generating height tiles
-                    for (let i = 0; i < baseElevation; i++) {
+                for (let i = 0; i < baseElevation; i++) {
 
-                        var brick = new Brick(this, (x * worldData.cellWidth) + (worldData.cellWidth / 2), (y * worldData.cellHeight) + (worldData.cellHeight / 2) - i * worldData.cellHeight);
+                    var brick = new Brick(this, (x * worldData.cellWidth) + (worldData.cellWidth / 2), (y * worldData.cellHeight) + (worldData.cellHeight / 2) - i * worldData.cellHeight);
 
-                        if (i == 0) {
-                            brick.setTint(0xffffff);
-                        } else if (i == 1) {
-                            brick.setTint(0xdddddd);
-                        } else if (i == 2) {
-                            brick.setTint(0xbbbbbb);
-                        } else if (i == 3) {
-                            brick.setTint(0x999999);
-                        } else if (i == 4) {
-                            brick.setTint(0x666666);
-                        } else if (i == 5) {
-                            brick.setTint(0x333333);
-                        }
+                    if (i == 0) {
+                        brick.setTint(0xffffff);
+                    } else if (i == 1) {
+                        brick.setTint(0xdddddd);
+                    } else if (i == 2) {
+                        brick.setTint(0xbbbbbb);
+                    } else if (i == 3) {
+                        brick.setTint(0x999999);
+                    } else if (i == 4) {
+                        brick.setTint(0x666666);
+                    } else if (i == 5) {
+                        brick.setTint(0x333333);
                     }
+                }
 
             }
         }
-        
+
         // worldData.treePositions.forEach(position => {
         //     new Tree(this, (position.x * worldData.cellWidth) + worldData.cellWidth / 2, (position.y * worldData.cellHeight) + worldData.cellHeight / 2);
         // });

@@ -18,15 +18,23 @@ import {
 import {
     GameScene
 } from './scenes/gameScene';
+import {
+    IsoPlugin
+} from './plugins/isoPlugin';
 
 const gameConfig = {
     type: Phaser.WEBGL,
     width: window.innerWidth,
-	height: window.innerHeight,
-	pixelArt: true,
+    height: window.innerHeight,
+    pixelArt: true,
     title: 'World.IO', // 'My Phaser 3 Game'    
     version: '0.0.1',
-    scene: [BootScene, PreloaderScene, MainMenuScene, SettingsScene, CharacterSelectionScene,GameScene],
+    plugins: {
+        scene: [
+            { key: 'IsoPlugin', plugin: IsoPlugin, mapping: 'isoPlugin' }
+        ]
+    },
+    scene: [BootScene, PreloaderScene, MainMenuScene, SettingsScene, CharacterSelectionScene, GameScene],
     loader: {
         // baseURL: '',
         path: 'assets/',
@@ -37,4 +45,3 @@ const gameConfig = {
 };
 
 var mygame = new Phaser.Game(gameConfig);
-
