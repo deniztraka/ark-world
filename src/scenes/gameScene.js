@@ -11,12 +11,18 @@ import {
     Biomes
 } from '../data/biomes';
 
+import {
+    IsoDynamicTileMapLayer
+} from '../plugins/isoPlugin/isoDynamicTileMapLayer';
+
 export class GameScene extends Phaser.Scene {
     constructor() {
         super({
             key: "GameScene"
         });
         this.controls = null;
+
+
     }
 
     preload() {
@@ -37,15 +43,18 @@ export class GameScene extends Phaser.Scene {
         };
         this.controls = new Phaser.Cameras.Controls.FixedKeyControl(controlConfig);
 
-        var worldData = new WorldData(1, 10, 10, 32, 32);
+        var worldData = new WorldData(1, 10, 10, 64, 32);
         worldData.generate();
         worldData.generateTreePositions();
 
         //this.createTexture(worldData, true);
 
+
+
         this.createIsoTileMap(worldData);
 
         //console.table(worldData.elevationData);
+
 
     }
 
@@ -56,37 +65,26 @@ export class GameScene extends Phaser.Scene {
     createIsoTileMap(worldData) {
 
 
-        var map = this.make.tilemap({
+
+        var map = this.make.isoTileMap({
             tileWidth: worldData.cellWidth,
             tileHeight: worldData.cellHeight,
             width: worldData.width,
             height: worldData.height
         });
 
-        var isoTiles = map.addTilesetImage('isoGrass');
+        debugger;
+
+        var isoTiles = map.addTilesetImage('isoDirt');
 
         var layers = {
-            layer0: map.createBlankDynamicLayer('layer0', isoTiles),
-            layer0object: map.createBlankDynamicLayer('layer0object', isoTiles),
-            layer1: map.createBlankDynamicLayer('layer1', isoTiles),
-            layer1object: map.createBlankDynamicLayer('layer1object', isoTiles),
-            layer2: map.createBlankDynamicLayer('layer2', isoTiles),
-            layer2object: map.createBlankDynamicLayer('layer2object', isoTiles),
-            layer3: map.createBlankDynamicLayer('layer3', isoTiles),
-            layer3object: map.createBlankDynamicLayer('layer3object', isoTiles),
-            layer4: map.createBlankDynamicLayer('layer4', isoTiles),
-            layer4object: map.createBlankDynamicLayer('layer4object', isoTiles),
-            layer5: map.createBlankDynamicLayer('layer5', isoTiles),
-            layer5object: map.createBlankDynamicLayer('layer5object', isoTiles)
+            layer0: map.createBlankDynamicIsoLayer('layer0', isoTiles)
         };
 
         for (var x = 0; x < worldData.width; x++) {
             for (var y = 0; y < worldData.height; y++) {
 
                 map.putTileAt(0, x, y, true, layers.layer0);
-
-
-
             }
         }
 

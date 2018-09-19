@@ -20,7 +20,7 @@ import {
 } from './scenes/gameScene';
 import {
     IsoPlugin
-} from './plugins/isoPlugin';
+} from './plugins/isoPlugin/isoPlugin';
 
 const gameConfig = {
     type: Phaser.WEBGL,
@@ -31,7 +31,8 @@ const gameConfig = {
     version: '0.0.1',
     plugins: {
         scene: [
-            { key: 'IsoPlugin', plugin: IsoPlugin, mapping: 'isoPlugin' }
+            { key: 'IsoPlugin', plugin: IsoPlugin, mapping: 'isoPlugin' },
+
         ]
     },
     scene: [BootScene, PreloaderScene, MainMenuScene, SettingsScene, CharacterSelectionScene, GameScene],

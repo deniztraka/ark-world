@@ -1,3 +1,9 @@
+import {
+    IsoTileMap
+} from './isoTileMap';
+
+import * as IsoTileMapComponents from './isoTileMapComponents';
+
 export class IsoPlugin extends Phaser.Plugins.ScenePlugin {
     constructor(scene, pluginManager) {
         super(scene, pluginManager);
@@ -15,8 +21,44 @@ export class IsoPlugin extends Phaser.Plugins.ScenePlugin {
         let eventEmitter = this.systems.events;
         eventEmitter.on('update', this.update, this);
 
+        Phaser.GameObjects.GameObjectCreator.register('isoTileMap', function(config) {
+
+            // Defaults are applied in ParseToTilemap
+            var c = (config !== undefined) ? config : {};
+
+            return IsoTileMapComponents.parseToIsoTilemap(
+                this.scene,
+                c.key,
+                c.tileWidth,
+                c.tileHeight,
+                c.width,
+                c.height,
+                c.data,
+                c.insertNull
+            );
+        });
+
         /* 
             List of unused eventEmitters to activate matching methods of this plugin
+            start
+            ready
+            preupdate
+            update
+            postupdate
+            resize
+            pause
+            resume
+            sleep
+            wake
+            transitioninit
+            transitionstart
+            transitioncomplete
+            transitionout
+            shutdown
+            destroy
+
+            var eventEmitter = this.systems.events;
+            eventEmitter.once('destroy', this.sceneDestroy, this);
         */
 
         //eventEmitter.on('start', this.start, this);
