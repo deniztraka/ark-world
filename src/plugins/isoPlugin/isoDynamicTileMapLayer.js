@@ -11,5 +11,8 @@ export class IsoDynamicTileMapLayer extends Phaser.Tilemaps.DynamicTilemapLayer 
                 this.layer.data[x][y].pixelY = (this.layer.data[x][y].x + this.layer.data[x][y].y) * 16;
             }
         }
+
+        //to see the whole map
+        this.x = this.layer.data[x].length * 32;
     }
 }

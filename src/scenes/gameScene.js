@@ -50,7 +50,7 @@ export class GameScene extends Phaser.Scene {
         //this.createTexture(worldData, true);
 
 
-
+        //this.createTileMap(worldData);
         this.createIsoTileMap(worldData);
 
         //console.table(worldData.elevationData);
@@ -63,9 +63,6 @@ export class GameScene extends Phaser.Scene {
     }
 
     createIsoTileMap(worldData) {
-
-
-
         var map = this.make.isoTileMap({
             tileWidth: worldData.cellWidth,
             tileHeight: worldData.cellHeight,
