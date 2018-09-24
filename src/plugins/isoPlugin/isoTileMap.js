@@ -1,13 +1,16 @@
 import * as IsoTileMapComponents from './isoTileMapComponents';
-import { IsoDynamicTileMapLayer } from './isoDynamicTileMapLayer';
+import {
+    IsoDynamicTileMapLayer
+} from './isoDynamicTileMapLayer';
+import {
+    IsoTile
+} from './isoTile';
+
 
 export class IsoTileMap extends Phaser.Tilemaps.Tilemap {
     constructor(scene, mapData) {
         super(scene, mapData);
-
     }
-
-
 
     putTileAt(tile, tileX, tileY, recalculateFaces, layer) {
         layer = this.getLayer(layer);
@@ -26,6 +29,8 @@ export class IsoTileMap extends Phaser.Tilemaps.Tilemap {
     }
 
     createBlankDynamicIsoLayer(name, tileset, x, y, width, height, tileWidth, tileHeight) {
+        var debug = true;
+
         if (tileWidth === undefined) {
             tileWidth = tileset.tileWidth;
         }
@@ -66,7 +71,7 @@ export class IsoTileMap extends Phaser.Tilemaps.Tilemap {
             row = [];
 
             for (var tileX = 0; tileX < width; tileX++) {
-                row.push(new Phaser.Tilemaps.Tile(layerData, -1, tileX, tileY, tileWidth, tileHeight, this.tileWidth, this.tileHeight));
+                row.push(new IsoTile(layerData, -1, tileX, tileY, tileWidth, tileHeight, this.tileWidth, this.tileHeight));
             }
 
             layerData.data.push(row);
@@ -80,6 +85,30 @@ export class IsoTileMap extends Phaser.Tilemaps.Tilemap {
         dynamicLayer.setRenderOrder(this.renderOrder);
 
         this.scene.sys.displayList.add(dynamicLayer);
+
+        if (debug) {
+            for (let x = 0; x < dynamicLayer.layer.data.length; x++) {
+                for (let y = 0; y < dynamicLayer.layer.data[x].length; y++) {
+                    var tile = dynamicLayer.layer.data[y][x];
+
+                    var versionText = this.scene.add.text(tile.getCenterX(), tile.getCenterY(), x + "," + y, {
+                        font: '10px Courier',
+                        fill: '#ffffff'
+                    });
+
+                    // var versionText = this.scene.add.text(tile.pixelX, tile.pixelY, x + "," + y + " ; " + tile.getCenterX() + "," + tile.getCenterY(), {
+                    //     font: '10px Courier',
+                    //     fill: '#ffffff'
+                    // });
+                    versionText.setOrigin(0.5, 0.5);
+                }
+            }
+
+
+
+
+
+        }
 
         return dynamicLayer;
     }

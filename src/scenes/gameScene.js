@@ -15,6 +15,7 @@ import {
     IsoDynamicTileMapLayer
 } from '../plugins/isoPlugin/isoDynamicTileMapLayer';
 
+
 export class GameScene extends Phaser.Scene {
     constructor() {
         super({
@@ -30,7 +31,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     create() {
-        var cursors = this.input.keyboard.createCursorKeys();
+
         var controlConfig = {
             camera: this.cameras.main,
             left: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),
@@ -53,16 +54,23 @@ export class GameScene extends Phaser.Scene {
         //this.createTileMap(worldData);
         this.createIsoTileMap(worldData);
 
+
+
         //console.table(worldData.elevationData);
 
 
     }
 
+
+
     update(time, delta) {
         this.controls.update(delta);
     }
 
+
     createIsoTileMap(worldData) {
+        var self = this;
+
         var map = this.make.isoTileMap({
             tileWidth: worldData.cellWidth,
             tileHeight: worldData.cellHeight,
@@ -70,7 +78,7 @@ export class GameScene extends Phaser.Scene {
             height: worldData.height
         });
 
-        debugger;
+
 
         var isoTiles = map.addTilesetImage('isoDirt');
 
@@ -85,6 +93,12 @@ export class GameScene extends Phaser.Scene {
             }
         }
 
+        this.input.on('pointerdown', function(pointer) {
+            console.log(pointer.position.x, pointer.position.y);
+            console.log(layers.layer0.worldToTileXY(pointer.position.x, pointer.position.y, false));
+        });
+
+        layers.layer0.enableMarker(self);
     }
 
 

@@ -1,6 +1,9 @@
 import {
     IsoTileMap
 } from './isoTileMap';
+import {
+    IsoTile
+} from './isoTile';
 
 export function parseToIsoTilemap(scene, key, tileWidth, tileHeight, width, height, data, insertNull) {
     if (tileWidth === undefined) {
@@ -59,13 +62,13 @@ export function putTileAt(tile, tileX, tileY, recalculateFaces, layer) {
 
     if (tile instanceof Phaser.Tilemaps.Tile) {
         if (layer.data[tileY][tileX] === null) {
-            layer.data[tileY][tileX] = new Phaser.Tilemaps.Tile(layer, tile.index, tileX, tileY, tile.width, tile.height);
+            layer.data[tileY][tileX] = new IsoTile(layer, tile.index, tileX, tileY, tile.width, tile.height);
         }
         layer.data[tileY][tileX].copy(tile);
     } else {
         var index = tile;
         if (layer.data[tileY][tileX] === null) {
-            layer.data[tileY][tileX] = new Phaser.Tilemaps.Tile(layer, index, tileX, tileY, layer.tileWidth, layer.tileHeight);
+            layer.data[tileY][tileX] = new IsoTile(layer, index, tileX, tileY, layer.tileWidth, layer.tileHeight);
         } else {
             layer.data[tileY][tileX].index = index;
         }
@@ -82,4 +85,121 @@ export function putTileAt(tile, tileX, tileY, recalculateFaces, layer) {
     }
 
     return newTile;
+}
+
+export function tileToWorldX(tile, camera, layer) {
+    var tileWidth = layer.baseTileWidth;
+    var tilemapLayer = layer.tilemapLayer;
+    var layerWorldX = 0;
+
+    if (tilemapLayer) {
+        if (camera === undefined) {
+            camera = tilemapLayer.scene.cameras.main;
+        }
+
+        layerWorldX = tilemapLayer.x + camera.scrollX * (1 - tilemapLayer.scrollFactorX);
+
+        tileWidth *= tilemapLayer.scaleX;
+    }
+
+    return layerWorldX + ((tile.x - tile.y) * (tileWidth / 2));
+}
+
+export function tileToWorldY(tile, camera, layer) {
+    var tileHeight = layer.baseTileHeight;
+    var tilemapLayer = layer.tilemapLayer;
+    var layerWorldY = 0;
+
+    if (tilemapLayer) {
+        if (camera === undefined) {
+            camera = tilemapLayer.scene.cameras.main;
+        }
+
+        layerWorldY = (tilemapLayer.y + camera.scrollY * (1 - tilemapLayer.scrollFactorY));
+
+        tileHeight *= tilemapLayer.scaleY;
+    }
+
+    return layerWorldY + ((tile.x + tile.y) * (tileHeight / 2));
+
+}
+
+export function tileToWorldXY(tile, point, camera, layer) {
+    if (point === undefined) {
+        point = new Phaser.Math(0, 0);
+    }
+
+    point.x = tileToWorldX(tile, camera, layer);
+    point.y = tileToWorldY(tile, camera, layer);
+
+    return point;
+}
+
+export function worldToTileX(worldX, worldY, snapToFloor, camera, layer) {
+
+    if (snapToFloor === undefined) {
+        snapToFloor = true;
+    }
+
+    var tileWidth = layer.baseTileWidth;
+    var tileHeight = layer.baseTileHeight;
+    var tilemapLayer = layer.tilemapLayer;
+
+    if (tilemapLayer) {
+        if (camera === undefined) {
+            camera = tilemapLayer.scene.cameras.main;
+        }
+
+        // Find the world position relative to the static or dynamic layer's top left origin,
+        // factoring in the camera's horizontal scroll
+        worldX = worldX + (tilemapLayer.x + camera.scrollX); //* (1 - tilemapLayer.scrollFactorX));
+        worldY = worldY + (tilemapLayer.y + camera.scrollY);
+
+        tileWidth *= tilemapLayer.scaleX;
+    }
+
+    return snapToFloor ?
+        Math.floor(worldX / tileWidth) :
+        (Math.floor(worldX / (tileWidth / 2)) + (Math.floor(worldY / (tileHeight / 2)))) / 2;
+
+}
+
+export function worldToTileY(worldX, worldY, snapToFloor, camera, layer) {
+    debugger;
+    if (snapToFloor === undefined) {
+        snapToFloor = true;
+    }
+
+    var tileHeight = layer.baseTileHeight;
+    var tileWidth = layer.baseTileWidth;
+    var tilemapLayer = layer.tilemapLayer;
+
+    if (tilemapLayer) {
+        if (camera === undefined) {
+            camera = tilemapLayer.scene.cameras.main;
+        }
+
+        // Find the world position relative to the static or dynamic layer's top left origin,
+        // factoring in the camera's vertical scroll
+        worldY = worldY + (tilemapLayer.y + camera.scrollY); //* (1 - tilemapLayer.scrollFactorY));
+        worldX = worldX + (tilemapLayer.x + camera.scrollX);
+
+        tileHeight *= tilemapLayer.scaleY;
+    }
+
+
+    return snapToFloor ?
+        Math.floor(worldY / tileHeight) :
+        (Math.floor(worldY / (tileHeight / 2)) - (Math.floor(worldX / (tileWidth / 2)))) / 2;
+}
+
+export function worldToTileXY(worldX, worldY, snapToFloor, point, camera, layer) {
+    if (point === undefined) {
+        point = new Phaser.Math.Vector2(0, 0);
+    }
+
+    point.x = Math.floor(worldToTileX(worldX, worldY, snapToFloor, camera, layer));
+    point.y = Math.floor(worldToTileY(worldX, worldY, snapToFloor, camera, layer));
+
+    return point;
 }
