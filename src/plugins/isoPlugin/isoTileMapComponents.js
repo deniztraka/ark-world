@@ -57,20 +57,20 @@ export function putTileAt(tile, tileX, tileY, recalculateFaces, layer) {
         recalculateFaces = true;
     }
 
-    var oldTile = layer.data[tileY][tileX];
+    var oldTile = layer.data[tileX][tileY];
     var oldTileCollides = oldTile && oldTile.collides;
 
     if (tile instanceof Phaser.Tilemaps.Tile) {
-        if (layer.data[tileY][tileX] === null) {
-            layer.data[tileY][tileX] = new IsoTile(layer, tile.index, tileX, tileY, tile.width, tile.height);
+        if (layer.data[tileX][tileY] === null) {
+            layer.data[tileX][tileY] = new IsoTile(layer, tile.index, tileX, tileY, tile.width, tile.height);
         }
-        layer.data[tileY][tileX].copy(tile);
+        layer.data[tileX][tileY].copy(tile);
     } else {
         var index = tile;
-        if (layer.data[tileY][tileX] === null) {
-            layer.data[tileY][tileX] = new IsoTile(layer, index, tileX, tileY, layer.tileWidth, layer.tileHeight);
+        if (layer.data[tileX][tileY] === null) {
+            layer.data[tileX][tileY] = new IsoTile(layer, index, tileX, tileY, layer.tileWidth, layer.tileHeight);
         } else {
-            layer.data[tileY][tileX].index = index;
+            layer.data[tileX][tileY].index = index;
         }
     }
 
@@ -152,8 +152,8 @@ export function worldToTileX(worldX, worldY, snapToFloor, camera, layer) {
 
         // Find the world position relative to the static or dynamic layer's top left origin,
         // factoring in the camera's horizontal scroll
-        worldX = worldX + (tilemapLayer.x + camera.scrollX); //* (1 - tilemapLayer.scrollFactorX));
-        worldY = worldY + (tilemapLayer.y + camera.scrollY);
+        worldX = worldX + (tilemapLayer.x + camera.scrollX * (1 - tilemapLayer.scrollFactorX));
+        worldY = worldY + (tilemapLayer.y + camera.scrollY * (1 - tilemapLayer.scrollFactorY));
 
         tileWidth *= tilemapLayer.scaleX;
     }
@@ -165,7 +165,6 @@ export function worldToTileX(worldX, worldY, snapToFloor, camera, layer) {
 }
 
 export function worldToTileY(worldX, worldY, snapToFloor, camera, layer) {
-    debugger;
     if (snapToFloor === undefined) {
         snapToFloor = true;
     }
@@ -181,8 +180,8 @@ export function worldToTileY(worldX, worldY, snapToFloor, camera, layer) {
 
         // Find the world position relative to the static or dynamic layer's top left origin,
         // factoring in the camera's vertical scroll
-        worldY = worldY + (tilemapLayer.y + camera.scrollY); //* (1 - tilemapLayer.scrollFactorY));
-        worldX = worldX + (tilemapLayer.x + camera.scrollX);
+        worldX = worldX + (tilemapLayer.x + camera.scrollX * (1 - tilemapLayer.scrollFactorX));
+        worldY = worldY + (tilemapLayer.y + camera.scrollY * (1 - tilemapLayer.scrollFactorY));
 
         tileHeight *= tilemapLayer.scaleY;
     }

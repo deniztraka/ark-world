@@ -15,6 +15,10 @@ import {
     IsoDynamicTileMapLayer
 } from '../plugins/isoPlugin/isoDynamicTileMapLayer';
 
+import
+IsoPlugin
+from '../plugins/rotatesIso/isoPlugin';
+
 
 export class GameScene extends Phaser.Scene {
     constructor() {
@@ -23,11 +27,17 @@ export class GameScene extends Phaser.Scene {
         });
         this.controls = null;
 
-
+        this.sys.settings.map.isoPlugin = "iso";
     }
 
-    preload() {
 
+    preload() {
+        this.load.scenePlugin(
+            'IsoPlugin',
+            IsoPlugin,
+            'iso',
+            'iso'
+        );
     }
 
     create() {
@@ -53,15 +63,39 @@ export class GameScene extends Phaser.Scene {
 
         //this.createTileMap(worldData);
         this.createIsoTileMap(worldData);
+        //this.createWithCustomPlugin(worldData);
 
 
 
         //console.table(worldData.elevationData);
 
 
+
+        debugger;
+
     }
 
+    createWithCustomPlugin(worldData) {
 
+        debugger;
+        for (var x = 0; x < worldData.width; x++) {
+            for (var y = 0; y < worldData.height; y++) {
+                // Create a cube using the new isoSprite factory method at the specified position.
+                var tile = this.add.isoSprite(x * worldData.cellHeight, y * worldData.cellHeight, 0, 'isoDirt');
+                tile.setInteractive();
+
+                tile.on('pointerover', function() {
+                    this.setTint(0x86bfda);
+                    //this.isoZ += 5;
+                });
+
+                tile.on('pointerout', function() {
+                    this.clearTint();
+                    //this.isoZ -= 5;
+                });
+            }
+        }
+    }
 
     update(time, delta) {
         this.controls.update(delta);
@@ -93,15 +127,19 @@ export class GameScene extends Phaser.Scene {
             }
         }
 
-        this.input.on('pointerdown', function(pointer) {
-            console.log(pointer.position.x, pointer.position.y);
-            console.log(layers.layer0.worldToTileXY(pointer.position.x, pointer.position.y, false));
+        this.input.on('pointerdown', function() {
+            debugger;
+            var worldPoint = self.input.activePointer.positionToCamera(self.cameras.main);
+            console.log(worldPoint.x, worldPoint.y);
+            var tileIndexPointer = layers.layer0.worldToTileXY(worldPoint.x, worldPoint.y, false);
+
+            console.log(tileIndexPointer);
+            layers.layer0.tileMarker.x = (tileIndexPointer.x - tileIndexPointer.y) * 32;
+            layers.layer0.tileMarker.y = (tileIndexPointer.x + tileIndexPointer.y) * 16;
         });
 
         layers.layer0.enableMarker(self);
     }
-
-
 
     createTileMap(worldData) {
         var map = this.make.tilemap({

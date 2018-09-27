@@ -22,6 +22,10 @@ import {
     IsoPlugin
 } from './plugins/isoPlugin/isoPlugin';
 
+// import {
+//     IsoPlugin
+// } from './plugins/rotatesIso/isoPlugin';
+
 const gameConfig = {
     type: Phaser.WEBGL,
     width: window.innerWidth,

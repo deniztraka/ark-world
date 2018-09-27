@@ -24,23 +24,22 @@ export class IsoDynamicTileMapLayer extends Phaser.Tilemaps.DynamicTilemapLayer 
 
     enableMarker(scene) {
         var self = this;
+        debugger;
         this.tileMarker = new TileMarker(scene);
 
         scene.game.input.addMoveCallback(function(pointer) {
-            self.updateMarker(pointer, self.tileMarker, self);
+            self.updateMarker(self.tileMarker, self);
         });
     }
 
-    updateMarker(pointer, tileMarker, self) {
-        var camera = tileMarker.scene.cameras.main;
-        tileMarker.x = pointer.x + camera.scrollX; //* (1 - tileMarker.scrollFactorX);
-        tileMarker.y = pointer.y + camera.scrollY; //* (1 - tileMarker.scrollFactorY); 
-
-        console.log(this.worldToTileXY(pointer.x, pointer.y, false));
-        var tileIndexPointer = this.worldToTileXY(pointer.x, pointer.y, false);
-        tileMarker.x = ((tileIndexPointer.x - tileIndexPointer.y) * (64 / 2)) + 32;
-        tileMarker.y = ((tileIndexPointer.x + tileIndexPointer.y) * (32 / 2));
-
+    updateMarker(tileMarker, self) {
+        var worldPoint = self.scene.input.activePointer.positionToCamera(self.scene.cameras.main);
+        var tileIndexPointer = this.worldToTileXY(worldPoint.x, worldPoint.y, false);
+        if (tileIndexPointer) {
+            var tile = this.layer.data[tileIndexPointer.x][tileIndexPointer.y];
+            tileMarker.x = tile.pixelX;
+            tileMarker.y = tile.pixelY;
+        }
     }
 
     tileToWorldX(tile, camera) {
@@ -67,7 +66,46 @@ export class IsoDynamicTileMapLayer extends Phaser.Tilemaps.DynamicTilemapLayer 
 
 
     worldToTileXY(worldX, worldY, snapToFloor, point, camera) {
-        return IsoTileMapComponents.worldToTileXY(worldX, worldY, snapToFloor, point, camera, this.layer);
+
+        var worldPoint = this.scene.input.activePointer.positionToCamera(this.scene.cameras.main);
+
+        var tileIndexPointer = IsoTileMapComponents.worldToTileXY(worldPoint.x, worldPoint.y, snapToFloor, point, this.scene.cameras.main, this.layer);
+
+        if (tileIndexPointer.x < 0 || tileIndexPointer.y < 0 || tileIndexPointer.x >= this.layer.data.length || tileIndexPointer.y >= this.layer.data[0].length) {
+            return;
+        }
+
+        var closestTile = this.layer.data[tileIndexPointer.x][tileIndexPointer.y];
+
+        var minimumDistance = Phaser.Math.Distance.Between(closestTile.x, closestTile.y, worldPoint.x, worldPoint.y);
+
+        //currentTile
+        for (let i = -1; i <= 1; i++) {
+            for (let j = -1; j <= 1; j++) {
+                if (tileIndexPointer.x + i < 0 || tileIndexPointer.y + j < 0 || tileIndexPointer.x + i >= this.layer.data.length || tileIndexPointer.y + j >= this.layer.data[0].length) {
+                    continue;
+                }
+
+                var adjacentTile = this.layer.data[tileIndexPointer.x + i][tileIndexPointer.y + j];
+                var currentDistance = Phaser.Math.Distance.Between(adjacentTile.getCenterX(), adjacentTile.getCenterY(), worldPoint.x, worldPoint.y);
+                if (currentDistance < minimumDistance) {
+                    closestTile = adjacentTile;
+                    minimumDistance = currentDistance;
+                }
+
+
+            }
+
+        }
+
+        var point = new Phaser.Math.Vector2(0, 0);
+
+
+        point.x = closestTile.x;
+        point.y = closestTile.y;
+
+        return point;
+        //return IsoTileMapComponents.worldToTileXY(worldX, worldY, snapToFloor, point, camera, this.layer);
     }
 
     //TODO: Fix culling for isometric map.

@@ -67,10 +67,10 @@ export class IsoTileMap extends Phaser.Tilemaps.Tilemap {
 
         var row;
 
-        for (var tileY = 0; tileY < height; tileY++) {
+        for (var tileX = 0; tileX < width; tileX++) {
             row = [];
 
-            for (var tileX = 0; tileX < width; tileX++) {
+            for (var tileY = 0; tileY < height; tileY++) {
                 row.push(new IsoTile(layerData, -1, tileX, tileY, tileWidth, tileHeight, this.tileWidth, this.tileHeight));
             }
 
@@ -89,8 +89,7 @@ export class IsoTileMap extends Phaser.Tilemaps.Tilemap {
         if (debug) {
             for (let x = 0; x < dynamicLayer.layer.data.length; x++) {
                 for (let y = 0; y < dynamicLayer.layer.data[x].length; y++) {
-                    var tile = dynamicLayer.layer.data[y][x];
-
+                    var tile = dynamicLayer.layer.data[x][y];
                     var versionText = this.scene.add.text(tile.getCenterX(), tile.getCenterY(), x + "," + y, {
                         font: '10px Courier',
                         fill: '#ffffff'
@@ -100,7 +99,14 @@ export class IsoTileMap extends Phaser.Tilemaps.Tilemap {
                     //     font: '10px Courier',
                     //     fill: '#ffffff'
                     // });
+
+                    // var versionText = this.scene.add.text(tile.pixelX, tile.pixelY, x + "," + y, {
+                    //     font: '10px Courier',
+                    //     fill: '#ffffff'
+                    // });
                     versionText.setOrigin(0.5, 0.5);
+
+
                 }
             }
 
