@@ -3,6 +3,8 @@ import * as IsoTileMapComponents from './isoTileMapComponents';
 import {
     TileMarker
 } from '../../core/tilemap/tileMarker';
+
+import DynamicTileMapRender from './dynamicIsoTileMapRender';
 export class IsoDynamicTileMapLayer extends Phaser.Tilemaps.DynamicTilemapLayer {
     constructor(scene, tilemap, layerIndex, tileset, x, y) {
         super(scene, tilemap, layerIndex, tileset, x, y);
@@ -131,3 +133,7 @@ export class IsoDynamicTileMapLayer extends Phaser.Tilemaps.DynamicTilemapLayer 
     // }
 
 }
+
+Phaser.Class.mixin(IsoDynamicTileMapLayer, [
+    DynamicTileMapRender
+]);

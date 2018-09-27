@@ -20,6 +20,8 @@ IsoPlugin
 from '../plugins/rotatesIso/isoPlugin';
 
 
+
+
 export class GameScene extends Phaser.Scene {
     constructor() {
         super({
@@ -54,15 +56,21 @@ export class GameScene extends Phaser.Scene {
         };
         this.controls = new Phaser.Cameras.Controls.FixedKeyControl(controlConfig);
 
-        var worldData = new WorldData(1, 10, 10, 64, 32);
+        var isoWorldData = new WorldData(1, 10, 10, 64, 32);
+        isoWorldData.generate();
+        isoWorldData.generateTreePositions();
+        this.createIsoTileMap(isoWorldData);
+
+        var worldData = new WorldData(1, 10, 10, 32, 32);
         worldData.generate();
         worldData.generateTreePositions();
+        this.createTileMap(worldData);
 
         //this.createTexture(worldData, true);
 
 
-        //this.createTileMap(worldData);
-        this.createIsoTileMap(worldData);
+
+
         //this.createWithCustomPlugin(worldData);
 
 
@@ -112,30 +120,33 @@ export class GameScene extends Phaser.Scene {
             height: worldData.height
         });
 
-
-
         var isoTiles = map.addTilesetImage('isoDirt');
 
         var layers = {
             layer0: map.createBlankDynamicIsoLayer('layer0', isoTiles)
         };
 
+        debugger;
+
         for (var x = 0; x < worldData.width; x++) {
             for (var y = 0; y < worldData.height; y++) {
 
                 map.putTileAt(0, x, y, true, layers.layer0);
+                if (x == 1 && y == 6) {
+                    layers.layer0.layer.data[x][y].z = 5;
+                }
+
+
             }
         }
 
         this.input.on('pointerdown', function() {
-            debugger;
             var worldPoint = self.input.activePointer.positionToCamera(self.cameras.main);
-            console.log(worldPoint.x, worldPoint.y);
             var tileIndexPointer = layers.layer0.worldToTileXY(worldPoint.x, worldPoint.y, false);
+            var tile = map.getTileAt(tileIndexPointer.x, tileIndexPointer.y, true, layers.layer0);
 
-            console.log(tileIndexPointer);
-            layers.layer0.tileMarker.x = (tileIndexPointer.x - tileIndexPointer.y) * 32;
-            layers.layer0.tileMarker.y = (tileIndexPointer.x + tileIndexPointer.y) * 16;
+            console.log(tile);
+
         });
 
         layers.layer0.enableMarker(self);
@@ -174,6 +185,7 @@ export class GameScene extends Phaser.Scene {
                 }
                 map.putTileAt(biome.tileIndex, x, y, true, layers["layer" + baseElevation]);
 
+                continue;
                 //generating height tiles
                 for (let i = 0; i < baseElevation; i++) {
 

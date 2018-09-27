@@ -1,3 +1,5 @@
+import IsoHeight from '../../core/mixins/isoHeight';
+
 export class IsoTile extends Phaser.Tilemaps.Tile {
     constructor(layer, index, x, y, width, height, baseWidth, baseHeight) {
         super(layer, index, x, y, width, height, baseWidth, baseHeight);
@@ -28,3 +30,7 @@ export class IsoTile extends Phaser.Tilemaps.Tile {
         return this.getTop(camera) + this.height / 2;
     }
 }
+
+Phaser.Class.mixin(IsoTile, [
+    IsoHeight
+]);
