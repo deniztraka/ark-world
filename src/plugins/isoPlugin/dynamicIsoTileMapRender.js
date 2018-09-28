@@ -12,7 +12,7 @@ if (typeof WEBGL_RENDERER) {
 }
 
 if (typeof CANVAS_RENDERER) {
-    renderCanvas = require('./DynamicTilemapLayerWebGLRenderer');
+    renderCanvas = require('./DynamicTilemapLayerCanvasRenderer');
 }
 
 module.exports = {

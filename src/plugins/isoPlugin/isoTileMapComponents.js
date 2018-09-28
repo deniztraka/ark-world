@@ -202,3 +202,24 @@ export function worldToTileXY(worldX, worldY, snapToFloor, point, camera, layer)
 
     return point;
 }
+
+export function getTileAt(tileX, tileY, nonNull, layer) {
+    if (nonNull === undefined) { nonNull = false; }
+
+    if (isInLayerBounds(tileX, tileY, layer)) {
+        var tile = layer.data[tileX][tileY];
+        if (tile === null) {
+            return null;
+        } else if (tile.index === -1) {
+            return nonNull ? tile : null;
+        } else {
+            return tile;
+        }
+    } else {
+        return null;
+    }
+}
+
+export function isInLayerBounds(tileX, tileY, layer) {
+    return (tileX >= 0 && tileX < layer.width && tileY >= 0 && tileY < layer.height);
+}

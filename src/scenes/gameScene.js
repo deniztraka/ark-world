@@ -61,26 +61,16 @@ export class GameScene extends Phaser.Scene {
         isoWorldData.generateTreePositions();
         this.createIsoTileMap(isoWorldData);
 
-        var worldData = new WorldData(1, 10, 10, 32, 32);
-        worldData.generate();
-        worldData.generateTreePositions();
-        this.createTileMap(worldData);
+        // var worldData = new WorldData(1, 10, 10, 32, 32);
+        // worldData.generate();
+        // worldData.generateTreePositions();
+        // this.createTileMap(worldData);
 
         //this.createTexture(worldData, true);
 
-
-
-
-        //this.createWithCustomPlugin(worldData);
-
-
-
         //console.table(worldData.elevationData);
 
-
-
         debugger;
-
     }
 
     createWithCustomPlugin(worldData) {
@@ -126,27 +116,20 @@ export class GameScene extends Phaser.Scene {
             layer0: map.createBlankDynamicIsoLayer('layer0', isoTiles)
         };
 
-        debugger;
-
         for (var x = 0; x < worldData.width; x++) {
             for (var y = 0; y < worldData.height; y++) {
-
                 map.putTileAt(0, x, y, true, layers.layer0);
-                if (x == 1 && y == 6) {
-                    layers.layer0.layer.data[x][y].z = 5;
-                }
-
-
             }
         }
 
         this.input.on('pointerdown', function() {
             var worldPoint = self.input.activePointer.positionToCamera(self.cameras.main);
             var tileIndexPointer = layers.layer0.worldToTileXY(worldPoint.x, worldPoint.y, false);
-            var tile = map.getTileAt(tileIndexPointer.x, tileIndexPointer.y, true, layers.layer0);
-
-            console.log(tile);
-
+            if (tileIndexPointer) {
+                var tile = map.getTileAt(tileIndexPointer.x, tileIndexPointer.y, true, layers.layer0);
+                tile.setHeight(32);
+                console.log(tile);
+            }
         });
 
         layers.layer0.enableMarker(self);

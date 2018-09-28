@@ -1,4 +1,4 @@
-import IsoHeight from '../../core/mixins/isoHeight';
+import IsoHeight from '../../plugins/isoPlugin/components/isoHeight';
 
 export class IsoTile extends Phaser.Tilemaps.Tile {
     constructor(layer, index, x, y, width, height, baseWidth, baseHeight) {
@@ -28,6 +28,14 @@ export class IsoTile extends Phaser.Tilemaps.Tile {
 
     getCenterY(camera) {
         return this.getTop(camera) + this.height / 2;
+    }
+
+    setHeight(value) {
+        var tileMapLayer = this.tilemapLayer;
+
+        if (tileMapLayer) {
+            tileMapLayer.layer.data[this.x][this.y].z = value;
+        }
     }
 }
 

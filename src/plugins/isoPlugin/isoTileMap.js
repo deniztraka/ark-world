@@ -28,6 +28,16 @@ export class IsoTileMap extends Phaser.Tilemaps.Tilemap {
         return IsoTileMapComponents.putTileAt(tile, tileX, tileY, recalculateFaces, layer);
     }
 
+    getTileAt(tileX, tileY, nonNull, layer) {
+        layer = this.getLayer(layer);
+
+        if (layer === null) {
+            return null;
+        }
+
+        return IsoTileMapComponents.getTileAt(tileX, tileY, nonNull, layer);
+    }
+
     createBlankDynamicIsoLayer(name, tileset, x, y, width, height, tileWidth, tileHeight) {
         var debug = true;
 
