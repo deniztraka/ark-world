@@ -8,10 +8,9 @@ import DynamicTileMapRender from './dynamicIsoTileMapRender';
 export class IsoDynamicTileMapLayer extends Phaser.Tilemaps.DynamicTilemapLayer {
     constructor(scene, tilemap, layerIndex, tileset, x, y) {
         super(scene, tilemap, layerIndex, tileset, x, y);
-        this.skipCull = true;
+        //this.skipCull = true;
+        this.cullCallback = IsoTileMapComponents.cullIsoTiles;
         this.tileMarker = null;
-
-
         //change tilePositions to render it isometric style
         for (let x = 0; x < this.layer.data.length; x++) {
             for (let y = 0; y < this.layer.data[x].length; y++) {
@@ -37,6 +36,7 @@ export class IsoDynamicTileMapLayer extends Phaser.Tilemaps.DynamicTilemapLayer 
     updateMarker(tileMarker, self) {
         var worldPoint = self.scene.input.activePointer.positionToCamera(self.scene.cameras.main);
         var tileIndexPointer = this.worldToTileXY(worldPoint.x, worldPoint.y, false);
+
         if (tileIndexPointer) {
             var tile = this.layer.data[tileIndexPointer.x][tileIndexPointer.y];
             tileMarker.x = tile.pixelX;
@@ -108,6 +108,11 @@ export class IsoDynamicTileMapLayer extends Phaser.Tilemaps.DynamicTilemapLayer 
 
         return point;
         //return IsoTileMapComponents.worldToTileXY(worldX, worldY, snapToFloor, point, camera, this.layer);
+    }
+
+
+    cull() {
+        this.culledTiles = this.cullCallback(this.layer, this.scene.cameras.main, this.culledTiles, this._renderOrder);;
     }
 
     //TODO: Fix culling for isometric map.

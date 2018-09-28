@@ -223,3 +223,160 @@ export function getTileAt(tileX, tileY, nonNull, layer) {
 export function isInLayerBounds(tileX, tileY, layer) {
     return (tileX >= 0 && tileX < layer.width && tileY >= 0 && tileY < layer.height);
 }
+
+
+export function cullTiles(layer, camera, outputArray, renderOrder) {
+    if (outputArray === undefined) {
+        outputArray = [];
+    }
+    if (renderOrder === undefined) {
+        renderOrder = 0;
+    }
+
+    outputArray.length = 0;
+
+    var tilemap = layer.tilemapLayer.tilemap;
+    var tilemapLayer = layer.tilemapLayer;
+
+    var mapData = layer.data;
+    var mapWidth = layer.width;
+    var mapHeight = layer.height;
+
+    //  We need to use the tile sizes defined for the map as a whole, not the layer,
+    //  in order to calculate the bounds correctly. As different sized tiles may be
+    //  placed on the grid and we cannot trust layer.baseTileWidth to give us the true size.
+    var tileW = Math.floor(tilemap.tileWidth * tilemapLayer.scaleX);
+    var tileH = Math.floor(tilemap.tileHeight * tilemapLayer.scaleY);
+
+    var drawLeft = 0;
+    var drawRight = mapWidth;
+    var drawTop = 0;
+    var drawBottom = mapHeight;
+
+    if (!tilemapLayer.skipCull && tilemapLayer.scrollFactorX === 1 && tilemapLayer.scrollFactorY === 1) {
+        //  Camera world view bounds, snapped for scaled tile size
+        //  Cull Padding values are given in tiles, not pixels
+
+        var boundsLeft = Phaser.Math.Snap.Floor(camera.worldView.x - tilemapLayer.x, tileW, 0, true) - tilemapLayer.cullPaddingX;
+        var boundsRight = Phaser.Math.Snap.Ceil(camera.worldView.right - tilemapLayer.x, tileW, 0, true) + tilemapLayer.cullPaddingX;
+        var boundsTop = Phaser.Math.Snap.Floor(camera.worldView.y - tilemapLayer.y, tileH, 0, true) - tilemapLayer.cullPaddingY;
+        var boundsBottom = Phaser.Math.Snap.Ceil(camera.worldView.bottom - tilemapLayer.y, tileH, 0, true) + tilemapLayer.cullPaddingY;
+
+        drawLeft = Math.max(0, boundsLeft);
+        drawRight = Math.min(mapWidth, boundsRight);
+        drawTop = Math.max(0, boundsTop);
+        drawBottom = Math.min(mapHeight, boundsBottom);
+    }
+
+    var x;
+    var y;
+    var tile;
+
+    if (renderOrder === 0) {
+        //  right-down
+
+        for (y = drawTop; y < drawBottom; y++) {
+            for (x = drawLeft; x < drawRight; x++) {
+                tile = mapData[y][x];
+
+                if (!tile || tile.index === -1 || !tile.visible || tile.alpha === 0) {
+                    continue;
+                }
+
+                outputArray.push(tile);
+            }
+        }
+    } else if (renderOrder === 1) {
+        //  left-down
+
+        for (y = drawTop; y < drawBottom; y++) {
+            for (x = drawRight; x >= drawLeft; x--) {
+                tile = mapData[y][x];
+
+                if (!tile || tile.index === -1 || !tile.visible || tile.alpha === 0) {
+                    continue;
+                }
+
+                outputArray.push(tile);
+            }
+        }
+    } else if (renderOrder === 2) {
+        //  right-up
+
+        for (y = drawBottom; y >= drawTop; y--) {
+            for (x = drawLeft; x < drawRight; x++) {
+                tile = mapData[y][x];
+
+                if (!tile || tile.index === -1 || !tile.visible || tile.alpha === 0) {
+                    continue;
+                }
+
+                outputArray.push(tile);
+            }
+        }
+    } else if (renderOrder === 3) {
+        //  left-up
+
+        for (y = drawBottom; y >= drawTop; y--) {
+            for (x = drawRight; x >= drawLeft; x--) {
+                tile = mapData[y][x];
+
+                if (!tile || tile.index === -1 || !tile.visible || tile.alpha === 0) {
+                    continue;
+                }
+
+                outputArray.push(tile);
+            }
+        }
+    }
+
+    tilemapLayer.tilesDrawn = outputArray.length;
+    tilemapLayer.tilesTotal = mapWidth * mapHeight;
+
+    return outputArray;
+}
+
+export function cullIsoTiles(layer, camera, outputArray, renderOrder) {
+    if (outputArray === undefined) {
+        outputArray = [];
+    }
+    if (renderOrder === undefined) {
+        renderOrder = 0;
+    }
+
+    outputArray.length = 0;
+
+    var tilemap = layer.tilemapLayer.tilemap;
+    var tilemapLayer = layer.tilemapLayer;
+
+    var mapData = layer.data;
+    var mapWidth = layer.width;
+    var mapHeight = layer.height;
+
+    //  We need to use the tile sizes defined for the map as a whole, not the layer,
+    //  in order to calculate the bounds correctly. As different sized tiles may be
+    //  placed on the grid and we cannot trust layer.baseTileWidth to give us the true size.
+    var tileW = Math.floor(tilemap.tileWidth * tilemapLayer.scaleX);
+    var tileH = Math.floor(tilemap.tileHeight * tilemapLayer.scaleY);
+
+
+
+    for (let x = 0; x < mapData.length; x++) {
+        const row = mapData[x];
+        for (let y = 0; y < row.length; y++) {
+            const tile = row[y];
+            var centerX = tile.getCenterX();
+            var centerY = tile.getCenterY();
+            if (centerX > camera.worldView.x - tile.width && centerX < camera.worldView.x + camera.worldView.width + tile.width &&
+                centerY > camera.worldView.y - tile.height / 2 && centerY < camera.worldView.y + camera.worldView.height + tile.height / 2) {
+                outputArray.push(tile);
+            }
+
+        }
+
+    }
+
+    tilemapLayer.tilesDrawn = outputArray.length;
+    tilemapLayer.tilesTotal = mapWidth * mapHeight;
+    return outputArray;
+}
