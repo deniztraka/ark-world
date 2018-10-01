@@ -27,7 +27,7 @@ export class IsoTile extends Phaser.Tilemaps.Tile {
     }
 
     getCenterY(camera) {
-        return this.getTop(camera) + this.height / 2;
+        return this.getTop(camera) + this.height / 4;
     }
 
     setHeight(value) {

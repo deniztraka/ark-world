@@ -56,7 +56,7 @@ export class GameScene extends Phaser.Scene {
         };
         this.controls = new Phaser.Cameras.Controls.FixedKeyControl(controlConfig);
 
-        var isoWorldData = new WorldData(1, 10, 10, 64, 32);
+        var isoWorldData = new WorldData(1, 10, 10, 64, 64);
         isoWorldData.generate();
         isoWorldData.generateTreePositions();
         this.createIsoTileMap(isoWorldData);

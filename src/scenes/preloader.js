@@ -45,8 +45,8 @@ export class PreloaderScene extends Phaser.Scene {
         this.load.image('snowyMountains', 'tiles/mountainsSnowyTest.png');
         this.load.image('block', 'tiles/blockTest.png');
         this.load.image('isoGrass', 'tiles/cim2.png');
-        this.load.image('isoDirt', 'tiles/isoDirt.png');
-        //this.load.image('isoDirt', 'tiles/kup.png');
+        //this.load.image('isoDirt', 'tiles/isoDirt.png');
+        this.load.image('isoDirt', 'tiles/kup.png');
 
         //add files from here
         // for (var i = 0; i < 500; i++) {

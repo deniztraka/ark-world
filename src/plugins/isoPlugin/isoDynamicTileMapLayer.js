@@ -69,9 +69,9 @@ export class IsoDynamicTileMapLayer extends Phaser.Tilemaps.DynamicTilemapLayer 
 
     worldToTileXY(worldX, worldY, snapToFloor, point, camera) {
 
-        var worldPoint = this.scene.input.activePointer.positionToCamera(this.scene.cameras.main);
+        //var worldPoint = this.scene.input.activePointer.positionToCamera(this.scene.cameras.main);
 
-        var tileIndexPointer = IsoTileMapComponents.worldToTileXY(worldPoint.x, worldPoint.y, snapToFloor, point, this.scene.cameras.main, this.layer);
+        var tileIndexPointer = IsoTileMapComponents.worldToTileXY(worldX, worldY, snapToFloor, point, this.scene.cameras.main, this.layer);
 
         if (tileIndexPointer.x < 0 || tileIndexPointer.y < 0 || tileIndexPointer.x >= this.layer.data.length || tileIndexPointer.y >= this.layer.data[0].length) {
             return;
@@ -79,7 +79,7 @@ export class IsoDynamicTileMapLayer extends Phaser.Tilemaps.DynamicTilemapLayer 
 
         var closestTile = this.layer.data[tileIndexPointer.x][tileIndexPointer.y];
 
-        var minimumDistance = Phaser.Math.Distance.Between(closestTile.x, closestTile.y, worldPoint.x, worldPoint.y);
+        var minimumDistance = Phaser.Math.Distance.Between(closestTile.getCenterX(), closestTile.getCenterY(), worldX, worldY);
 
         //currentTile
         for (let i = -1; i <= 1; i++) {
@@ -89,7 +89,7 @@ export class IsoDynamicTileMapLayer extends Phaser.Tilemaps.DynamicTilemapLayer 
                 }
 
                 var adjacentTile = this.layer.data[tileIndexPointer.x + i][tileIndexPointer.y + j];
-                var currentDistance = Phaser.Math.Distance.Between(adjacentTile.getCenterX(), adjacentTile.getCenterY(), worldPoint.x, worldPoint.y);
+                var currentDistance = Phaser.Math.Distance.Between(adjacentTile.getCenterX(), adjacentTile.getCenterY(), worldX, worldY);
                 if (currentDistance < minimumDistance) {
                     closestTile = adjacentTile;
                     minimumDistance = currentDistance;

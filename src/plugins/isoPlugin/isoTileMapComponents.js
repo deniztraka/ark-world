@@ -120,7 +120,7 @@ export function tileToWorldY(tile, camera, layer) {
         tileHeight *= tilemapLayer.scaleY;
     }
 
-    return layerWorldY + ((tile.x + tile.y) * (tileHeight / 2));
+    return layerWorldY + ((tile.x + tile.y) * (tileHeight / 4));
 
 }
 
@@ -160,7 +160,8 @@ export function worldToTileX(worldX, worldY, snapToFloor, camera, layer) {
 
     return snapToFloor ?
         Math.floor(worldX / tileWidth) :
-        (Math.floor(worldX / (tileWidth / 2)) + (Math.floor(worldY / (tileHeight / 2)))) / 2;
+        (Math.floor(worldX / (tileWidth / 2)) + (Math.floor(worldY / (tileHeight / 4)))) / 2;
+
 
 }
 
@@ -185,11 +186,13 @@ export function worldToTileY(worldX, worldY, snapToFloor, camera, layer) {
 
         tileHeight *= tilemapLayer.scaleY;
     }
-
+    debugger;
 
     return snapToFloor ?
         Math.floor(worldY / tileHeight) :
-        (Math.floor(worldY / (tileHeight / 2)) - (Math.floor(worldX / (tileWidth / 2)))) / 2;
+        (Math.floor(worldY / (tileHeight / 4)) - (Math.floor(worldX / (tileWidth / 2)))) / 2;
+
+
 }
 
 export function worldToTileXY(worldX, worldY, snapToFloor, point, camera, layer) {
@@ -204,7 +207,9 @@ export function worldToTileXY(worldX, worldY, snapToFloor, point, camera, layer)
 }
 
 export function getTileAt(tileX, tileY, nonNull, layer) {
-    if (nonNull === undefined) { nonNull = false; }
+    if (nonNull === undefined) {
+        nonNull = false;
+    }
 
     if (isInLayerBounds(tileX, tileY, layer)) {
         var tile = layer.data[tileX][tileY];
