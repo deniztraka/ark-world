@@ -170,4 +170,16 @@ export class WorldData {
         if (moisture < 0.675) return Biomes.TropicalSeasonalForest; // 0.66 0.675
         return Biomes.TropicalRainForest;
     }
+
+    getElevation(x, y, base) {
+        if (base) {
+            var baseElevation = Math.floor(this.elevationData[x][y] * 10) - 5; //because seaa is lower than elevation 5 so we start at 1;
+            if (baseElevation < 0) {
+                baseElevation = 0;
+            }
+            return baseElevation;
+        } else {
+            return this.elevationData[x][y];
+        }
+    }
 }

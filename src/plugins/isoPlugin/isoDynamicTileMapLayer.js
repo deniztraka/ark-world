@@ -25,7 +25,6 @@ export class IsoDynamicTileMapLayer extends Phaser.Tilemaps.DynamicTilemapLayer 
 
     enableMarker(scene) {
         var self = this;
-        debugger;
         this.tileMarker = new TileMarker(scene);
 
         scene.game.input.addMoveCallback(function(pointer) {

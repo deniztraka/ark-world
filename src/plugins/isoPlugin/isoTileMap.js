@@ -39,7 +39,6 @@ export class IsoTileMap extends Phaser.Tilemaps.Tilemap {
     }
 
     createBlankDynamicIsoLayer(name, tileset, x, y, width, height, tileWidth, tileHeight) {
-        var debug = true;
 
         if (tileWidth === undefined) {
             tileWidth = tileset.tileWidth;
@@ -96,7 +95,7 @@ export class IsoTileMap extends Phaser.Tilemaps.Tilemap {
 
         this.scene.sys.displayList.add(dynamicLayer);
 
-        if (debug) {
+        if (false) {
             for (let x = 0; x < dynamicLayer.layer.data.length; x++) {
                 for (let y = 0; y < dynamicLayer.layer.data[x].length; y++) {
                     var tile = dynamicLayer.layer.data[x][y];

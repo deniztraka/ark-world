@@ -70,12 +70,10 @@ export class GameScene extends Phaser.Scene {
 
         //console.table(worldData.elevationData);
 
-        debugger;
     }
 
     createWithCustomPlugin(worldData) {
 
-        debugger;
         for (var x = 0; x < worldData.width; x++) {
             for (var y = 0; y < worldData.height; y++) {
                 // Create a cube using the new isoSprite factory method at the specified position.
@@ -113,26 +111,81 @@ export class GameScene extends Phaser.Scene {
         var isoTiles = map.addTilesetImage('isoDirt');
 
         var layers = {
-            layer0: map.createBlankDynamicIsoLayer('layer0', isoTiles)
+            layer0: map.createBlankDynamicIsoLayer('layer0', isoTiles),
+            layer0object: map.createBlankDynamicIsoLayer('layer0object', isoTiles),
+            layer1: map.createBlankDynamicIsoLayer('layer1', isoTiles),
+            layer1object: map.createBlankDynamicIsoLayer('layer1object', isoTiles),
+            layer2: map.createBlankDynamicIsoLayer('layer2', isoTiles),
+            layer2object: map.createBlankDynamicIsoLayer('layer2object', isoTiles),
+            layer3: map.createBlankDynamicIsoLayer('layer3', isoTiles),
+            layer3object: map.createBlankDynamicIsoLayer('layer3object', isoTiles),
+            layer4: map.createBlankDynamicIsoLayer('layer4', isoTiles),
+            layer4object: map.createBlankDynamicIsoLayer('layer4object', isoTiles),
+            layer5: map.createBlankDynamicIsoLayer('layer5', isoTiles),
+            layer5object: map.createBlankDynamicIsoLayer('layer5object', isoTiles)
         };
+
+        debugger;
 
         for (var x = 0; x < worldData.width; x++) {
             for (var y = 0; y < worldData.height; y++) {
+                //map.putTileAt(0, x, y, true, layers.layer0);
                 map.putTileAt(0, x, y, true, layers.layer0);
             }
         }
 
-        this.input.on('pointerdown', function() {
-            var worldPoint = self.input.activePointer.positionToCamera(self.cameras.main);
-            var tileIndexPointer = layers.layer0.worldToTileXY(worldPoint.x, worldPoint.y, false);
-            if (tileIndexPointer) {
-                var tile = map.getTileAt(tileIndexPointer.x, tileIndexPointer.y, true, layers.layer0);
-                tile.setHeight(32);
-                console.log(tile);
+        for (let i = 1; i <= 5; i++) {
+            var currentLayer = layers["layer" + i];
+
+            for (var x = 0; x < worldData.width; x++) {
+                for (var y = 0; y < worldData.height; y++) {
+
+                    //if (x <= 1 && y <= 1) {
+                    var elevation = worldData.getElevation(x, y, true);
+
+                    if (i <= elevation) {
+                        debugger;
+                        var tile = map.putTileAt(0, x, y, true, currentLayer);
+
+                        tile.setHeight(i * worldData.cellHeight / 2);
+                        if (i == 0) {
+                            tile.tint = 0xffffff;
+                        } else if (i == 1) {
+                            tile.tint = 0xdddddd;
+                        } else if (i == 2) {
+                            tile.tint = 0xbbbbbb;
+                        } else if (i == 3) {
+                            tile.tint = 0x999999;
+                        } else if (i == 4) {
+                            tile.tint = 0x666666;
+                        } else if (i == 5) {
+                            tile.tint = 0x333333;
+                        }
+                        console.log(tile);
+                    }
+                    //}
+
+                }
             }
+
+        }
+
+
+        this.input.on('pointerdown', function() {
+            //self.logTile();
         });
 
-        layers.layer0.enableMarker(self);
+        //layers.layer0.enableMarker(self);
+    }
+
+    logTile() {
+        var worldPoint = this.input.activePointer.positionToCamera(this.cameras.main);
+        var tileIndexPointer = layers.layer0.worldToTileXY(worldPoint.x, worldPoint.y, false);
+        if (tileIndexPointer) {
+            var tile = map.getTileAt(tileIndexPointer.x, tileIndexPointer.y, true, layers.layer0);
+            tile.setHeight(tile.z + 32);
+            console.log(tile);
+        }
     }
 
     createTileMap(worldData) {
@@ -161,14 +214,13 @@ export class GameScene extends Phaser.Scene {
         //return;
         for (var x = 0; x < worldData.width; x++) {
             for (var y = 0; y < worldData.height; y++) {
+
                 var biome = worldData.getBiome(worldData.elevationData[x][y], worldData.moistureData[x][y]);
-                var baseElevation = Math.floor(worldData.elevationData[x][y] * 10) - 5; //because seaa is lower than elevation 5 so we start at 1;
-                if (baseElevation < 0) {
-                    baseElevation = 0;
-                }
+
+                var baseElevation = worldData.getElevation(x, y, true);
                 map.putTileAt(biome.tileIndex, x, y, true, layers["layer" + baseElevation]);
 
-                continue;
+                //continue;
                 //generating height tiles
                 for (let i = 0; i < baseElevation; i++) {
 

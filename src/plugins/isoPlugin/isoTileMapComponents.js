@@ -75,7 +75,7 @@ export function putTileAt(tile, tileX, tileY, recalculateFaces, layer) {
     }
 
     // Updating colliding flag on the new tile
-    var newTile = layer.data[tileY][tileX];
+    var newTile = layer.data[tileX][tileY];
     var collides = layer.collideIndexes.indexOf(newTile.index) !== -1;
     Phaser.Tilemaps.Components.SetCollision(newTile, collides, true, layer);
 
@@ -186,7 +186,6 @@ export function worldToTileY(worldX, worldY, snapToFloor, camera, layer) {
 
         tileHeight *= tilemapLayer.scaleY;
     }
-    debugger;
 
     return snapToFloor ?
         Math.floor(worldY / tileHeight) :
