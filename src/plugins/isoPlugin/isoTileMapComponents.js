@@ -194,6 +194,34 @@ export function worldToTileY(worldX, worldY, snapToFloor, camera, layer) {
 
 }
 
+export function removeTileAt(tileX, tileY, replaceWithNull, recalculateFaces, layer) {
+    if (replaceWithNull === undefined) {
+        replaceWithNull = false;
+    }
+    if (recalculateFaces === undefined) {
+        recalculateFaces = true;
+    }
+    if (!isInLayerBounds(tileX, tileY, layer)) {
+        return null;
+    }
+
+    var tile = layer.data[tileX][tileY];
+    if (tile === null) {
+        return null;
+    } else {
+        layer.data[tileX][tileY] = replaceWithNull ?
+            null :
+            new IsoTile(layer, -1, tileX, tileY, tile.width, tile.height);
+    }
+
+    // Recalculate faces only if the removed tile was a colliding tile
+    if (recalculateFaces && tile && tile.collides) {
+        CalculateFacesAt(tileX, tileY, layer);
+    }
+
+    return tile;
+}
+
 export function worldToTileXY(worldX, worldY, snapToFloor, point, camera, layer) {
     if (point === undefined) {
         point = new Phaser.Math.Vector2(0, 0);

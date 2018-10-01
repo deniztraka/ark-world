@@ -28,6 +28,16 @@ export class IsoTileMap extends Phaser.Tilemaps.Tilemap {
         return IsoTileMapComponents.putTileAt(tile, tileX, tileY, recalculateFaces, layer);
     }
 
+    removeTileAt(tileX, tileY, replaceWithNull, recalculateFaces, layer) {
+        layer = this.getLayer(layer);
+
+        if (this._isStaticCall(layer, 'removeTileAt')) { return null; }
+
+        if (layer === null) { return null; }
+
+        return IsoTileMapComponents.removeTileAt(tileX, tileY, replaceWithNull, recalculateFaces, layer);
+    }
+
     getTileAt(tileX, tileY, nonNull, layer) {
         layer = this.getLayer(layer);
 
