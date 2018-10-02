@@ -169,7 +169,7 @@ export class GameScene extends Phaser.Scene {
             self.logTile();
         });
 
-        //layers.layer0.enableMarker(self);
+        //this.mapLayers.layer1.enableMarker(self);
     }
 
     logTile() {

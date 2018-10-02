@@ -19,7 +19,7 @@
     "dependencies": {
         "libnoise": "^0.2.1",
         "noisejs": "^2.1.0",
-        "phaser": "^3.12.0",
+        "phaser": "^3.14.0",
         "poisson-disk-sampling": "^1.0.2"
     },
     "scripts": {
