@@ -48,6 +48,8 @@ export class PreloaderScene extends Phaser.Scene {
         //this.load.image('isoDirt', 'tiles/isoDirt.png');
         this.load.image('isoDirt', 'tiles/kup.png');
 
+        this.load.spritesheet('ogre', 'mobiles/ogre.png', { frameWidth: 64, frameHeight: 64 });
+
         //add files from here
         // for (var i = 0; i < 500; i++) {
         //     this.load.image('phaserLogo' + i, 'phaser3-logo.png');
