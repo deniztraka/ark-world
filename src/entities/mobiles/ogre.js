@@ -11,7 +11,6 @@ export class Ogre extends Phaser.GameObjects.Sprite {
             self.anims.load(anim.key);
         });
 
-        debugger;
         //controls
         this.controls = getControls(scene);
 
@@ -25,7 +24,6 @@ export class Ogre extends Phaser.GameObjects.Sprite {
             self.update();
         });
 
-        var spaceBar = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     }
 
     update(){
