@@ -16,7 +16,7 @@ import {
 } from '../plugins/isoPlugin/isoDynamicTileMapLayer';
 
 import
-    IsoPlugin
+IsoPlugin
 from '../plugins/rotatesIso/isoPlugin';
 
 import {
@@ -35,7 +35,7 @@ export class GameScene extends Phaser.Scene {
 
         this.sys.settings.map.isoPlugin = "iso";
 
-        this.updateEmitter = new Phaser.Events.EventEmitter();
+        this.eventEmitter = new Phaser.Events.EventEmitter();
     }
 
 
@@ -65,7 +65,7 @@ export class GameScene extends Phaser.Scene {
         this.map = null;
         this.mapLayers = null;
 
-        var isoWorldData = new WorldData(1, 10, 10, 64, 64);
+        var isoWorldData = new WorldData(1, 20, 20, 64, 64);
         isoWorldData.generate();
         isoWorldData.generateTreePositions();
         this.createIsoTileMap(isoWorldData);
@@ -81,7 +81,13 @@ export class GameScene extends Phaser.Scene {
 
         //console.table(worldData.elevationData);
 
-        var ogre = new Ogre(this, 32, 16);
+
+        this.createPlayer();
+    }
+
+    createPlayer() {
+        var tile = this.map.getTileAt(9, 9, true, this.mapLayers.layer0);
+        var ogre = new Ogre(this, tile.getCenterX(), tile.getCenterY());
 
     }
 
@@ -93,12 +99,12 @@ export class GameScene extends Phaser.Scene {
                 var tile = this.add.isoSprite(x * worldData.cellHeight, y * worldData.cellHeight, 0, 'isoDirt');
                 tile.setInteractive();
 
-                tile.on('pointerover', function () {
+                tile.on('pointerover', function() {
                     this.setTint(0x86bfda);
                     //this.isoZ += 5;
                 });
 
-                tile.on('pointerout', function () {
+                tile.on('pointerout', function() {
                     this.clearTint();
                     //this.isoZ -= 5;
                 });
@@ -108,7 +114,7 @@ export class GameScene extends Phaser.Scene {
 
     update(time, delta) {
         this.controls.update(delta);
-        this.updateEmitter.emit("update!");
+        this.eventEmitter.emit("gameSceneUpdate!");
     }
 
 
@@ -147,7 +153,6 @@ export class GameScene extends Phaser.Scene {
             }
         }
 
-        return;
         for (let i = 1; i <= 5; i++) {
             var currentLayer = this.mapLayers["layer" + i];
 
@@ -175,12 +180,12 @@ export class GameScene extends Phaser.Scene {
             }
         }
 
-        this.input.on('pointerdown', function () {
-            self.logTile();
-        });
+        // this.input.on('pointerdown', function() {
+        //     self.logTile();
+        // });
 
 
-        
+
         //this.mapLayers.layer1.enableMarker(self);
     }
 

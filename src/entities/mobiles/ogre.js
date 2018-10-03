@@ -1,8 +1,12 @@
+import {
+    PlayerController
+} from '../../core/playerController';
+
 export class Ogre extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y) {
         super(scene, x, y, "ogre");
+        this.direction = "N";
         var self = this;
-
         this.setOrigin(0.5, 0.75);
 
         //anims loading
@@ -15,37 +19,45 @@ export class Ogre extends Phaser.GameObjects.Sprite {
         this.controls = getControls(scene);
 
 
+        this.inputHandler = new PlayerController(this.scene, this);
+        this.states = {
+            isWalking: false,
+            isRunning: false
+        };
 
 
         //this.anims.play('walkNW');
         scene.add.existing(this);
 
-        scene.updateEmitter.on("update!",function(){
+        scene.eventEmitter.on("gameSceneUpdate!", function() {
             self.update();
         });
 
     }
 
-    update(){
-        var self = this;
-        if(self.scene.input.keyboard.checkDown(self.controls.w,0)){
-            self.anims.play('walkNW');
-        }
+    update() {
+        this.inputHandler.update();
+
     }
 
-    
+    playAnimation() {
 
+    }
+
+    setDirection(direction) {
+        this.direction = direction;
+    }
 
 }
 
-function getControls(scene){
+function getControls(scene) {
     return {
-        spaceBar : scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE),
-        w : scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),
-        a : scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),
-        s : scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S),
-        d : scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D),
-    }    
+        spaceBar: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE),
+        w: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),
+        a: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),
+        s: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S),
+        d: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D),
+    }
 }
 
 function getAnims() {

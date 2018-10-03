@@ -8,7 +8,6 @@ import {
 import {
     Player
 } from "../core/player";
-import { InputHandler } from "../core/inputHandler";
 
 export class CharacterSelectionScene extends Phaser.Scene {
     constructor() {
@@ -32,8 +31,6 @@ export class CharacterSelectionScene extends Phaser.Scene {
         mainMenu.addMenuItem("Enter", this.onEnterClick, this);
 
         //this.player = new Player(this, this.scene.manager.game.renderer.width / 2, this.scene.manager.game.renderer.height / 2 - 100);
-
-        this.inputHandler = new InputHandler(this);
     }
 
     onBackClick() {
@@ -44,7 +41,5 @@ export class CharacterSelectionScene extends Phaser.Scene {
         this.scene.start("GameScene");
     }
 
-    update() {
-        this.inputHandler.update();
-    }
+    update() {}
 }
