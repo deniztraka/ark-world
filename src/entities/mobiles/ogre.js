@@ -37,11 +37,23 @@ export class Ogre extends Phaser.GameObjects.Sprite {
 
     update() {
         this.inputHandler.update();
-
+        this.handleAnimations();
     }
 
-    playAnimation() {
+    handleAnimations() {
+        if (this.states.isWalking) {
+            this.playAnimation("walk" + this.direction);
+        } else {
+            this.playAnimation("idle" + this.direction);
+        }
+    }
 
+    playAnimation(animationKey) {
+        if (this.anims.currentAnim.key == animationKey) {
+            this.anims.play(animationKey, true);
+        } else {
+            this.anims.play(animationKey);
+        }
     }
 
     setDirection(direction) {
@@ -61,7 +73,9 @@ function getControls(scene) {
 }
 
 function getAnims() {
-    return [{
+    return [
+        //walking starts here
+        {
             key: 'walkSW',
             frames: [{
                     key: "ogre",
@@ -234,6 +248,82 @@ function getAnims() {
                     frame: 59
                 }
             ],
+            frameRate: 6,
+            repeat: -1
+        },
+
+
+        //Idle starts here
+
+        {
+            key: 'idleSW',
+            frames: [{
+                key: "ogre",
+                frame: 0
+            }],
+            frameRate: 6,
+            repeat: -1
+        },
+        {
+            key: 'idleW',
+            frames: [{
+                key: "ogre",
+                frame: 8
+            }],
+            frameRate: 6,
+            repeat: -1
+        },
+        {
+            key: 'idleNW',
+            frames: [{
+                key: "ogre",
+                frame: 16
+            }],
+            frameRate: 6,
+            repeat: -1
+        },
+        {
+            key: 'idleN',
+            frames: [{
+                key: "ogre",
+                frame: 24
+            }],
+            frameRate: 6,
+            repeat: -1
+        },
+        {
+            key: 'idleNE',
+            frames: [{
+                key: "ogre",
+                frame: 32
+            }],
+            frameRate: 6,
+            repeat: -1
+        },
+        {
+            key: 'idleE',
+            frames: [{
+                key: "ogre",
+                frame: 40
+            }],
+            frameRate: 6,
+            repeat: -1
+        },
+        {
+            key: 'idleSE',
+            frames: [{
+                key: "ogre",
+                frame: 48
+            }],
+            frameRate: 6,
+            repeat: -1
+        },
+        {
+            key: 'idleS',
+            frames: [{
+                key: "ogre",
+                frame: 56
+            }],
             frameRate: 6,
             repeat: -1
         }

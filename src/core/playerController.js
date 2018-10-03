@@ -24,14 +24,21 @@ export class PlayerController {
     }
 
     update() {
-        this.owner.setDirection(this.getDirection());
-        // if (this.activePointer.rightButtonDown()) {
-        //     this.owner.states.isWalking = true;
-        // } else {
-        //     this.owner.states.isWalking = false;
-        // }
+        var self = this;
 
-        //console.log(this.owner.states.isWalking);
+
+        this.phaserScene.input.on('pointerdown', function(pointer) {
+            if (pointer.rightButtonDown()) {
+                self.owner.setDirection(self.getDirection());
+                self.owner.states.isWalking = true;
+            }
+        });
+
+        this.phaserScene.input.on('pointerup', function(pointer) {
+            if (pointer.rightButtonDown() == 2) {
+                self.owner.states.isWalking = false;
+            }
+        });
     }
 
     getDirection() {
