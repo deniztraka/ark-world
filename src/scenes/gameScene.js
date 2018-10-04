@@ -36,6 +36,11 @@ export class GameScene extends Phaser.Scene {
         this.sys.settings.map.isoPlugin = "iso";
 
         this.eventEmitter = new Phaser.Events.EventEmitter();
+
+        this.showDebug = false;
+
+
+
     }
 
 
@@ -49,6 +54,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     create() {
+        var self = this;
 
         var controlConfig = {
             camera: this.cameras.main,
@@ -83,6 +89,26 @@ export class GameScene extends Phaser.Scene {
 
 
         this.createPlayer();
+
+        this.input.keyboard.on('keydown_C', function(event) {
+            self.showDebug = !self.showDebug;
+            self.drawDebug();
+        });
+
+        this.debugGraphics = this.add.graphics();
+    }
+
+    drawDebug() {
+        this.debugGraphics.clear();
+
+        if (this.showDebug) {
+            // Pass in null for any of the style options to disable drawing that component
+            this.map.renderDebug(this.debugGraphics, {
+                tileColor: new Phaser.Display.Color(0, 134, 48, 200), // Non-colliding tiles
+                collidingTileColor: new Phaser.Display.Color(243, 134, 48, 200), // Colliding tiles
+                faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Colliding face edges
+            });
+        }
     }
 
     createPlayer() {
@@ -114,7 +140,7 @@ export class GameScene extends Phaser.Scene {
 
     update(time, delta) {
         this.controls.update(delta);
-        this.eventEmitter.emit("gameSceneUpdate!");
+        this.eventEmitter.emit("gameSceneUpdate!", time, delta);
     }
 
 

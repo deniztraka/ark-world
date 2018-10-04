@@ -33,6 +33,12 @@ const gameConfig = {
     pixelArt: true,
     title: 'World.IO', // 'My Phaser 3 Game'    
     version: '0.0.1',
+    physics: {
+        default: 'arcade',
+        arcade: {
+            debug: true
+        }
+    },
     plugins: {
         scene: [
             { key: 'IsoPlugin', plugin: IsoPlugin, mapping: 'isoPlugin' },

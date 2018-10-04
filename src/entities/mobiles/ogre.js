@@ -29,15 +29,114 @@ export class Ogre extends Phaser.GameObjects.Sprite {
         //this.anims.play('walkNW');
         scene.add.existing(this);
 
-        scene.eventEmitter.on("gameSceneUpdate!", function() {
-            self.update();
+        scene.eventEmitter.on("gameSceneUpdate!", function(time, delta) {
+            self.update(time, delta);
         });
 
+        this.lastMoveTime = 0;
+        this.currentMapPosition = this.currentMapPosition = this.scene.mapLayers.layer0.worldToTileXY(this.x, this.y, false);
     }
 
-    update() {
+    update(time, delta) {
         this.inputHandler.update();
         this.handleAnimations();
+        this.handleMovement(time, delta);
+    }
+
+    handleMovement(time, delta) {
+        var tw = this.scene.map.tileWidth * this.scene.mapLayers.layer0.scaleX;
+        var th = this.scene.map.tileHeight * this.scene.mapLayers.layer0.scaleY;
+
+
+
+        var repeatMoveDelay = 250;
+
+        if (time > this.lastMoveTime + repeatMoveDelay) {
+            if (this.states.isWalking) {
+                this.moveToCurrentDirection(1, time, delta);
+                this.lastMoveTime = time;
+            }
+        }
+    }
+
+    moveToCurrentDirection(numberOfTiles, time, delta) {
+
+        function setPosition(nextPosition, context, pTime, pDelta) {
+            if (nextPosition) {
+                var nextTile = context.scene.map.getTileAt(nextPosition.x, nextPosition.y, true, context.scene.mapLayers.layer0);
+                if (nextTile != null) {
+
+                    // context.x = nextTile.getCenterX();
+                    // context.y = nextTile.getCenterY();
+                    // context.currentMapPosition = new Phaser.Math.Vector2(nextTile.x, nextTile.y);
+                    //return;
+
+                    function onCompleteHandler(tween, targets, nextTile) {
+                        context.currentMapPosition = new Phaser.Math.Vector2(nextTile.x, nextTile.y);
+                    }
+
+                    context.scene.tweens.add({
+                        targets: context,
+                        x: {
+                            value: nextTile.getCenterX(),
+                            ease: 'Linear'
+                        },
+                        y: {
+                            value: nextTile.getCenterY(),
+                            ease: 'Linear'
+                        },
+                        duration: 200,
+                        onComplete: onCompleteHandler,
+                        onCompleteParams: [nextTile]
+                    });
+                }
+            }
+        }
+
+
+        var nextMapPosition = null;
+        switch (this.direction) {
+            case "NW":
+                //console.log("walking NW");
+                nextMapPosition = new Phaser.Math.Vector2(this.currentMapPosition.x - numberOfTiles, this.currentMapPosition.y - numberOfTiles);
+                setPosition(nextMapPosition, this, time, delta);
+                break;
+            case "N":
+                //console.log("walking N");
+                nextMapPosition = new Phaser.Math.Vector2(this.currentMapPosition.x, this.currentMapPosition.y - numberOfTiles);
+                setPosition(nextMapPosition, this, time, delta);
+                break;
+            case "NE":
+                //console.log("walking NE");
+                nextMapPosition = new Phaser.Math.Vector2(this.currentMapPosition.x + numberOfTiles, this.currentMapPosition.y - numberOfTiles);
+                setPosition(nextMapPosition, this, time, delta);
+                break;
+            case "E":
+                //console.log("walking E");
+                nextMapPosition = new Phaser.Math.Vector2(this.currentMapPosition.x + numberOfTiles, this.currentMapPosition.y);
+                setPosition(nextMapPosition, this, time, delta);
+                break;
+            case "SE":
+                //console.log("walking SE");
+                nextMapPosition = new Phaser.Math.Vector2(this.currentMapPosition.x + numberOfTiles, this.currentMapPosition.y + numberOfTiles);
+                setPosition(nextMapPosition, this, time, delta);
+                break;
+            case "S":
+                //console.log("walking S");
+                nextMapPosition = new Phaser.Math.Vector2(this.currentMapPosition.x, this.currentMapPosition.y + numberOfTiles);
+                setPosition(nextMapPosition, this, time, delta);
+                break;
+            case "SW":
+                //console.log("walking SW");
+                nextMapPosition = new Phaser.Math.Vector2(this.currentMapPosition.x - numberOfTiles, this.currentMapPosition.y + numberOfTiles);
+                setPosition(nextMapPosition, this, time, delta);
+                break;
+            case "W":
+                //console.log("walking W");
+                nextMapPosition = new Phaser.Math.Vector2(this.currentMapPosition.x - numberOfTiles, this.currentMapPosition.y);
+                setPosition(nextMapPosition, this, time, delta);
+                break;
+        }
     }
 
     handleAnimations() {
