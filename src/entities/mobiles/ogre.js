@@ -44,15 +44,11 @@ export class Ogre extends Phaser.GameObjects.Sprite {
     }
 
     handleMovement(time, delta) {
-        var tw = this.scene.map.tileWidth * this.scene.mapLayers.layer0.scaleX;
-        var th = this.scene.map.tileHeight * this.scene.mapLayers.layer0.scaleY;
-
-
-
         var repeatMoveDelay = 250;
 
         if (time > this.lastMoveTime + repeatMoveDelay) {
             if (this.states.isWalking) {
+
                 this.moveToCurrentDirection(1, time, delta);
                 this.lastMoveTime = time;
             }
@@ -64,7 +60,8 @@ export class Ogre extends Phaser.GameObjects.Sprite {
         function setPosition(nextPosition, context, pTime, pDelta) {
             if (nextPosition) {
                 var nextTile = context.scene.map.getTileAt(nextPosition.x, nextPosition.y, true, context.scene.mapLayers.layer0);
-                if (nextTile != null) {
+
+                if (nextTile != null && !nextTile.hasElevationStack) {
 
                     // context.x = nextTile.getCenterX();
                     // context.y = nextTile.getCenterY();
@@ -89,6 +86,8 @@ export class Ogre extends Phaser.GameObjects.Sprite {
                         onComplete: onCompleteHandler,
                         onCompleteParams: [nextTile]
                     });
+                } else {
+                    context.states.isWalking = false;
                 }
             }
         }

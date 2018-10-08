@@ -71,7 +71,8 @@ export class GameScene extends Phaser.Scene {
         this.map = null;
         this.mapLayers = null;
 
-        var isoWorldData = new WorldData(1, 20, 20, 64, 64);
+
+        var isoWorldData = new WorldData(4, 50, 50, 64, 64);
         isoWorldData.generate();
         isoWorldData.generateTreePositions();
         this.createIsoTileMap(isoWorldData);
@@ -88,7 +89,9 @@ export class GameScene extends Phaser.Scene {
         //console.table(worldData.elevationData);
 
 
-        this.createPlayer();
+
+
+
 
         this.input.keyboard.on('keydown_C', function(event) {
             self.showDebug = !self.showDebug;
@@ -159,17 +162,21 @@ export class GameScene extends Phaser.Scene {
         this.mapLayers = {
             layer0: self.map.createBlankDynamicIsoLayer('layer0', isoTiles),
             layer0object: self.map.createBlankDynamicIsoLayer('layer0object', isoTiles),
-            layer1: self.map.createBlankDynamicIsoLayer('layer1', isoTiles),
-            layer1object: self.map.createBlankDynamicIsoLayer('layer1object', isoTiles),
-            layer2: self.map.createBlankDynamicIsoLayer('layer2', isoTiles),
-            layer2object: self.map.createBlankDynamicIsoLayer('layer2object', isoTiles),
-            layer3: self.map.createBlankDynamicIsoLayer('layer3', isoTiles),
-            layer3object: self.map.createBlankDynamicIsoLayer('layer3object', isoTiles),
-            layer4: self.map.createBlankDynamicIsoLayer('layer4', isoTiles),
-            layer4object: self.map.createBlankDynamicIsoLayer('layer4object', isoTiles),
-            layer5: self.map.createBlankDynamicIsoLayer('layer5', isoTiles),
-            layer5object: self.map.createBlankDynamicIsoLayer('layer5object', isoTiles)
         };
+
+        this.createPlayer();
+
+
+        this.mapLayers.layer1 = self.map.createBlankDynamicIsoLayer('layer1', isoTiles);
+        this.mapLayers.layer1object = self.map.createBlankDynamicIsoLayer('layer1object', isoTiles);
+        this.mapLayers.layer2 = self.map.createBlankDynamicIsoLayer('layer2', isoTiles);
+        this.mapLayers.layer2object = self.map.createBlankDynamicIsoLayer('layer2object', isoTiles);
+        this.mapLayers.layer3 = self.map.createBlankDynamicIsoLayer('layer3', isoTiles);
+        this.mapLayers.layer3object = self.map.createBlankDynamicIsoLayer('layer3object', isoTiles);
+        this.mapLayers.layer4 = self.map.createBlankDynamicIsoLayer('layer4', isoTiles);
+        this.mapLayers.layer4object = self.map.createBlankDynamicIsoLayer('layer4object', isoTiles);
+        this.mapLayers.layer5 = self.map.createBlankDynamicIsoLayer('layer5', isoTiles);
+        this.mapLayers.layer5object = self.map.createBlankDynamicIsoLayer('layer5object', isoTiles);
 
 
         for (var x = 0; x < worldData.width; x++) {
@@ -187,6 +194,8 @@ export class GameScene extends Phaser.Scene {
                     var elevation = worldData.getElevation(x, y, true);
                     if (i <= elevation) {
                         var tile = this.map.putTileAt(0, x, y, true, currentLayer);
+                        var floorTile = this.map.getTileAt(x, y, true, this.mapLayers.layer0);
+                        floorTile.hasElevationStack = true;
                         tile.setHeight(i * worldData.cellHeight / 2);
                         if (i == 0) {
                             tile.tint = 0xffffff;
