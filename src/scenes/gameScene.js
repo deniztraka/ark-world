@@ -31,12 +31,16 @@ import {
 export class GameScene extends Phaser.Scene {
     constructor() {
         super({
-            key: "GameScene"
+            key: "GameScene",
+            mapAdd: {
+                isoPlugin: 'iso',
+                isoPhysics: 'isoPhysics'
+            }
         });
         this.controls = null;
 
-        this.sys.settings.map.isoPlugin = "iso";
-        this.sys.settings.map.isoPhysics = "isoPhysics";
+        // this.sys.settings.map.isoPlugin = "iso";
+        // this.sys.settings.map.isoPhysics = "isoPhysics";
 
         this.eventEmitter = new Phaser.Events.EventEmitter();
     }
@@ -79,40 +83,60 @@ export class GameScene extends Phaser.Scene {
         this.tileStackData = {};
         this.isoGroup = this.add.group();
 
-        // Apply some gravity on our cubes
-        this.isoPhysics.world.gravity.setTo(0, 0, -500);
-        this.isoPhysics.projector.origin.setTo(0.5, 0.5);
-
-        var isoWorldData = new WorldData(1, 10, 10, 64, 64);
+        var isoWorldData = new WorldData(2, 100, 100, 64, 64);
         isoWorldData.generate();
         isoWorldData.generateTreePositions();
+
+
+        this.isoPhysics.world.gravity.setTo(0, 0, -500);
+        this.isoPhysics.projector.origin.setTo(0.5, 0.1);
+
+        this.projectionX = 36;
+        this.projectionY = 36;
+        this.projectionZ = 32;
+
+
+        this.isoPhysics.world.setBounds(0, 0, 0, 5000, 5000, 5000);
 
         this.createWithCustomPlugin(isoWorldData);
 
         //this.createTexture(worldData, true);
-
+        debugger;
         this.createPlayer();
 
     }
 
     createPlayer() {
 
-        var ogre = new Player(this, 9, 9, this.isoGroup);
+        this.player = new Player(this, 5, 5, this.isoGroup);
+        //this.cameras.main.startFollow(this.player)
 
+    }
+
+    updateMap() {
+        this.clearMap();
+        this.createNewMap();
+    }
+
+    clearMap() {
+
+    }
+
+    createNewMap() {
 
     }
 
     createWithCustomPlugin(worldData) {
-
-
-        for (var x = 0; x < worldData.width; x++) {
-            for (var y = 0; y < worldData.height; y++) {
+        //return;
+        for (var x = 0; x < 25; x++) {
+            for (var y = 0; y < 25; y++) {
                 // Create a cube using the new isoSprite factory method at the specified position.
-                var tile = this.add.isoSprite(x * worldData.cellHeight / 2, y * worldData.cellWidth / 2, 0, 'isoDirt', this.isoGroup);
+                var tile = this.add.isoSprite(x * this.projectionX, y * this.projectionY, 0, 'isoDirt', this.isoGroup);
                 tile.tileData = {};
                 tile.tileData.x = x;
                 tile.tileData.y = y;
                 tile.elevation = 0;
+
 
                 this.isoPhysics.world.enable(tile);
                 // tile.on('pointerover', function() {
@@ -142,7 +166,7 @@ export class GameScene extends Phaser.Scene {
 
                     var elevation = worldData.getElevation(x, y, true);
                     if (i <= elevation) {
-                        var elevationTile = this.add.isoSprite(x * worldData.cellHeight / 2, y * worldData.cellWidth / 2, i * worldData.cellHeight / 2, 'isoDirt', this.isoGroup);
+                        var elevationTile = this.add.isoSprite(x * this.projectionX, y * this.projectionY, i * this.projectionZ, 'isoDirt', this.isoGroup);
                         //var tile = this.map.getTileAt(x, y, true, this.mapLayers.layer0);
                         elevationTile.tileData = {};
                         elevationTile.tileData.x = x;
@@ -153,7 +177,7 @@ export class GameScene extends Phaser.Scene {
                         tile.hasElevationStack = true;
                         elevationTile.body.allowGravity = false;
 
-                        elevationTile.setOrigin(0.5, 0.5);
+                        //elevationTile.setOrigin(0.5, 0.5);
                         elevationTile.setInteractive();
 
                         elevationTile.body.blocked = {
@@ -212,18 +236,31 @@ export class GameScene extends Phaser.Scene {
 
                 tile.body.collideWorldBounds = true;
                 tile.body.bounce.set(0, 0, 0);
+
             }
         }
 
         // debugger;
         // this.createPlayer();
+        console.log(this.tileStackData["0"].length);
     }
 
     update(time, delta) {
         this.controls.update(delta);
         this.eventEmitter.emit("gameSceneUpdate!", time, delta);
-        this.isoPhysics.world.collide(this.isoGroup);
+
+        this.isoPhysics.world.collide(this.isoGroup, this.player.isoSprite, function(isoTile, player, c) {
+            //console.log(isoTile.tileData);
+        });
+        this.cullMap();
     }
+
+    cullMap() {
+        this.updateMap();
+    }
+
+
+
 
 
 
@@ -241,7 +278,7 @@ export class GameScene extends Phaser.Scene {
 
         //tree placement
         worldData.treePositions.forEach(point => {
-            texture.context.fillStyle = "rgb(0,0,0)"
+            texture.context.fillStyle = "rgb(0,0,0)";
             texture.context.fillRect(point.x * gridSize, point.y * gridSize, gridSize, gridSize);
         });
 

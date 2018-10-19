@@ -122,6 +122,8 @@ export class Player {
                         self.sprite.body.velocity.x = -speed;
                         break;
                 }
+
+                //this.setCurrentMapPosition();
             }
         });
 
@@ -161,6 +163,8 @@ export class Player {
 
 
 }
+
+
 
 function getControls(scene) {
     return {

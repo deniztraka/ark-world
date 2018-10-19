@@ -47,6 +47,7 @@ export class PreloaderScene extends Phaser.Scene {
         this.load.image('isoGrass', 'tiles/cim2.png');
         this.load.image('isoDirtPlane', 'tiles/isoDirt.png');
         this.load.image('isoDirt', 'tiles/kup.png');
+        //this.load.image('isoDirt', 'tiles/cube.png');
 
         this.load.spritesheet('ogre', 'mobiles/ogre.png', { frameWidth: 64, frameHeight: 64 });
 
