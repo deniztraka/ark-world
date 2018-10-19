@@ -2,123 +2,76 @@ import {
     PlayerController
 } from '../../core/playerController';
 
-export class Ogre {
-    constructor(scene, x, y) {
-        this.currentMapPosition = new Phaser.Math.Vector2(x, y);
+function getMouseAngle(a, p) {
+    return Math.atan2(a.y - p.y, a.x - p.x) * 180 / Math.PI + 180; // 45
+}
 
-        this.sprite = scene.add.isoSprite(x * 32, y * 32, 32, 'ogre');
+export class Player {
+    constructor(scene, x, y, group) {
+        this.currentMapPosition = new Phaser.Math.Vector2(x, y);
+        this.phaserScene = scene;
+        this.sprite = scene.add.isoSprite(x * 32, y * 32, 100, 'ogre', group);
 
         this.direction = "N";
         var self = this;
-        this.sprite.setOrigin(0.5, 0.75);
+        this.sprite.setOrigin(0.5, 0.5, 0.1);
 
-        //anims loading
         getAnims().forEach(anim => {
             scene.anims.create(anim);
             self.sprite.anims.load(anim.key);
         });
 
+
+
         //controls
         this.controls = getControls(scene);
 
-
-        this.inputHandler = new PlayerController(scene, this);
         this.states = {
             isWalking: false,
             isRunning: false
         };
 
-        debugger;
         scene.eventEmitter.on("gameSceneUpdate!", function(time, delta) {
             self.update(time, delta);
         });
 
         this.lastMoveTime = 0;
 
+
+        scene.isoPhysics.world.enable(this.sprite);
+        this.sprite.body.collideWorldBounds = true;
+
     }
 
     update(time, delta) {
 
-        this.inputHandler.update();
-        this.handleAnimations();
         this.handleMovement(time, delta);
+        this.handleAnimation(time, delta);
     }
 
-    handleMovement(time, delta) {
-        var repeatMoveDelay = 250;
-
-        if (time > this.lastMoveTime + repeatMoveDelay) {
-            if (this.states.isWalking) {
-
-                this.moveToCurrentDirection(1, time, delta);
-                this.lastMoveTime = time;
-            }
+    getDirection() {
+        var worldPoint = this.phaserScene.input.activePointer.positionToCamera(this.phaserScene.cameras.main);
+        var angle = getMouseAngle(this.sprite, worldPoint);
+        if (angle >= 22.5 && angle < 67.5) {
+            return "E";
+        } else if (angle >= 67.5 && angle < 112.5) {
+            return "SE";
+        } else if (angle >= 112.5 && angle < 157.5) {
+            return "S";
+        } else if (angle >= 22.5 && angle < 202.5) {
+            return "SW";
+        } else if (angle >= 22.5 && angle < 247.5) {
+            return "W";
+        } else if (angle >= 22.5 && angle < 292.5) {
+            return "NW";
+        } else if (angle >= 22.5 && angle < 337.5) {
+            return "N";
+        } else {
+            return "NE";
         }
     }
 
-    moveToCurrentDirection(numberOfTiles, time, delta) {
-
-        function setPosition(nextPosition, context, pTime, pDelta) {
-            if (nextPosition) {
-                var nextTile = null;
-
-                if (context.scene) {
-                    nextTile = context.scene.map.getTileAt(nextPosition.x, nextPosition.y, true, context.scene.mapLayers.layer0);
-                } else {
-                    var filtered = context.sprite.scene.tileStackData[0].filter(function(tilep) {
-                        return tilep.tileData.x == nextPosition.x && tilep.tileData.y == nextPosition.y;
-                    });
-                    if (filtered.length > 0) {
-                        nextTile = filtered[0];
-                    }
-                }
-
-                if (nextTile != null && !nextTile.hasElevationStack) {
-
-                    context.sprite.x = nextTile.x;
-                    context.sprite.y = nextTile.y;
-                    context.currentMapPosition = new Phaser.Math.Vector2(nextTile.tileData.x, nextTile.tileData.y);
-                } else {
-                    context.states.isWalking = false;
-                }
-            }
-        }
-
-
-        var nextMapPosition = this.getNextMapPoisiton(numberOfTiles);
-        setPosition(nextMapPosition, this, time, delta);
-    }
-
-    getNextMapPoisiton(numberOfTiles) {
-        switch (this.direction) {
-            case "NW":
-                return new Phaser.Math.Vector2(this.currentMapPosition.x - numberOfTiles, this.currentMapPosition.y - numberOfTiles);
-                break;
-            case "N":
-                return new Phaser.Math.Vector2(this.currentMapPosition.x, this.currentMapPosition.y - numberOfTiles);
-                break;
-            case "NE":
-                return new Phaser.Math.Vector2(this.currentMapPosition.x + numberOfTiles, this.currentMapPosition.y - numberOfTiles);
-                break;
-            case "E":
-                return new Phaser.Math.Vector2(this.currentMapPosition.x + numberOfTiles, this.currentMapPosition.y);
-                break;
-            case "SE":
-                return new Phaser.Math.Vector2(this.currentMapPosition.x + numberOfTiles, this.currentMapPosition.y + numberOfTiles);
-                break;
-            case "S":
-                return new Phaser.Math.Vector2(this.currentMapPosition.x, this.currentMapPosition.y + numberOfTiles);
-                break;
-            case "SW":
-                return new Phaser.Math.Vector2(this.currentMapPosition.x - numberOfTiles, this.currentMapPosition.y + numberOfTiles);
-                break;
-            case "W":
-                return new Phaser.Math.Vector2(this.currentMapPosition.x - numberOfTiles, this.currentMapPosition.y);
-                break;
-        }
-    }
-
-    handleAnimations() {
+    handleAnimation(time, delta) {
         if (this.states.isWalking) {
             this.playAnimation("walk" + this.direction);
         } else {
@@ -127,16 +80,85 @@ export class Ogre {
     }
 
     playAnimation(animationKey) {
-        if (this.sprite.anims.currentAnim.key == animationKey) {
-            this.sprite.anims.play(animationKey, true);
-        } else {
-            this.sprite.anims.play(animationKey);
-        }
+
+        this.sprite.anims.play(animationKey, this.sprite.anims.currentAnim.key == animationKey, 0);
+
     }
 
-    setDirection(direction) {
-        this.direction = direction;
+    handleMovement(time, delta) {
+        var self = this;
+        var speed = 100;
+        this.phaserScene.input.on('pointerdown', function(pointer) {
+            if (pointer.rightButtonDown()) {
+                self.states.isWalking = true;
+                self.direction = self.getDirection();
+                switch (self.direction) {
+                    case "NW":
+                        self.sprite.body.velocity.y = -speed;
+                        self.sprite.body.velocity.x = -speed;
+                        break;
+                    case "N":
+                        self.sprite.body.velocity.y = -speed;
+                        break;
+                    case "NE":
+                        self.sprite.body.velocity.y = -speed;
+                        self.sprite.body.velocity.x = speed;
+                        break;
+                    case "E":
+                        self.sprite.body.velocity.x = speed;
+                        break;
+                    case "SE":
+                        self.sprite.body.velocity.y = speed;
+                        self.sprite.body.velocity.x = speed;
+                        break;
+                    case "S":
+                        self.sprite.body.velocity.y = speed;
+                        break;
+                    case "SW":
+                        self.sprite.body.velocity.y = speed;
+                        self.sprite.body.velocity.x = -speed;
+                        break;
+                    case "W":
+                        self.sprite.body.velocity.x = -speed;
+                        break;
+                }
+            }
+        });
+
+        this.phaserScene.input.on('pointerup', function(pointer) {
+            if (pointer.rightButtonDown() == 2) {
+                self.sprite.body.velocity.x = 0;
+                self.sprite.body.velocity.y = 0;
+                self.states.isWalking = false;
+            }
+        });
+
+
+        if (Phaser.Input.Keyboard.JustDown(this.controls.spaceBar)) {
+            var tempz = this.sprite.body.z;
+            this.sprite.body.z = tempz + 5;
+            this.sprite.body.velocity.z = 200;
+            this.playAnimation("walk" + this.direction);
+
+        }
+
+        // if (this.controls.w.isDown) {
+        //     this.sprite.body.velocity.y = -speed;
+        // } else if (this.controls.s.isDown) {
+        //     this.sprite.body.velocity.y = speed;
+        // } else {
+        //     this.sprite.body.velocity.y = 0;
+        // }
+
+        // if (this.controls.a.isDown) {
+        //     this.sprite.body.velocity.x = -speed;
+        // } else if (this.controls.d.isDown) {
+        //     this.sprite.body.velocity.x = speed;
+        // } else {
+        //     this.sprite.body.velocity.x = 0;
+        // }
     }
+
 
 }
 

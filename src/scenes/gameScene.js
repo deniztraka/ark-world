@@ -20,11 +20,13 @@ IsoPlugin
 from '../plugins/rotatesIso/isoPlugin';
 
 import {
-    Ogre
-} from '../entities/mobiles/ogre';
+    IsoPhysics
+}
+from '../plugins/rotatesIso/isoPlugin';
 
-
-
+import {
+    Player
+} from '../entities/mobiles/player';
 
 export class GameScene extends Phaser.Scene {
     constructor() {
@@ -34,13 +36,9 @@ export class GameScene extends Phaser.Scene {
         this.controls = null;
 
         this.sys.settings.map.isoPlugin = "iso";
+        this.sys.settings.map.isoPhysics = "isoPhysics";
 
         this.eventEmitter = new Phaser.Events.EventEmitter();
-
-        this.showDebug = false;
-
-
-
     }
 
 
@@ -50,6 +48,13 @@ export class GameScene extends Phaser.Scene {
             IsoPlugin,
             'iso',
             'iso'
+        );
+
+        this.load.scenePlugin(
+            'IsoPhysics',
+            IsoPhysics,
+            'isoPhysics',
+            'isoPhysics'
         );
     }
 
@@ -71,238 +76,156 @@ export class GameScene extends Phaser.Scene {
         this.map = null;
         this.mapLayers = null;
 
+        this.tileStackData = {};
+        this.isoGroup = this.add.group();
 
-        var isoWorldData = new WorldData(4, 50, 50, 64, 64);
+        // Apply some gravity on our cubes
+        this.isoPhysics.world.gravity.setTo(0, 0, -500);
+        this.isoPhysics.projector.origin.setTo(0.5, 0.5);
+
+        var isoWorldData = new WorldData(1, 10, 10, 64, 64);
         isoWorldData.generate();
         isoWorldData.generateTreePositions();
-        this.createIsoTileMap(isoWorldData);
 
-        // var worldData = new WorldData(1, 10, 10, 32, 32);
-        // worldData.generate();
-        // worldData.generateTreePositions();
-        // this.createTileMap(worldData);
-
-
+        this.createWithCustomPlugin(isoWorldData);
 
         //this.createTexture(worldData, true);
 
-        //console.table(worldData.elevationData);
+        this.createPlayer();
 
-
-
-
-
-
-        this.input.keyboard.on('keydown_C', function(event) {
-            self.showDebug = !self.showDebug;
-            self.drawDebug();
-        });
-
-        this.debugGraphics = this.add.graphics();
-    }
-
-    drawDebug() {
-        this.debugGraphics.clear();
-
-        if (this.showDebug) {
-            // Pass in null for any of the style options to disable drawing that component
-            this.map.renderDebug(this.debugGraphics, {
-                tileColor: new Phaser.Display.Color(0, 134, 48, 200), // Non-colliding tiles
-                collidingTileColor: new Phaser.Display.Color(243, 134, 48, 200), // Colliding tiles
-                faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Colliding face edges
-            });
-        }
     }
 
     createPlayer() {
-        var tile = this.map.getTileAt(9, 9, true, this.mapLayers.layer0);
-        var ogre = new Ogre(this, tile.getCenterX(), tile.getCenterY());
+
+        var ogre = new Player(this, 9, 9, this.isoGroup);
+
 
     }
 
     createWithCustomPlugin(worldData) {
 
+
         for (var x = 0; x < worldData.width; x++) {
             for (var y = 0; y < worldData.height; y++) {
                 // Create a cube using the new isoSprite factory method at the specified position.
-                var tile = this.add.isoSprite(x * worldData.cellHeight, y * worldData.cellHeight, 0, 'isoDirt');
+                var tile = this.add.isoSprite(x * worldData.cellHeight / 2, y * worldData.cellWidth / 2, 0, 'isoDirt', this.isoGroup);
+                tile.tileData = {};
+                tile.tileData.x = x;
+                tile.tileData.y = y;
+                tile.elevation = 0;
+
+                this.isoPhysics.world.enable(tile);
+                // tile.on('pointerover', function() {
+                //     this.setTint(0x86bfda);
+                //     this.isoZ += 5;
+                // });
+
+                // tile.on('pointerout', function() {
+                //     this.clearTint();
+                //     this.isoZ -= 5;
+                // });
+                //tile.setOrigin(0.5, 0.5);
                 tile.setInteractive();
+                tile.body.blocked = {
+                    up: true,
+                    down: true,
+                    frontX: true,
+                    frontY: true,
+                    backX: true,
+                    backY: true
+                };
+                tile.body.immovable = true;
+                tile.body.allowGravity = true;
 
-                tile.on('pointerover', function() {
-                    this.setTint(0x86bfda);
-                    //this.isoZ += 5;
-                });
 
-                tile.on('pointerout', function() {
-                    this.clearTint();
-                    //this.isoZ -= 5;
-                });
+                for (let i = 1; i <= 5; i++) {
+
+                    var elevation = worldData.getElevation(x, y, true);
+                    if (i <= elevation) {
+                        var elevationTile = this.add.isoSprite(x * worldData.cellHeight / 2, y * worldData.cellWidth / 2, i * worldData.cellHeight / 2, 'isoDirt', this.isoGroup);
+                        //var tile = this.map.getTileAt(x, y, true, this.mapLayers.layer0);
+                        elevationTile.tileData = {};
+                        elevationTile.tileData.x = x;
+                        elevationTile.tileData.y = y;
+                        elevationTile.elevation = i;
+                        this.isoPhysics.world.enable(elevationTile);
+
+                        tile.hasElevationStack = true;
+                        elevationTile.body.allowGravity = false;
+
+                        elevationTile.setOrigin(0.5, 0.5);
+                        elevationTile.setInteractive();
+
+                        elevationTile.body.blocked = {
+                            up: true,
+                            down: true,
+                            frontX: true,
+                            frontY: true,
+                            backX: true,
+                            backY: true
+                        };
+                        elevationTile.body.immovable = true;
+
+                        if (i == 0) {
+                            elevationTile.tint = 0xffffff;
+                        } else if (i == 1) {
+                            elevationTile.tint = 0xdddddd;
+                        } else if (i == 2) {
+                            elevationTile.tint = 0xbbbbbb;
+                        } else if (i == 3) {
+                            elevationTile.tint = 0x999999;
+                        } else if (i == 4) {
+                            elevationTile.tint = 0x666666;
+                        } else if (i == 5) {
+                            elevationTile.tint = 0x333333;
+                        }
+
+                        if (!this.tileStackData[i]) {
+                            this.tileStackData[i] = [];
+                        }
+
+                        this.tileStackData[i].push(elevationTile);
+                        // Enable the physics body on this cube
+
+                        elevationTile.body.collideWorldBounds = true;
+                        elevationTile.body.bounce.set(0, 0, 0);
+
+                        // elevationTile.on('pointerover', function() {
+                        //     this.setTint(0x86bfda);
+                        //     this.isoZ += 5;
+                        // });
+
+                        // elevationTile.on('pointerout', function() {
+                        //     this.clearTint();
+                        //     this.isoZ -= 5;
+                        // });
+                    }
+
+                }
+
+                if (!this.tileStackData["0"]) {
+                    this.tileStackData["0"] = [];
+                }
+
+                this.tileStackData["0"].push(tile);
+                //Enable the physics body on this cube
+
+                tile.body.collideWorldBounds = true;
+                tile.body.bounce.set(0, 0, 0);
             }
         }
+
+        // debugger;
+        // this.createPlayer();
     }
 
     update(time, delta) {
         this.controls.update(delta);
         this.eventEmitter.emit("gameSceneUpdate!", time, delta);
+        this.isoPhysics.world.collide(this.isoGroup);
     }
 
 
-    createIsoTileMap(worldData) {
-        var self = this;
-
-        this.map = this.make.isoTileMap({
-            tileWidth: worldData.cellWidth,
-            tileHeight: worldData.cellHeight,
-            width: worldData.width,
-            height: worldData.height
-        });
-
-        var isoTiles = this.map.addTilesetImage('isoDirt');
-
-        this.mapLayers = {
-            layer0: self.map.createBlankDynamicIsoLayer('layer0', isoTiles),
-            layer0object: self.map.createBlankDynamicIsoLayer('layer0object', isoTiles),
-        };
-
-        this.createPlayer();
-
-
-        this.mapLayers.layer1 = self.map.createBlankDynamicIsoLayer('layer1', isoTiles);
-        this.mapLayers.layer1object = self.map.createBlankDynamicIsoLayer('layer1object', isoTiles);
-        this.mapLayers.layer2 = self.map.createBlankDynamicIsoLayer('layer2', isoTiles);
-        this.mapLayers.layer2object = self.map.createBlankDynamicIsoLayer('layer2object', isoTiles);
-        this.mapLayers.layer3 = self.map.createBlankDynamicIsoLayer('layer3', isoTiles);
-        this.mapLayers.layer3object = self.map.createBlankDynamicIsoLayer('layer3object', isoTiles);
-        this.mapLayers.layer4 = self.map.createBlankDynamicIsoLayer('layer4', isoTiles);
-        this.mapLayers.layer4object = self.map.createBlankDynamicIsoLayer('layer4object', isoTiles);
-        this.mapLayers.layer5 = self.map.createBlankDynamicIsoLayer('layer5', isoTiles);
-        this.mapLayers.layer5object = self.map.createBlankDynamicIsoLayer('layer5object', isoTiles);
-
-
-        for (var x = 0; x < worldData.width; x++) {
-            for (var y = 0; y < worldData.height; y++) {
-                //map.putTileAt(0, x, y, true, layers.layer0);
-                this.map.putTileAt(0, x, y, true, this.mapLayers.layer0);
-            }
-        }
-
-        for (let i = 1; i <= 5; i++) {
-            var currentLayer = this.mapLayers["layer" + i];
-
-            for (var x = 0; x < worldData.width; x++) {
-                for (var y = 0; y < worldData.height; y++) {
-                    var elevation = worldData.getElevation(x, y, true);
-                    if (i <= elevation) {
-                        var tile = this.map.putTileAt(0, x, y, true, currentLayer);
-                        var floorTile = this.map.getTileAt(x, y, true, this.mapLayers.layer0);
-                        floorTile.hasElevationStack = true;
-                        tile.setHeight(i * worldData.cellHeight / 2);
-                        if (i == 0) {
-                            tile.tint = 0xffffff;
-                        } else if (i == 1) {
-                            tile.tint = 0xdddddd;
-                        } else if (i == 2) {
-                            tile.tint = 0xbbbbbb;
-                        } else if (i == 3) {
-                            tile.tint = 0x999999;
-                        } else if (i == 4) {
-                            tile.tint = 0x666666;
-                        } else if (i == 5) {
-                            tile.tint = 0x333333;
-                        }
-                    }
-                }
-            }
-        }
-
-        // this.input.on('pointerdown', function() {
-        //     self.logTile();
-        // });
-
-
-
-        //this.mapLayers.layer1.enableMarker(self);
-    }
-
-    logTile() {
-        var worldPoint = this.input.activePointer.positionToCamera(this.cameras.main);
-        var tileIndexPointer = this.mapLayers.layer0.worldToTileXY(worldPoint.x, worldPoint.y, false);
-        if (tileIndexPointer) {
-            var tile = this.map.getTileAt(tileIndexPointer.x, tileIndexPointer.y, true, this.mapLayers.layer0);
-            //tile.setHeight(tile.z + 16);
-            console.log(tile);
-            // var tileDeleted = this.map.removeTileAt(tileIndexPointer.x, tileIndexPointer.y, false, true, this.mapLayers.layer0);
-            // console.log(tileDeleted);
-            // var newTile = this.map.putTileAt(tileDeleted.index, tileIndexPointer.x, tileIndexPointer.y, true, this.mapLayers.layer1);
-            // newTile.setHeight(32);
-            // console.log(newTile);
-
-        }
-    }
-
-    createTileMap(worldData) {
-        var self = this;
-
-        this.map = this.make.tilemap({
-            tileWidth: worldData.cellWidth,
-            tileHeight: worldData.cellHeight,
-            width: worldData.width,
-            height: worldData.height
-        });
-        var tiles = this.map.addTilesetImage('real_tiles_extended');
-        this.mapLayers = {
-            layer0: self.map.createBlankDynamicLayer('layer0', tiles),
-            layer0object: self.map.createBlankDynamicLayer('layer0object', tiles),
-            layer1: self.map.createBlankDynamicLayer('layer1', tiles),
-            layer1object: self.map.createBlankDynamicLayer('layer1object', tiles),
-            layer2: self.map.createBlankDynamicLayer('layer2', tiles),
-            layer2object: self.map.createBlankDynamicLayer('layer2object', tiles),
-            layer3: self.map.createBlankDynamicLayer('layer3', tiles),
-            layer3object: self.map.createBlankDynamicLayer('layer3object', tiles),
-            layer4: self.map.createBlankDynamicLayer('layer4', tiles),
-            layer4object: self.map.createBlankDynamicLayer('layer4object', tiles),
-            layer5: self.map.createBlankDynamicLayer('layer5', tiles),
-            layer5object: self.map.createBlankDynamicLayer('layer5object', tiles)
-        };
-
-        //return;
-        for (var x = 0; x < worldData.width; x++) {
-            for (var y = 0; y < worldData.height; y++) {
-
-                var biome = worldData.getBiome(worldData.elevationData[x][y], worldData.moistureData[x][y]);
-
-                var baseElevation = worldData.getElevation(x, y, true);
-                this.map.putTileAt(biome.tileIndex, x, y, true, this.mapLayers["layer" + baseElevation]);
-
-                //continue;
-                //generating height tiles
-                for (let i = 0; i < baseElevation; i++) {
-
-                    var brick = new Brick(this, (x * worldData.cellWidth) + (worldData.cellWidth / 2), (y * worldData.cellHeight) + (worldData.cellHeight / 2) - i * worldData.cellHeight);
-
-                    if (i == 0) {
-                        brick.setTint(0xffffff);
-                    } else if (i == 1) {
-                        brick.setTint(0xdddddd);
-                    } else if (i == 2) {
-                        brick.setTint(0xbbbbbb);
-                    } else if (i == 3) {
-                        brick.setTint(0x999999);
-                    } else if (i == 4) {
-                        brick.setTint(0x666666);
-                    } else if (i == 5) {
-                        brick.setTint(0x333333);
-                    }
-                }
-
-            }
-        }
-
-        // worldData.treePositions.forEach(position => {
-        //     new Tree(this, (position.x * worldData.cellWidth) + worldData.cellWidth / 2, (position.y * worldData.cellHeight) + worldData.cellHeight / 2);
-        // });
-
-    }
 
     createTexture(worldData, useColor) {
         var gridSize = 1;

@@ -2,10 +2,6 @@ function getMouseAngle(a, p) {
     return Math.atan2(a.y - p.y, a.x - p.x) * 180 / Math.PI + 180; // 45
 }
 
-function getDirection() {
-
-}
-
 export class PlayerController {
     constructor(_phaserScene, _owner) {
         this.phaserScene = _phaserScene;
@@ -43,7 +39,7 @@ export class PlayerController {
 
     getDirection() {
         var worldPoint = this.activePointer.positionToCamera(this.phaserScene.cameras.main);
-        var angle = getMouseAngle(this.owner, worldPoint);
+        var angle = getMouseAngle(this.owner.sprite, worldPoint);
         if (angle >= 22.5 && angle < 67.5) {
             return "E";
         } else if (angle >= 67.5 && angle < 112.5) {

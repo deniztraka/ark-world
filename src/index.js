@@ -18,13 +18,17 @@ import {
 import {
     GameScene
 } from './scenes/gameScene';
-import {
-    IsoPlugin
-} from './plugins/isoPlugin/isoPlugin';
-
 // import {
 //     IsoPlugin
-// } from './plugins/rotatesIso/isoPlugin';
+// } from './plugins/isoPlugin/isoPlugin';
+
+import {
+    IsoPlugin
+} from './plugins/rotatesIso/isoPlugin';
+
+import
+IsoPhysics
+from './plugins/rotatesIso/isoPlugin';
 
 const gameConfig = {
     type: Phaser.WEBGL,
@@ -33,15 +37,10 @@ const gameConfig = {
     pixelArt: true,
     title: 'World.IO', // 'My Phaser 3 Game'    
     version: '0.0.1',
-    physics: {
-        default: 'arcade',
-        arcade: {
-            debug: true
-        }
-    },
     plugins: {
         scene: [
             { key: 'IsoPlugin', plugin: IsoPlugin, mapping: 'isoPlugin' },
+            { key: 'IsoPhysics', plugin: IsoPhysics, mapping: 'isoPhysics' },
 
         ]
     },
