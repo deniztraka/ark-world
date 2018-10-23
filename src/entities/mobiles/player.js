@@ -10,7 +10,7 @@ export class Player {
     constructor(scene, x, y, group) {
         this.currentMapPosition = new Phaser.Math.Vector2(x, y);
         this.phaserScene = scene;
-        this.sprite = scene.add.isoSprite(x * 32, y * 32, 100, 'ogre', group);
+        this.sprite = scene.add.isoSprite(x * 32, y * 32, 500, 'ogre', group);
 
         this.direction = "N";
         var self = this;
@@ -36,10 +36,11 @@ export class Player {
         });
 
         this.lastMoveTime = 0;
+        this.currentIsoTile = null;
 
 
         scene.isoPhysics.world.enable(this.sprite);
-        this.sprite.body.collideWorldBounds = true;
+        //this.sprite.body.collideWorldBounds = true;
 
     }
 
@@ -159,6 +160,20 @@ export class Player {
         // } else {
         //     this.sprite.body.velocity.x = 0;
         // }
+
+        this.phaserScene.isoPhysics.world.collide(this.phaserScene.isoGroup, this.isoSprite, function(isoTile, player, c) {
+
+            if (self.currentIsoTile && self.currentIsoTile.tileData != isoTile.tileData) {
+
+                self.phaserScene.eventEmitter.emit("playerPositionChanged!", isoTile.tileData);
+            }
+            self.currentIsoTile = isoTile;
+            self.currentMapPosition = isoTile.tileData;
+
+        });
+
+        this.phaserScene.cameras.main.scrollY = this.sprite.y - this.phaserScene.game.renderer.height / 2;
+        this.phaserScene.cameras.main.scrollX = this.sprite.x - this.phaserScene.game.renderer.width / 2;
     }
 
 
