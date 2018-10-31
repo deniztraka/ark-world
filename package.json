@@ -17,6 +17,7 @@
         "webpack-dev-server": "^2.11.3"
     },
     "dependencies": {
+        "express": "^4.16.4",
         "libnoise": "^0.2.1",
         "noisejs": "^2.1.0",
         "phaser": "^3.14.0",
@@ -24,6 +25,8 @@
     },
     "scripts": {
         "start:dev": "webpack-dev-server",
-        "start": "webpack-dev-server"
-    }
+        "start": "webpack && node server.js",
+        "build": "webpack"
+    },
+    "main": "src/server.js"
 }
