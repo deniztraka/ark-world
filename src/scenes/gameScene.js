@@ -62,7 +62,7 @@ export class GameScene extends Phaser.Scene {
         this.isoGroup = this.add.group();
 
 
-        var worldData = new WorldData(4, 100, 100, 32, 32);
+        var worldData = new WorldData(4, 25, 25, 32, 32);
         worldData.generate();
         worldData.generateTreePositions();
         //this.createTexture(worldData, true);

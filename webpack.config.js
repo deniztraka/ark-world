@@ -10,7 +10,8 @@ module.exports = {
 
     output: {
         path: path.resolve(__dirname, 'build/js'),
-        filename: 'app.bundle.js'
+        filename: 'app.bundle.js',
+        publicPath: '/js'
     },
 
     module: {
@@ -27,7 +28,7 @@ module.exports = {
     },
 
     devServer: {
-        contentBase: path.resolve(__dirname, 'build'),
+        contentBase: path.resolve(__dirname, 'build')
     },
 
     plugins: [
@@ -47,6 +48,6 @@ module.exports = {
         new webpack.optimize.CommonsChunkPlugin({
             name: 'production-dependencies',
             filename: 'production-dependencies.bundle.js'
-        }),
-    ],
+        })
+    ]
 }
