@@ -23,6 +23,7 @@
         "poisson-disk-sampling": "^1.0.2"
     },
     "scripts": {
-        "start:dev": "webpack-dev-server"
+        "start:dev": "webpack-dev-server",
+        "start": "webpack-dev-server"
     }
 }
