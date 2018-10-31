@@ -3,14 +3,14 @@ var express = require('express');
 
 var app = express();
 
-
-
+app.use(express.static(__dirname + '/js'));
 
 app.get('/', function(req, res) {
-    res.sendFile(__dirname + '/index.html');
+    res.sendFile(__dirname + '/build/index.html');
 });
 
-app.use('/assets', express.static(__dirname + '/assets'));
+
+
 
 app.set('port', process.env.PORT || 8080);
 
