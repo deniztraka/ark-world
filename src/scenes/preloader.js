@@ -40,6 +40,15 @@ export class PreloaderScene extends Phaser.Scene {
         this.load.image('base_tiles', 'tiles/tileBase.png');
         this.load.image('base_tiles_extended', 'tiles/tileBaseExtended.png');
         this.load.image('real_tiles_extended', 'tiles/tileRealExtended.png');
+        this.load.image('tree_GrassLand', 'tiles/tree_GrassLand.png');
+        this.load.image('tree_TemperateDesert', 'tiles/tree_TemperateDesert.png');
+        this.load.image('tree_TropicalRainForest', 'tiles/tree_TropicalRainForest.png');
+        this.load.image('tree_TemperateRainForest', 'tiles/tree_TemperateRainForest.png');
+        this.load.image('tree_TemperateDeciduousForest', 'tiles/tree_TemperateDeciduousForest.png');
+        this.load.image('tree_TropicalSeasonalForest', 'tiles/tree_TropicalSeasonalForest.png');
+        this.load.image('tree_SubtropicalDesert', 'tiles/tree_SubtropicalDesert.png');
+        this.load.image('tree_Taiga', 'tiles/tree_Taiga.png');
+        this.load.image('tree_Shrubland', 'tiles/tree_Shrubland.png');
         this.load.image('tree', 'tiles/testTree.png');
         this.load.image('mountains', 'tiles/mountains_asd.png');
         this.load.image('snowyMountains', 'tiles/mountainsSnowyTest.png');

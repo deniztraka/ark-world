@@ -57,7 +57,6 @@ export function createIsoTile(phaserScene, x, y, z, texture, group, elevation) {
     }
 
     phaserScene.tileStackData[elevation].push(tile);
-
     return tile;
 
 }

@@ -32,7 +32,7 @@ export class WorldData {
         if (seed) {
             this.seed = seed;
         }
-        this.generateWith(0.001, 2, 0.5, 6, libnoise.QualityMode.LOW, this.seed);
+        this.generateWith(0.001, 2, 0.5, 6, libnoise.QualityMode.HIGH, this.seed);
     }
 
     generateWith(frequency, lacunarity, persistence, octaves, quality, seed) {
