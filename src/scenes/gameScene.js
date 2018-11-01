@@ -11,11 +11,9 @@ import {
     Biomes
 } from '../data/biomes';
 
-
-
 import {
     Player
-} from '../entities/mobiles/player';
+} from '../entities/mobiles/basicPlayer';
 
 import * as IsoTileHelper from '../core/tilemap/isoTileHelper';
 
@@ -62,28 +60,45 @@ export class GameScene extends Phaser.Scene {
         this.isoGroup = this.add.group();
 
 
-        var worldData = new WorldData(4, 25, 25, 32, 32);
-        worldData.generate();
-        worldData.generateTreePositions();
+        this.worldData = new WorldData(4, 100, 100, 32, 32);
+        this.worldData.generate();
+        this.worldData.generateTreePositions();
         //this.createTexture(worldData, true);
-        this.createWorld(worldData);
+        this.createWorld();
+
+        this.createPlayer();
+
+        var help = this.add.text(16, 16, 'W/A/S/D to keys to move', {
+            fontSize: '18px',
+            padding: { x: 10, y: 5 },
+            backgroundColor: '#ffffff',
+            fill: '#000000'
+        });
+
+        help.setScrollFactor(0);
 
     }
 
     update(time, delta) {
-        this.controls.update(delta);
+        if (this.controls) {
+            this.controls.update(delta);
+        }
         this.eventEmitter.emit("gameSceneUpdate!", time, delta);
 
     }
 
-    createWorld(worldData) {
+    createPlayer() {
+        this.player = new Player(this, 0, 10);
+    }
+
+    createWorld() {
         var self = this;
 
         this.map = this.make.tilemap({
-            tileWidth: worldData.cellWidth,
-            tileHeight: worldData.cellHeight,
-            width: worldData.width,
-            height: worldData.height
+            tileWidth: this.worldData.cellWidth,
+            tileHeight: this.worldData.cellHeight,
+            width: this.worldData.width,
+            height: this.worldData.height
         });
         var tiles = this.map.addTilesetImage('real_tiles_extended');
         this.mapLayers = {
@@ -102,21 +117,26 @@ export class GameScene extends Phaser.Scene {
         };
 
         //return;
-        for (var x = 0; x < worldData.width; x++) {
-            for (var y = 0; y < worldData.height; y++) {
+        for (var x = 0; x < this.worldData.width; x++) {
+            for (var y = 0; y < this.worldData.height; y++) {
 
-                var currentBiome = worldData.getBiome(worldData.elevationData[x][y], worldData.moistureData[x][y]);
+                var currentBiome = this.worldData.getBiome(this.worldData.elevationData[x][y], this.worldData.moistureData[x][y]);
 
-                var baseElevation = worldData.getElevation(x, y, true);
-                this.map.putTileAt(currentBiome.tileIndex, x, y, true, this.mapLayers["layer0"]);
+                var baseElevation = this.worldData.getElevation(x, y, true);
+                var tile = this.map.putTileAt(currentBiome.tileIndex, x, y, true, this.mapLayers["layer0"]);
+                tile.properties.biome = currentBiome;
+                tile.properties.biomeName = currentBiome.name;
+                //tile.collides = currentBiome.walkable;
                 //this.map.putTileAt(biome.tileIndex, x, y, true, this.mapLayers["layer" + baseElevation]);
             }
         }
 
+        this.mapLayers["layer0"].setCollisionByProperty({ biomeName: ["Sea"] });
+
         //tree placement
-        worldData.treePositions.forEach(point => {
-            var currentBiome = worldData.getBiome(worldData.elevationData[point.x][point.y], worldData.moistureData[point.x][point.y]);
-            var tree = new Tree(self, point.x * worldData.cellWidth + worldData.cellWidth / 2, point.y * worldData.cellHeight, currentBiome);
+        this.worldData.treePositions.forEach(point => {
+            var currentBiome = self.worldData.getBiome(self.worldData.elevationData[point.x][point.y], self.worldData.moistureData[point.x][point.y]);
+            var tree = new Tree(self, point.x * self.worldData.cellWidth + self.worldData.cellWidth / 2, point.y * self.worldData.cellHeight, currentBiome);
         });
     }
 

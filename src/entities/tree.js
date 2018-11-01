@@ -37,7 +37,7 @@ export class Tree extends Phaser.GameObjects.Sprite {
         this.biome = biome;
         this.setTexture(getBiomeTextureKey(biome));
         this.setPosition(x, y);
-        this.setOrigin(0.5, 0.75);
+        this.setOrigin(0.5, 0.1);
         this.depth = y;
 
         scene.add.existing(this);
