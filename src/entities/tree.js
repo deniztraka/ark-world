@@ -3,7 +3,9 @@ import {
 } from '../data/biomes';
 
 function getBiomeTextureKey(biome) {
+    return 'tree_TropicalSeasonalForest';
 
+    
     switch (biome) {
         case Biomes.TropicalSeasonalForest:
             return 'tree_TropicalSeasonalForest';

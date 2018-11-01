@@ -11,7 +11,7 @@ export class Player {
     constructor(scene, x, y) {
         this.currentMapPosition = new Phaser.Math.Vector2(x, y);
         this.phaserScene = scene;
-        this.sprite = scene.add.sprite(x * 32 + 16, y * 32 + 16, 'hero', 5);
+        this.sprite = scene.add.sprite(x * 128 + 64, y * 128 + 64, 'hero', 5);
         this.sprite.setOrigin(0.5, 1);
 
         this.map = scene.map;
@@ -31,7 +31,7 @@ export class Player {
 
         this.lastMoveTime = 0;
 
-        this.cam.setBounds(0, 0, 100 * 32, 100 * 32);
+        this.cam.setBounds(0, 0, 100 * 128, 100 * 128);
         this.cam.scrollX = this.sprite.x - this.sprite.width * 0.5;
         this.cam.scrollY = this.sprite.y - this.sprite.height * 0.5;
     }

@@ -39,13 +39,14 @@ export class PreloaderScene extends Phaser.Scene {
         this.load.image("humanLegs", "mobiles/human/legs.png");
         this.load.image('base_tiles', 'tiles/tileBase.png');
         this.load.image('base_tiles_extended', 'tiles/tileBaseExtended.png');
-        this.load.image('real_tiles_extended', 'tiles/tileRealExtended.png');
+        //this.load.image('real_tiles_extended', 'tiles/tileRealExtended.png');
+        this.load.image('real_tiles_extended', 'tiles/tileRealExtendedBigs.png');
         this.load.image('tree_GrassLand', 'tiles/tree_GrassLand.png');
         this.load.image('tree_TemperateDesert', 'tiles/tree_TemperateDesert.png');
         this.load.image('tree_TropicalRainForest', 'tiles/tree_TropicalRainForest.png');
         this.load.image('tree_TemperateRainForest', 'tiles/tree_TemperateRainForest.png');
         this.load.image('tree_TemperateDeciduousForest', 'tiles/tree_TemperateDeciduousForest.png');
-        this.load.image('tree_TropicalSeasonalForest', 'tiles/tree_TropicalSeasonalForest.png');
+        this.load.image('tree_TropicalSeasonalForest', 'tiles/tree_TropicalSeasonalForest1.png');
         this.load.image('tree_SubtropicalDesert', 'tiles/tree_SubtropicalDesert.png');
         this.load.image('tree_Taiga', 'tiles/tree_Taiga.png');
         this.load.image('tree_Shrubland', 'tiles/tree_Shrubland.png');
@@ -57,7 +58,7 @@ export class PreloaderScene extends Phaser.Scene {
         this.load.image('isoDirtPlane', 'tiles/isoDirt.png');
         this.load.image('isoDirt', 'tiles/kup.png');
         this.load.image('player', 'mobiles/player.png');
-        this.load.spritesheet('hero', 'mobiles/hero.png', { frameWidth: 16, frameHeight: 16 });
+        this.load.spritesheet('hero', 'mobiles/hero1.png', { frameWidth: 64, frameHeight: 64 });
         //this.load.image('isoDirt', 'tiles/cube.png');
 
         this.load.spritesheet('ogre', 'mobiles/ogre.png', { frameWidth: 64, frameHeight: 64 });
