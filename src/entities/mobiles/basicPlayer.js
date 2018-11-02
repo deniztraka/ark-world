@@ -11,13 +11,13 @@ export class Player {
     constructor(scene, x, y) {
         this.currentMapPosition = new Phaser.Math.Vector2(x, y);
         this.phaserScene = scene;
-        this.sprite = scene.add.sprite(x * 128 + 64, y * 128 + 64, 'hero', 5);
+        this.sprite = scene.add.sprite(x * 16 + 8, y * 16 + 8, 'hero', 5);
         this.sprite.setOrigin(0.5, 1);
 
         this.map = scene.map;
         this.cam = scene.cameras.main;
         this.controller = new PlayerController(scene, this);
-        this.speed = 250;
+        this.speed = 100;
 
         this.cursors = scene.input.keyboard.createCursorKeys();
 
@@ -31,7 +31,7 @@ export class Player {
 
         this.lastMoveTime = 0;
 
-        this.cam.setBounds(0, 0, 100 * 128, 100 * 128);
+        this.cam.setBounds(0, 0, 100 * 16, 100 * 16);
         this.cam.scrollX = this.sprite.x - this.sprite.width * 0.5;
         this.cam.scrollY = this.sprite.y - this.sprite.height * 0.5;
     }

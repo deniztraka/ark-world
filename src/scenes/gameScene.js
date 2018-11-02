@@ -60,7 +60,7 @@ export class GameScene extends Phaser.Scene {
         this.isoGroup = this.add.group();
 
 
-        this.worldData = new WorldData(4, 100, 100, 128, 128);
+        this.worldData = new WorldData(4, 100, 100, 16, 16);
         this.worldData.generate();
         this.worldData.generateTreePositions();
         //this.createTexture(worldData, true);
@@ -126,8 +126,20 @@ export class GameScene extends Phaser.Scene {
                 var tile = this.map.putTileAt(currentBiome.tileIndex, x, y, true, this.mapLayers["layer0"]);
                 tile.properties.biome = currentBiome;
                 tile.properties.biomeName = currentBiome.name;
-                //tile.collides = currentBiome.walkable;
-                //this.map.putTileAt(biome.tileIndex, x, y, true, this.mapLayers["layer" + baseElevation]);
+                
+                if (baseElevation == 5) {
+                    tile.tint = 0xffffff;
+                } else if (baseElevation == 4) {
+                    tile.tint = 0xeeeeee;
+                } else if (baseElevation == 3) {
+                    tile.tint = 0xdddddd;
+                } else if (baseElevation == 2) {
+                    tile.tint = 0xcccccc;
+                } else if (baseElevation == 1) {
+                    tile.tint = 0xcccccc;
+                } else if (baseElevation == 0) {
+                    tile.tint = 0xcccccc;
+                }
             }
         }
 
@@ -136,7 +148,7 @@ export class GameScene extends Phaser.Scene {
         //tree placement
         this.worldData.treePositions.forEach(point => {
             var currentBiome = self.worldData.getBiome(self.worldData.elevationData[point.x][point.y], self.worldData.moistureData[point.x][point.y]);
-            var tree = new Tree(self, point.x * self.worldData.cellWidth + self.worldData.cellWidth / 2, point.y * self.worldData.cellHeight, currentBiome);
+            var tree = new Tree(self, point.x * self.worldData.cellWidth + self.worldData.cellWidth / 2, point.y * self.worldData.cellHeight + self.worldData.cellHeight , currentBiome);
         });
     }
 

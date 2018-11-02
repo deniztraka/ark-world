@@ -3,9 +3,6 @@ import {
 } from '../data/biomes';
 
 function getBiomeTextureKey(biome) {
-    return 'tree_TropicalSeasonalForest';
-
-    
     switch (biome) {
         case Biomes.TropicalSeasonalForest:
             return 'tree_TropicalSeasonalForest';
@@ -38,10 +35,17 @@ export class Tree extends Phaser.GameObjects.Sprite {
 
         this.biome = biome;
         this.setTexture(getBiomeTextureKey(biome));
-        this.setPosition(x, y);
-        this.setOrigin(0.5, 0.1);
+        //this.setPosition(x, y);
+        this.setOrigin(0.5, 1);
         this.depth = y;
 
         scene.add.existing(this);
+        this.tint = 0xcccccc;
+
+
+        //origin poin debugger
+        // var graphics = scene.add.graphics();
+        // graphics.fillStyle(0x00ff00, 1);
+        // graphics.fillCircle(x, y, 3);    
     }
 }
