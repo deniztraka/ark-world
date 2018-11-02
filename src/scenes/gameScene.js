@@ -27,7 +27,7 @@ export class GameScene extends Phaser.Scene {
 
         var self = this;
         this.eventEmitter = new Phaser.Events.EventEmitter();
-        this.eventEmitter.on("playerPositionChanged!", function(newIsoTileData) {
+        this.eventEmitter.on("playerPositionChanged!", function (newIsoTileData) {
             self.cullMap(newIsoTileData);
         });
 
@@ -70,7 +70,10 @@ export class GameScene extends Phaser.Scene {
 
         var help = this.add.text(16, 16, 'W/A/S/D to keys to move', {
             fontSize: '18px',
-            padding: { x: 10, y: 5 },
+            padding: {
+                x: 10,
+                y: 5
+            },
             backgroundColor: '#ffffff',
             fill: '#000000'
         });
@@ -126,7 +129,8 @@ export class GameScene extends Phaser.Scene {
                 var tile = this.map.putTileAt(currentBiome.tileIndex, x, y, true, this.mapLayers["layer0"]);
                 tile.properties.biome = currentBiome;
                 tile.properties.biomeName = currentBiome.name;
-                
+                tile.properties.baseElevation = baseElevation;
+
                 if (baseElevation == 5) {
                     tile.tint = 0xffffff;
                 } else if (baseElevation == 4) {
@@ -143,12 +147,15 @@ export class GameScene extends Phaser.Scene {
             }
         }
 
-        this.mapLayers["layer0"].setCollisionByProperty({ biomeName: ["Sea"] });
+        this.mapLayers["layer0"].setCollisionByProperty({
+            biomeName: ["Sea", "DeepSea"],
+            baseElevation: [5, 4, 3]
+        });
 
         //tree placement
         this.worldData.treePositions.forEach(point => {
             var currentBiome = self.worldData.getBiome(self.worldData.elevationData[point.x][point.y], self.worldData.moistureData[point.x][point.y]);
-            var tree = new Tree(self, point.x * self.worldData.cellWidth + self.worldData.cellWidth / 2, point.y * self.worldData.cellHeight + self.worldData.cellHeight , currentBiome);
+            var tree = new Tree(self, point.x * self.worldData.cellWidth + self.worldData.cellWidth / 2, point.y * self.worldData.cellHeight + self.worldData.cellHeight, currentBiome);
         });
     }
 
