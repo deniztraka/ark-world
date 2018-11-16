@@ -152,11 +152,11 @@ export class GameScene extends Phaser.Scene {
             baseElevation: [5, 4, 3]
         });
 
-        //tree placement
-        this.worldData.treePositions.forEach(point => {
-            var currentBiome = self.worldData.getBiome(self.worldData.elevationData[point.x][point.y], self.worldData.moistureData[point.x][point.y]);
-            var tree = new Tree(self, point.x * self.worldData.cellWidth + self.worldData.cellWidth / 2, point.y * self.worldData.cellHeight + self.worldData.cellHeight, currentBiome);
-        });
+        // //tree placement
+        // this.worldData.treePositions.forEach(point => {
+        //     var currentBiome = self.worldData.getBiome(self.worldData.elevationData[point.x][point.y], self.worldData.moistureData[point.x][point.y]);
+        //     var tree = new Tree(self, point.x * self.worldData.cellWidth + self.worldData.cellWidth / 2, point.y * self.worldData.cellHeight + self.worldData.cellHeight, currentBiome);
+        // });
     }
 
     createTexture(worldData, useColor) {

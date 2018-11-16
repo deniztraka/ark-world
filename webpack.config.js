@@ -14,7 +14,9 @@ module.exports = {
         filename: 'app.bundle.js',
         publicPath: '/js'
     },
-
+    watchOptions: {
+        poll: true
+    },
     module: {
         rules: [{
             test: /\.js$/,

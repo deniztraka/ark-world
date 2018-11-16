@@ -27,10 +27,11 @@
         "socket.io": "^2.1.1"
     },
     "scripts": {
-        "start:dev": "webpack-dev-server",
+        "start:devOld": "webpack-dev-server",
         "start": "npm-run-all build server",
         "server": "node server.js",
-        "build": "webpack --watch"
+        "build": "webpack",
+        "start:dev": "webpack -d --watch"
     },
     "main": "src/server.js"
 }
