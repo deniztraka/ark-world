@@ -20,20 +20,21 @@ export class MainMenuScene extends Phaser.Scene {
         var menuBackgroundImage = this.add.image(this.scene.manager.game.renderer.width / 2, this.scene.manager.game.renderer.height / 2, "menuBackground");
         menuBackgroundImage.setOrigin(0.5, 0.5);
 
-        var mainMenu = new MainMenu(this, MenuPosition.Center);
-        mainMenu.addMenuItem("Play", this.onPlayClick, this);
-        mainMenu.addMenuItem("Settings", this.onSettingsClick, this);
+        var mainMenu = new MainMenu(this, MenuPosition.Bottom);
+        mainMenu.addMenuItem("Create", this.onCreateWorldClicked, this);
+        mainMenu.addMenuItem("Join", this.onJoinClicked, this);
+        //mainMenu.addMenuItem("Settings", this.onSettingsClicked, this);
     }
 
-    onPlayClick() {
-        this.scene.start("CharacterSelectionScene");
+    onCreateWorldClicked() {
+        this.scene.start("CreateWorldScene");
     }
 
-    onSettingsClick() {
+    onJoinClicked() {
+        this.scene.start("JoinServerScene");
+    }
+
+    onSettingsClicked() {
         this.scene.start("SettingsScene");
-    }
-
-    onQuitClick() {
-        console.log("quit clicked");
     }
 }

@@ -19,6 +19,9 @@ import {
     CharacterSelectionScene
 } from './scenes/characterSelectionScene';
 import {
+    CreateWorldScene
+} from './scenes/createWorldScene';
+import {
     GameScene
 } from './scenes/gameScene';
 // import {
@@ -47,7 +50,7 @@ const gameConfig = {
 
         ]
     },
-    scene: [BootScene, PreloaderScene, MainMenuScene, SettingsScene, CharacterSelectionScene, GameScene],
+    scene: [BootScene, PreloaderScene, MainMenuScene, SettingsScene, CharacterSelectionScene, GameScene, CreateWorldScene],
     loader: {
         // baseURL: '',
         path: 'assets/',

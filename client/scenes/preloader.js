@@ -87,6 +87,6 @@ export class PreloaderScene extends Phaser.Scene {
     onComplete() {
         this.progressBar.destroy();
         this.progressBox.destroy();
-        this.scene.start("GameScene");
+        this.scene.start("MainMenuScene");
     }
 }
