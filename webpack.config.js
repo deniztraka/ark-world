@@ -1,10 +1,11 @@
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const webpack = require('webpack');
+const LiveReloadPlugin = require('webpack-livereload-plugin');
 
 module.exports = {
     entry: {
-        app: './src/index.js',
+        app: './client/index.js',
         'production-dependencies': ['phaser']
     },
 
@@ -17,7 +18,7 @@ module.exports = {
     module: {
         rules: [{
             test: /\.js$/,
-            include: path.resolve(__dirname, 'src/'),
+            include: path.resolve(__dirname, 'client/'),
             use: {
                 loader: 'babel-loader',
                 options: {
@@ -48,6 +49,7 @@ module.exports = {
         new webpack.optimize.CommonsChunkPlugin({
             name: 'production-dependencies',
             filename: 'production-dependencies.bundle.js'
-        })
+        }),
+        new LiveReloadPlugin()
     ]
 }

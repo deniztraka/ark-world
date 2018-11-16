@@ -1,4 +1,7 @@
 import 'phaser';
+import io from 'socket.io-client';
+
+
 
 import {
     BootScene
@@ -55,3 +58,5 @@ const gameConfig = {
 };
 
 var mygame = new Phaser.Game(gameConfig);
+
+const socket = io('http://localhost:8080');

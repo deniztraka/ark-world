@@ -27,7 +27,7 @@ export class GameScene extends Phaser.Scene {
 
         var self = this;
         this.eventEmitter = new Phaser.Events.EventEmitter();
-        this.eventEmitter.on("playerPositionChanged!", function (newIsoTileData) {
+        this.eventEmitter.on("playerPositionChanged!", function(newIsoTileData) {
             self.cullMap(newIsoTileData);
         });
 
