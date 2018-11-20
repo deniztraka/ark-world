@@ -7,8 +7,7 @@
     "license": "MIT",
     "private": true,
     "devDependencies": {
-        "webpack-dev-server": "^2.11.3",
-        "webpack-livereload-plugin": "^1.2.0"
+
     },
     "dependencies": {
         "babel-core": "^6.26.3",
@@ -24,7 +23,9 @@
         "poisson-disk-sampling": "^1.0.2",
         "webpack": "^3.12.0",
         "copy-webpack-plugin": "^4.5.2",
-        "socket.io": "^2.1.1"
+        "socket.io": "^2.1.1",
+        "webpack-dev-server": "^2.11.3",
+        "webpack-livereload-plugin": "^1.2.0"
     },
     "scripts": {
         "start:devOld": "webpack-dev-server",
