@@ -23,5 +23,5 @@ var server = serv.listen(app.get('port'), function() {
 });
 
 io.on("connection", function(socket) {
-    console.log("connected");
+    console.log("connectedd");
 });

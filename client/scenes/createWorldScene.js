@@ -23,7 +23,7 @@ export class CreateWorldScene extends Phaser.Scene {
         mainMenu.addMenuItem("Back", this.onBackClick, this);
         mainMenu.addMenuItem("Enter", this.onEnterClick, this);
 
-        console.log("hello");
+        console.log("hellos");
     }
 
     onBackClick() {
