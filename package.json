@@ -30,7 +30,8 @@
     "scripts": {
         "start:devOld": "webpack-dev-server",
         "start": "npm-run-all build server",
-        "server": "nodemon server.js",
+        "server": "node server.js",
+        "devServer": "nodemon server.js",
         "build": "webpack",
         "start:dev": "webpack -d --watch"
     },
