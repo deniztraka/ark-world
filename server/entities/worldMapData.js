@@ -1,23 +1,20 @@
-import {
+const {
     libnoise
-} from 'libnoise';
+} = require('libnoise');
 
-import {
-    Biomes
-} from './biomes'
+const Biomes = require('../data/biome');
 
-import PoissonDiskSampling from 'poisson-disk-sampling'
+const PoissonDiskSampling = require('poisson-disk-sampling');
 
-export class WorldData {
+class WorldMapData {
+
     constructor(seed, width, height, cellWidth, cellHeight) {
         this.seed = seed;
         this.width = width;
         this.height = height;
         this.cellWidth = cellWidth;
         this.cellHeight = cellHeight;
-        this.elevationData = [...Array(this.width)].map(x => Array(this.height).fill(0));
-        this.moistureData = [...Array(this.width)].map(x => Array(this.height).fill(0));
-        this.treePositions = [];
+
         this.defaultWorldNoiseMinVal = 0;
         this.defaultWorldNoiseMaxVal = 0;
         this.normalizedWorldNoiseMinVal = 0;
@@ -26,6 +23,15 @@ export class WorldData {
         this.defaultWorldMoistureMaxVal = 0;
         this.normalizedWorldMoistureMinVal = 0;
         this.normalizedWorldMoistureMaxVal = 0;
+
+        this.elevationData = [...Array(this.width)].map(x => Array(this.height).fill(0));
+        this.moistureData = [...Array(this.width)].map(x => Array(this.height).fill(0));
+        this.biomeData = [...Array(this.width)].map(x => Array(this.height).fill(0));
+        this.treePositions = [];
+
+        this.isMoistureDataFilled = false;
+        this.isElevationDataFilled = false;
+        this.isTreePositionsFilled = false;
     }
 
     generate(seed) {
@@ -33,6 +39,8 @@ export class WorldData {
             this.seed = seed;
         }
         this.generateWith(0.001, 2, 0.5, 6, libnoise.QualityMode.HIGH, this.seed);
+        this.generateBiomeData();
+        this.generateTreePositions();
     }
 
     generateWith(frequency, lacunarity, persistence, octaves, quality, seed) {
@@ -75,6 +83,8 @@ export class WorldData {
             }
         }
 
+        this.isElevationDataFilled = true;
+
 
         var moistureNoise = new libnoise.generator.Perlin(frequency * 0.5, lacunarity, persistence, octaves, this.seed + 1231232, quality);
 
@@ -110,6 +120,9 @@ export class WorldData {
                 }
             }
         }
+
+
+        this.isMoistureDataFilled = true;
     }
 
     generateTreePositions() {
@@ -136,6 +149,21 @@ export class WorldData {
                     }
                 });
             }
+        }
+
+        this.isTreePositionsFilled = true;
+    }
+
+    generateBiomeData() {
+        if (this.isElevationDataFilled && this.isMoistureDataFilled) {
+            for (var x = 0; x < this.width; x++) {
+                for (var y = 0; y < this.height; y++) {
+                    var currentBiome = this.getBiome(this.elevationData[x][y], this.moistureData[x][y]);
+                    this.biomeData[x][y] = currentBiome;
+                }
+            }
+        } else {
+            console.log("Could not generate BiomeData: Elevation and Moisture data must be filled.");
         }
     }
 
@@ -166,20 +194,10 @@ export class WorldData {
         }
 
         if (moisture < 0.54) return Biomes.SubtropicalDesert;; // 0.16 0.54
-        if (moisture < 0.625) return Biomes.GrassLand; // 0.33 0.625
+        if (moisture < 0.625) return Biomes.GrassLand;; // 0.33 0.625
         if (moisture < 0.675) return Biomes.TropicalSeasonalForest; // 0.66 0.675
         return Biomes.TropicalRainForest;
     }
+};
 
-    getElevation(x, y, base) {
-        if (base) {
-            var baseElevation = Math.floor(this.elevationData[x][y] * 10) - 5; //because seaa is lower than elevation 5 so we start at 1;
-            if (baseElevation < 0) {
-                baseElevation = 0;
-            }
-            return baseElevation;
-        } else {
-            return this.elevationData[x][y];
-        }
-    }
-}
+module.exports = WorldMapData;
