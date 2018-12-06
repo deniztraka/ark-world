@@ -34,5 +34,8 @@
         "build": "webpack",
         "start:dev": "webpack -d --watch"
     },
-    "main": "src/server.js"
+    "main": "src/server.js",
+    "nodemonConfig": {
+        "delay": "2000"
+    }
 }

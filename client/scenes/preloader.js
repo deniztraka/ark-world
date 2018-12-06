@@ -41,6 +41,7 @@ export class PreloaderScene extends Phaser.Scene {
         this.load.image('base_tiles_extended', 'tiles/tileBaseExtended.png');
         //this.load.image('real_tiles_extended', 'tiles/tileRealExtended.png');
         this.load.image('real_tiles_extended', 'tiles/tileRealExtendedSmall.png');
+        //this.load.image('real_tiles_extended', 'tiles/tileRealExtendedSaturatedSmall.png');
         //this.load.image('real_tiles_extended', 'tiles/tileRealExtendedBigs.png');
         this.load.image('tree_GrassLand', 'tiles/tree_GrassLand.png');
         this.load.image('tree_TemperateDesert', 'tiles/tree_TemperateDesert.png');
@@ -87,6 +88,6 @@ export class PreloaderScene extends Phaser.Scene {
     onComplete() {
         this.progressBar.destroy();
         this.progressBox.destroy();
-        this.scene.start("MainMenuScene");
+        this.scene.start("LoginScreen");
     }
 }

@@ -24,6 +24,10 @@ import {
 import {
     GameScene
 } from './scenes/gameScene';
+
+import {
+    LoginScreen
+} from './scenes/loginScreen';
 // import {
 //     IsoPlugin
 // } from './plugins/isoPlugin/isoPlugin';
@@ -50,7 +54,7 @@ const gameConfig = {
 
         ]
     },
-    scene: [BootScene, PreloaderScene, MainMenuScene, SettingsScene, CharacterSelectionScene, GameScene, CreateWorldScene],
+    scene: [BootScene, PreloaderScene, LoginScreen, MainMenuScene, SettingsScene, CharacterSelectionScene, GameScene, CreateWorldScene],
     loader: {
         // baseURL: '',
         path: 'assets/',

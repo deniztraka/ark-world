@@ -31,4 +31,4 @@ io.on("connection", function(socket) {
 let worldBuilder = new WorldBuilder();
 var world = worldBuilder.create();
 var worldSimulator = new WorldSimulator(world);
-worldSimulator.start();
+worldSimulator.start("asd");
