@@ -44,25 +44,25 @@ export class PlayerController {
 
         if (time > this.owner.lastMoveTime + repeatMoveDelay) {
             if (this.keys.s.isDown) {
-                if (this.isTileOpenAt(this.owner.sprite.x, this.owner.sprite.y + this.scene.worldData.cellHeight)) {
+                if (this.isTileOpenAt(this.owner.sprite.x, this.owner.sprite.y + this.scene.staticMapData.cellHeight)) {
                     this.scene.tweens.add({
                         targets: this.owner.sprite,
-                        y: this.owner.sprite.y + this.scene.worldData.cellHeight / 2,
+                        y: this.owner.sprite.y + this.scene.staticMapData.cellHeight / 2,
                         duration: repeatMoveDelay,
-                        onComplete: function () {
+                        onComplete: function() {
                             self.owner.lastMoveTime = time;
                         },
                         delay: 0
                     });
                 }
             } else if (this.keys.w.isDown) {
-                if (this.isTileOpenAt(this.owner.sprite.x, this.owner.sprite.y - this.scene.worldData.cellHeight)) {
+                if (this.isTileOpenAt(this.owner.sprite.x, this.owner.sprite.y - this.scene.staticMapData.cellHeight)) {
                     //this.owner.sprite.y -= this.scene.worldData.cellHeight;
                     this.scene.tweens.add({
                         targets: this.owner.sprite,
-                        y: this.owner.sprite.y - this.scene.worldData.cellHeight / 2,
+                        y: this.owner.sprite.y - this.scene.staticMapData.cellHeight / 2,
                         duration: repeatMoveDelay,
-                        onComplete: function () {
+                        onComplete: function() {
                             self.owner.lastMoveTime = time;
                         },
                         delay: 0
@@ -71,26 +71,26 @@ export class PlayerController {
             }
 
             if (this.keys.a.isDown) {
-                if (this.isTileOpenAt(this.owner.sprite.x - this.scene.worldData.cellWidth, this.owner.sprite.y)) {
+                if (this.isTileOpenAt(this.owner.sprite.x - this.scene.staticMapData.cellWidth, this.owner.sprite.y)) {
                     //this.owner.sprite.x -= this.scene.worldData.cellWidth;
                     this.scene.tweens.add({
                         targets: this.owner.sprite,
-                        x: this.owner.sprite.x - this.scene.worldData.cellWidth / 2,
+                        x: this.owner.sprite.x - this.scene.staticMapData.cellWidth / 2,
                         duration: repeatMoveDelay,
-                        onComplete: function () {
+                        onComplete: function() {
                             self.owner.lastMoveTime = time;
                         },
                         delay: 0
                     });
                 }
             } else if (this.keys.d.isDown) {
-                if (this.isTileOpenAt(this.owner.sprite.x + this.scene.worldData.cellWidth, this.owner.sprite.y)) {
+                if (this.isTileOpenAt(this.owner.sprite.x + this.scene.staticMapData.cellWidth, this.owner.sprite.y)) {
                     //this.owner.sprite.x += this.scene.worldData.cellWidth;
                     this.scene.tweens.add({
                         targets: this.owner.sprite,
-                        x: this.owner.sprite.x + this.scene.worldData.cellHeight / 2,
+                        x: this.owner.sprite.x + this.scene.staticMapData.cellHeight / 2,
                         duration: repeatMoveDelay,
-                        onComplete: function () {
+                        onComplete: function() {
                             self.owner.lastMoveTime = time;
                         },
                         delay: 0

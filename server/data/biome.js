@@ -1,4 +1,4 @@
-const Biomes = {
+Biomes = {
 
     Scorched: {
         name: "Scorched",
@@ -7,7 +7,8 @@ const Biomes = {
             enabled: false,
             minDistance: 0,
             maxDistance: 0
-        }
+        },
+        tileIndex: 0
     },
     Bare: {
         name: "Bare",
@@ -16,7 +17,8 @@ const Biomes = {
             enabled: false,
             minDistance: 0,
             maxDistance: 0
-        }
+        },
+        tileIndex: 1
     },
     Tundra: {
         name: "Tundra",
@@ -25,7 +27,8 @@ const Biomes = {
             enabled: false,
             minDistance: 0,
             maxDistance: 0
-        }
+        },
+        tileIndex: 2
     },
     Snow: {
         name: "Snow",
@@ -34,7 +37,8 @@ const Biomes = {
             enabled: false,
             minDistance: 0,
             maxDistance: 0
-        }
+        },
+        tileIndex: 3
     },
     TemperateDesert: {
         name: "TemperateDesert",
@@ -43,7 +47,8 @@ const Biomes = {
             enabled: true,
             minDistance: 8,
             maxDistance: 30
-        }
+        },
+        tileIndex: 4
     },
     Shrubland: {
         name: "Shrubland",
@@ -52,7 +57,8 @@ const Biomes = {
             enabled: true,
             minDistance: 3,
             maxDistance: 7
-        }
+        },
+        tileIndex: 5
     },
     Taiga: {
         name: "Taiga",
@@ -61,7 +67,8 @@ const Biomes = {
             enabled: true,
             minDistance: 6,
             maxDistance: 15
-        }
+        },
+        tileIndex: 6
     },
     GrassLand: {
         name: "GrassLand",
@@ -70,7 +77,8 @@ const Biomes = {
             enabled: true,
             minDistance: 2,
             maxDistance: 8
-        }
+        },
+        tileIndex: 7
     },
     TemperateDeciduousForest: {
         name: "TemperateDeciduousForest",
@@ -79,7 +87,8 @@ const Biomes = {
             enabled: true,
             minDistance: 3,
             maxDistance: 10
-        }
+        },
+        tileIndex: 8
     },
     TemperateRainForest: {
         name: "TemperateRainForest",
@@ -88,7 +97,8 @@ const Biomes = {
             enabled: true,
             minDistance: 3,
             maxDistance: 8
-        }
+        },
+        tileIndex: 9
     },
     SubtropicalDesert: {
         name: "SubtropicalDesert",
@@ -97,7 +107,8 @@ const Biomes = {
             enabled: true,
             minDistance: 10,
             maxDistance: 25
-        }
+        },
+        tileIndex: 10
     },
     TropicalSeasonalForest: {
         name: "TropicalSeasonalForest",
@@ -106,7 +117,8 @@ const Biomes = {
             enabled: true,
             minDistance: 2,
             maxDistance: 10
-        }
+        },
+        tileIndex: 11
     },
     TropicalRainForest: {
         name: "TropicalRainForest",
@@ -115,7 +127,8 @@ const Biomes = {
             enabled: true,
             minDistance: 2,
             maxDistance: 10
-        }
+        },
+        tileIndex: 12
     },
     Beach: {
         name: "Beach",
@@ -124,7 +137,8 @@ const Biomes = {
             enabled: false,
             minDistance: 0,
             maxDistance: 0
-        }
+        },
+        tileIndex: 13
     },
     Sea: {
         name: "Sea",
@@ -133,7 +147,8 @@ const Biomes = {
             enabled: false,
             minDistance: 0,
             maxDistance: 0
-        }
+        },
+        tileIndex: 14
     },
     DeepSea: {
         name: "DeepSea",
@@ -142,7 +157,8 @@ const Biomes = {
             enabled: false,
             minDistance: 0,
             maxDistance: 0
-        }
+        },
+        tileIndex: 15
     }
 }
 

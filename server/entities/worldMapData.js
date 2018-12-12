@@ -25,6 +25,7 @@ class WorldMapData {
         this.normalizedWorldMoistureMaxVal = 0;
 
         this.elevationData = [...Array(this.width)].map(x => Array(this.height).fill(0));
+        this.baseElevationData = [...Array(this.width)].map(x => Array(this.height).fill(0));
         this.moistureData = [...Array(this.width)].map(x => Array(this.height).fill(0));
         this.biomeData = [...Array(this.width)].map(x => Array(this.height).fill(0));
         this.treePositions = [];
@@ -80,6 +81,16 @@ class WorldMapData {
                 if (this.elevationData[x][y] < this.normalizedWorldNoiseMinVal) {
                     this.normalizedWorldNoiseMinVal = this.elevationData[x][y];
                 }
+            }
+        }
+
+        //normalize
+        for (var x = 0; x < this.width; x++) {
+            for (var y = 0; y < this.height; y++) {
+
+                this.baseElevationData[x][y] = this.get
+
+
             }
         }
 
@@ -167,34 +178,57 @@ class WorldMapData {
         }
     }
 
+    getElevation(x, y, base) {
+        if (base) {
+            var baseElevation = Math.floor(this.elevationData[x][y] * 10) - 5; //because seaa is lower than elevation 5 so we start at 1;
+            if (baseElevation < 0) {
+                baseElevation = 0;
+            }
+            return baseElevation;
+        } else {
+            return this.elevationData[x][y];
+        }
+    }
+
     getBiome(elevation, moisture) {
 
         if (elevation < 0.4) return Biomes.DeepSea; // 0.1 0.4
         if (elevation < 0.5) return Biomes.Sea; // 0.1 0.5
         if (elevation < 0.52) return Biomes.Beach; // 0.12 0.52
 
-        if (elevation > 0.77) { // 0.8 77
-            if (moisture < 0.5) return Biomes.Scorched; // 0.1 0.5
-            if (moisture < 0.55) return Biomes.Bare; // 0.2 0.55
-            if (moisture < 0.6) return Biomes.Tundra; // 0.5 0.6
+        if (elevation > 0.9) { // 0.8 77
+            // if (moisture < 0.5) return Biomes.Scorched; // 0.1 0.5
+            // if (moisture < 0.55) return Biomes.Bare; // 0.2 0.55
+            // if (moisture < 0.6) return Biomes.Tundra; // 0.5 0.6
+            // return Biomes.Snow;
             return Biomes.Snow;
         }
 
+        if (elevation > 0.77) { // 0.8 77
+            // if (moisture < 0.5) return Biomes.Scorched; // 0.1 0.5
+            // if (moisture < 0.55) return Biomes.Bare; // 0.2 0.55
+            // if (moisture < 0.6) return Biomes.Tundra; // 0.5 0.6
+            // return Biomes.Snow;
+            return Biomes.Scorched;
+        }
+
         if (elevation > 0.7) { // 0.6 0.7
-            if (moisture < 0.625) return Biomes.TemperateDesert; // 0.33 0.625
-            if (moisture < 0.8) return Biomes.Shrubland; // 0.66 0.8
+            // if (moisture < 0.625) return Biomes.TemperateDesert; // 0.33 0.625
+            // if (moisture < 0.8) return Biomes.Shrubland; // 0.66 0.8
+            // return Biomes.Taiga;
             return Biomes.Taiga;
         }
 
         if (elevation > 0.58) { // 0.3 0.58
-            if (moisture < 0.54) return Biomes.TemperateDesert; // 0.16 0.54
-            if (moisture < 0.675) return Biomes.GrassLand; // 0.50 0.675
-            if (moisture < 0.8) return Biomes.TemperateDeciduousForest; //0.83 0.8
-            return Biomes.TemperateRainForest;
+            // if (moisture < 0.54) return Biomes.TemperateDesert; // 0.16 0.54
+            // if (moisture < 0.675) return Biomes.GrassLand; // 0.50 0.675
+            // if (moisture < 0.8) return Biomes.TemperateDeciduousForest; //0.83 0.8
+            // return Biomes.TemperateRainForest;
+            return Biomes.TemperateDeciduousForest;
         }
 
         if (moisture < 0.54) return Biomes.SubtropicalDesert;; // 0.16 0.54
-        if (moisture < 0.625) return Biomes.GrassLand;; // 0.33 0.625
+        if (moisture < 0.625) return Biomes.GrassLand; // 0.33 0.625
         if (moisture < 0.675) return Biomes.TropicalSeasonalForest; // 0.66 0.675
         return Biomes.TropicalRainForest;
     }

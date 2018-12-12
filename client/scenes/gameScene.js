@@ -34,6 +34,11 @@ export class GameScene extends Phaser.Scene {
         this.renderSize = 10;
 
         this.shadows = [];
+        this.staticMapData = null;
+    }
+
+    init(data) {
+        this.staticMapData = data;
     }
 
     preload() {
@@ -61,14 +66,10 @@ export class GameScene extends Phaser.Scene {
         this.tileStackData = {};
         this.isoGroup = this.add.group();
 
-
-        this.worldData = new WorldData(4, 200, 200, 16, 16);
-        this.worldData.generate();
-        this.worldData.generateTreePositions();
-        //this.createTexture(this.worldData, true);
-        this.createWorld();
-
-        this.createPlayer();
+        if (this.staticMapData) {
+            this.createWorld();
+            this.createPlayer();
+        }
 
         var help = this.add.text(16, 16, 'W/A/S/D to keys to move', {
             fontSize: '18px',
@@ -86,7 +87,7 @@ export class GameScene extends Phaser.Scene {
 
 
             var tile = this.map.getTileAtWorldXY(pointer.x, pointer.y, true, this.cam, this.mapLayers["layer0"]);
-            console.log(tile.properties);
+            console.log(tile.properties.biome.name + " index:" + tile.index + " elevation:" + tile.properties.elevation);
 
 
         }, this);
@@ -100,9 +101,6 @@ export class GameScene extends Phaser.Scene {
             this.controls.update(delta);
         }
         this.eventEmitter.emit("gameSceneUpdate!", time, delta);
-
-
-
     }
 
     createPlayer() {
@@ -113,10 +111,10 @@ export class GameScene extends Phaser.Scene {
         var self = this;
 
         this.map = this.make.tilemap({
-            tileWidth: this.worldData.cellWidth,
-            tileHeight: this.worldData.cellHeight,
-            width: this.worldData.width,
-            height: this.worldData.height
+            tileWidth: self.staticMapData.cellWidth,
+            tileHeight: self.staticMapData.cellHeight,
+            width: self.staticMapData.width,
+            height: self.staticMapData.height
         });
         var tiles = this.map.addTilesetImage('real_tiles_extended');
         this.mapLayers = {
@@ -134,44 +132,48 @@ export class GameScene extends Phaser.Scene {
             layer5object: self.map.createBlankDynamicLayer('layer5object', tiles)
         };
 
-        //return;
-        for (var x = 0; x < this.worldData.width; x++) {
-            for (var y = 0; y < this.worldData.height; y++) {
+        for (var x = 0; x < self.staticMapData.width; x++) {
+            for (var y = 0; y < self.staticMapData.height; y++) {
+                var tile = this.map.putTileAt(self.staticMapData.tileData[x][y].index, x, y, true, this.mapLayers["layer0"]);
+                tile.properties.biome = {
+                    name: self.staticMapData.tileData[x][y].name
+                };
+                tile.properties = {
+                    biome: {
+                        name: self.staticMapData.tileData[x][y].name
+                    },
+                    elevation: self.staticMapData.tileData[x][y].elevation
+                };
 
-                var currentBiome = this.worldData.getBiome(this.worldData.elevationData[x][y], this.worldData.moistureData[x][y]);
-
-                var baseElevation = this.worldData.getElevation(x, y, true);
-                var tile = this.map.putTileAt(currentBiome.tileIndex, x, y, true, this.mapLayers["layer0"]);
-                tile.properties.biome = currentBiome;
-                tile.properties.biomeName = currentBiome.name;
-                tile.properties.baseElevation = baseElevation;
-
-                if (baseElevation == 5) {
+                if (tile.properties.elevation == 5) {
                     tile.tint = 0xffffff;
-                } else if (baseElevation == 4) {
+                } else if (tile.properties.elevation == 4) {
                     tile.tint = 0xeeeeee;
-                } else if (baseElevation == 3) {
+                } else if (tile.properties.elevation == 3) {
                     tile.tint = 0xdddddd;
-                } else if (baseElevation == 2) {
+                } else if (tile.properties.elevation == 2) {
                     tile.tint = 0xcccccc;
-                } else if (baseElevation == 1) {
+                } else if (tile.properties.elevation == 1) {
                     tile.tint = 0xcccccc;
-                } else if (baseElevation == 0) {
+                } else if (tile.properties.elevation == 0) {
                     tile.tint = 0xcccccc;
                 }
-
-
             }
         }
 
+        this.mapLayers["layer0"].setCollision(self.staticMapData.collisionIndexes);
 
+        this.updateShadows();
 
-        this.mapLayers["layer0"].setCollisionByProperty({
-            biomeName: ["Sea", "DeepSea", "Scorched"]
-        });
+    }
 
-        for (var x = 0; x < this.worldData.width; x++) {
-            for (var y = 0; y < this.worldData.height; y++) {
+    updateShadows() {
+        var self = this;
+        var shadowTiles = [];
+        var shadowFillStyle = "rgba(0,0,0,0.1)";
+
+        for (var x = 0; x < self.staticMapData.width; x++) {
+            for (var y = 0; y < self.staticMapData.height; y++) {
 
                 var tile = self.map.getTileAt(x, y, false, self.mapLayers["layer0"]);
 
@@ -179,54 +181,45 @@ export class GameScene extends Phaser.Scene {
                 var rightTile = self.map.getTileAt(x + 1, y, false, self.mapLayers["layer0"]);
                 var topTile = self.map.getTileAt(x, y - 1, false, self.mapLayers["layer0"]);
                 var bottomTile = self.map.getTileAt(x, y + 1, false, self.mapLayers["layer0"]);
-                debugger;
-                if (tile.canCollide || tile.properties.biomeName == "Snow") {
-                    self.shadows.push({
+
+                if (tile.canCollide || tile.properties.biome.name == "Snow") {
+                    shadowTiles.push({
                         centerX: tile.getCenterX(),
                         centerY: tile.getCenterY(),
                         left: tile.getLeft(),
                         right: tile.getRight(),
                         top: tile.getTop(),
                         bottom: tile.getBottom(),
-                        faceLeft: tile.faceLeft || (leftTile != null && leftTile.properties.baseElevation < tile.properties.baseElevation),
-                        faceRight: tile.faceRight || (rightTile != null && rightTile.properties.baseElevation < tile.properties.baseElevation),
-                        faceBottom: tile.faceBottom || (bottomTile != null && bottomTile.properties.baseElevation < tile.properties.baseElevation),
-                        faceTop: tile.faceTop || (topTile != null && topTile.properties.baseElevation < tile.properties.baseElevation),
-                        hasShadow: !(tile.properties.biomeName === "Sea" || tile.properties.biomeName === "DeepSea")
+                        faceLeft: tile.faceLeft || (leftTile != null && leftTile.properties.elevation < tile.properties.elevation),
+                        faceRight: tile.faceRight || (rightTile != null && rightTile.properties.elevation < tile.properties.elevation),
+                        faceBottom: tile.faceBottom || (bottomTile != null && bottomTile.properties.elevation < tile.properties.elevation),
+                        faceTop: tile.faceTop || (topTile != null && topTile.properties.elevation < tile.properties.elevation),
+                        hasShadow: !(tile.properties.biome.name === "Sea" || tile.properties.biome.name === "DeepSea")
                     });
                 }
             }
         }
 
-
-        // //tree placement
-        // this.worldData.treePositions.forEach(point => {
-        //     var currentBiome = self.worldData.getBiome(self.worldData.elevationData[point.x][point.y], self.worldData.moistureData[point.x][point.y]);
-        //     var tree = new Tree(self, point.x * self.worldData.cellWidth + self.worldData.cellWidth / 2, point.y * self.worldData.cellHeight + self.worldData.cellHeight, currentBiome);
-        // });
-
-
-        debugger;
-        var shadowTexture = this.textures.createCanvas('shadowTexture', this.worldData.width * 16, this.worldData.height * 16);
-        this.shadows.forEach(tileShadowInfo => {
+        var shadowTexture = this.textures.createCanvas('shadowTexture', this.staticMapData.width * 16, this.staticMapData.height * 16);
+        shadowTiles.forEach(tileShadowInfo => {
             if (tileShadowInfo.hasShadow) {
                 if (tileShadowInfo.faceLeft) {
-                    shadowTexture.context.fillStyle = "rgba(0,0,0,0.1)";
+                    shadowTexture.context.fillStyle = shadowFillStyle;
                     shadowTexture.context.fillRect(tileShadowInfo.left - 4, tileShadowInfo.top, 4, 16);
                 }
 
                 if (tileShadowInfo.faceRight) {
-                    shadowTexture.context.fillStyle = "rgba(0,0,0,0.1)";
+                    shadowTexture.context.fillStyle = shadowFillStyle;
                     shadowTexture.context.fillRect(tileShadowInfo.left + 16, tileShadowInfo.top, 4, 16);
                 }
 
                 if (tileShadowInfo.faceBottom) {
-                    shadowTexture.context.fillStyle = "rgba(0,0,0,0.1)";
+                    shadowTexture.context.fillStyle = shadowFillStyle;
                     shadowTexture.context.fillRect(tileShadowInfo.left, tileShadowInfo.top + 16, 16, 4);
                 }
 
                 if (tileShadowInfo.faceTop) {
-                    shadowTexture.context.fillStyle = "rgba(0,0,0,0.1)";
+                    shadowTexture.context.fillStyle = shadowFillStyle;
                     shadowTexture.context.fillRect(tileShadowInfo.left, tileShadowInfo.top - 4, 16, 4);
                 }
             }
@@ -234,7 +227,6 @@ export class GameScene extends Phaser.Scene {
         shadowTexture.refresh();
         var shadowImg = this.add.image(0, 0, 'shadowTexture');
         shadowImg.setOrigin(0, 0);
-
     }
 
     createTexture(worldData, useColor) {

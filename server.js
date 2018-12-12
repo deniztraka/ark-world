@@ -24,11 +24,22 @@ var server = serv.listen(app.get('port'), function() {
     console.log('listening on port ', server.address().port);
 });
 
-io.on("connection", function(socket) {
-    console.log("connectedd");
-});
+
 
 let worldBuilder = new WorldBuilder();
 var world = worldBuilder.create();
 var worldSimulator = new WorldSimulator(world);
 worldSimulator.start("asd");
+
+io.on("connection", function(socket) {
+    socket.on('hiFrom', function(clientName) {
+        world.addClient(socket, clientName);
+        console.log(socket.id + " | " + clientName + " said hi");
+
+    });
+
+    socket.on("disconnect", function() {
+        world.disconnectClient(socket.id);
+        console.log(socket.id + " is disconnected;");
+    });
+});
