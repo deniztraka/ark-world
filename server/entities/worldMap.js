@@ -23,7 +23,6 @@ class WorldMap {
 
         for (var x = 0; x < staticMapData.width; x++) {
             for (var y = 0; y < staticMapData.height; y++) {
-
                 staticMapData.tileData[x][y] = {
                     index: this.worldMapData.biomeData[x][y].tileIndex,
                     name: this.worldMapData.biomeData[x][y].name,

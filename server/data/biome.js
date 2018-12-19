@@ -140,6 +140,16 @@ Biomes = {
         },
         tileIndex: 13
     },
+    River: {
+        name: "River",
+        color: "rgb(68,68,122)",
+        treePlacement: {
+            enabled: false,
+            minDistance: 0,
+            maxDistance: 1
+        },
+        tileIndex: 14
+    },
     Sea: {
         name: "Sea",
         color: "rgb(68,68,122)",

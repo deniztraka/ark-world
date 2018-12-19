@@ -41,6 +41,7 @@ class WorldMapData {
         }
         this.generateWith(0.001, 2, 0.5, 6, libnoise.QualityMode.HIGH, this.seed);
         this.generateBiomeData();
+        this.generateRivers();
         this.generateTreePositions();
     }
 
@@ -81,16 +82,6 @@ class WorldMapData {
                 if (this.elevationData[x][y] < this.normalizedWorldNoiseMinVal) {
                     this.normalizedWorldNoiseMinVal = this.elevationData[x][y];
                 }
-            }
-        }
-
-        //normalize
-        for (var x = 0; x < this.width; x++) {
-            for (var y = 0; y < this.height; y++) {
-
-                this.baseElevationData[x][y] = this.get
-
-
             }
         }
 
@@ -136,6 +127,182 @@ class WorldMapData {
         this.isMoistureDataFilled = true;
     }
 
+    getRandomPoint(biomeName) {
+        var rX = Math.floor(Math.random() * this.width);
+        var rY = Math.floor(Math.random() * this.height);
+
+        if (this.biomeData[rX][rY].name == biomeName) {
+
+            return {
+                x: rX,
+                y: rY
+            };
+        } else {
+            //console.log("tried " + rX + " " + rY + " " + this.biomeData[rX][rY].name);
+            return this.getRandomPoint(biomeName);
+        }
+    }
+
+    generateLake(point) {
+        console.log("makingg lake at this point:" + point.x + "," + point.y);
+
+        this.floodFill(point.x, point.y, this.elevationData[point.x][point.y]);
+    }
+
+    floodFill(x, y, elevationData) {
+
+
+
+        /* Set current color to fillColor, then perform following operations. */
+
+        if (this.elevationData[x] && this.elevationData[x][y] <= elevationData) {
+
+            console.log("filled:" + x + "," + y + " eld:" + this.elevationData[x][y]);
+            console.log();
+
+            this.biomeData[x][y] = Biomes.Snow; // Set pixel color to fillColor
+            if (this.elevationData[x + 1] && this.elevationData[x - 1]) {
+                this.floodFill(x + 1, y, this.elevationData[x + 1][y]);
+
+                this.floodFill(x - 1, y, this.elevationData[x - 1][y]);
+
+                this.floodFill(x, y + 1, this.elevationData[x][y + 1]);
+
+                this.floodFill(x, y - 1, this.elevationData[x][y - 1]);
+            }
+        }
+    }
+
+    generateRivers() {
+        var self = this;
+        var rivers = [];
+
+        var riverCount = Math.floor(Math.random() * 5);
+
+        for (let i = 0; i < riverCount; i++) {
+
+            var river = {
+                startPoint: null,
+                points: [],
+                endPoint: null
+            };
+            var riverStartPoint = this.getRandomPoint("Scorched");
+            var rX = riverStartPoint.x;
+            var rY = riverStartPoint.y;
+
+            river.startPoint = riverStartPoint;
+
+            var currentBiome = this.biomeData[rX][rY];
+
+
+            var currentBiomeName = currentBiome.name;
+            var currentElevation = 1;
+
+
+            var counter = 0;
+            while (currentBiomeName != "Sea") {
+                var adjacentTiles = [];
+
+                // console.log("");
+                // console.log("------------------------------------------------------");
+                // console.log("current:" + rX + "," + rY + " biome:" + currentBiomeName + " elv:" + currentElevation);
+                // console.log(">");
+                // console.log("leftEl:" + this.elevationData[rX - 1][rY]);
+                // console.log("right:" + this.elevationData[rX + 1][rY]);
+                // console.log("top:" + this.elevationData[rX][rY - 1]);
+                // console.log("bottom:" + this.elevationData[rX][rY + 1]);
+
+
+
+                //left tile elevation            
+                if (this.elevationData[rX - 1] && currentElevation > this.elevationData[rX - 1][rY]) {
+                    adjacentTiles.push({
+                        x: rX - 1,
+                        y: rY
+                    });
+                }
+
+                //right tile elevation            
+                if (this.elevationData[rX + 1] && currentElevation > this.elevationData[rX + 1][rY]) {
+                    adjacentTiles.push({
+                        x: rX + 1,
+                        y: rY
+                    });
+                }
+
+                //top tile elevation            
+                if (this.elevationData[rY - 1] && currentElevation > this.elevationData[rX][rY - 1]) {
+                    adjacentTiles.push({
+                        x: rX,
+                        y: rY - 1
+                    });
+                }
+
+                //bottom tile elevation            
+                if (this.elevationData[rY + 1] && currentElevation > this.elevationData[rX][rY + 1]) {
+                    adjacentTiles.push({
+                        x: rX,
+                        y: rY + 1
+                    });
+                }
+
+                //console.log(adjacentTiles.length);
+                if (adjacentTiles.length == 0) {
+                    // console.log("dont have next");                    
+                    //Todo: make it lake
+                    // self.generateLake({
+                    //     x: rX,
+                    //     y: rY
+                    // });
+                    // console.log("------------------------------------------------------");
+                    break;
+                }
+
+                var lowest = Number.POSITIVE_INFINITY;
+                var nextPoint = null;
+                for (var t = adjacentTiles.length - 1; t >= 0; t--) {
+                    var tmp = this.getElevation(adjacentTiles[t].x, adjacentTiles[t].y, false);
+                    if (tmp < lowest) {
+                        lowest = tmp;
+                        nextPoint = adjacentTiles[t];
+                    }
+                }
+                // console.log(nextPoint);
+                // console.log(tmp);
+
+
+                currentBiome = this.biomeData[nextPoint.x][nextPoint.y];
+                currentBiomeName = currentBiome.name;
+                currentElevation = this.getElevation(nextPoint.x, nextPoint.y, false);
+                rX = nextPoint.x;
+                rY = nextPoint.y;
+                // console.log("next:" + rX + "," + rY + " biome:" + currentBiomeName + " elv:" + currentElevation);
+                // console.log("------------------------------------------------------");
+
+                river.points.push(nextPoint);
+                if (currentBiomeName == "Sea" || currentBiomeName == "River") {
+                    river.points.endPoint = nextPoint;
+                }
+                counter++;
+            }
+
+            rivers.push(river);
+
+
+        }
+
+        rivers.forEach(river => {
+
+            self.biomeData[river.startPoint.x][river.startPoint.y] = Biomes.River;
+            //self.biomeData[river.endPoint.x][river.endPoint.y] = Biomes.River;
+
+            river.points.forEach(point => {
+                self.biomeData[point.x][point.y] = Biomes.River;
+            });
+        });
+
+    }
+
     generateTreePositions() {
         var self = this;
         for (var biome in Biomes) {
@@ -174,7 +341,7 @@ class WorldMapData {
                 }
             }
         } else {
-            console.log("Could not generate BiomeData: Elevation and Moisture data must be filled.");
+            console.log("Could nott generate BiomeData: Elevation and Moisture data must be filled.");
         }
     }
 

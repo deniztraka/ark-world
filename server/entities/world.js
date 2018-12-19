@@ -4,7 +4,7 @@ const Client = require('./client');
 class World {
 
     constructor(seed) {
-        this.worldMap = new WorldMap(seed, 100, 100);
+        this.worldMap = new WorldMap(seed, 50, 50);
         this.mobiles = [];
         this.clients = {};
 

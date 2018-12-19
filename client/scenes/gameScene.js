@@ -37,8 +37,14 @@ export class GameScene extends Phaser.Scene {
         this.staticMapData = null;
     }
 
-    init(data) {
-        this.staticMapData = data;
+    init(obj) {
+        var self = this;
+        this.staticMapData = obj.data;
+        this.socket = obj.socket;
+
+        this.socket.on("disconnect", function() {
+            self.scene.start("LoginScreen");
+        });
     }
 
     preload() {
@@ -87,7 +93,7 @@ export class GameScene extends Phaser.Scene {
 
 
             var tile = this.map.getTileAtWorldXY(pointer.x, pointer.y, true, this.cam, this.mapLayers["layer0"]);
-            console.log(tile.properties.biome.name + " index:" + tile.index + " elevation:" + tile.properties.elevation);
+            console.log(tile.x + "," + tile.y + " " + tile.properties.biome.name + " index:" + tile.index + " elevation:" + tile.properties.elevation);
 
 
         }, this);
@@ -194,11 +200,12 @@ export class GameScene extends Phaser.Scene {
                         faceRight: tile.faceRight || (rightTile != null && rightTile.properties.elevation < tile.properties.elevation),
                         faceBottom: tile.faceBottom || (bottomTile != null && bottomTile.properties.elevation < tile.properties.elevation),
                         faceTop: tile.faceTop || (topTile != null && topTile.properties.elevation < tile.properties.elevation),
-                        hasShadow: !(tile.properties.biome.name === "Sea" || tile.properties.biome.name === "DeepSea")
+                        hasShadow: !(tile.properties.biome.name === "Sea" || tile.properties.biome.name === "DeepSea" || tile.properties.biome.name === "River")
                     });
                 }
             }
         }
+        this.textures.remove("shadowTexture");
 
         var shadowTexture = this.textures.createCanvas('shadowTexture', this.staticMapData.width * 16, this.staticMapData.height * 16);
         shadowTiles.forEach(tileShadowInfo => {
