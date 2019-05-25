@@ -34,7 +34,7 @@ worldSimulator.start("asd");
 io.on("connection", function(socket) {
     socket.on('hiFrom', function(clientName) {
         world.addClient(socket, clientName);
-        console.log(socket.id + " | " + clientName + " said hi");
+        console.log(socket.id + " | " + clientName + " said hii");
 
     });
 

@@ -4,6 +4,7 @@ const webpack = require('webpack');
 const LiveReloadPlugin = require('webpack-livereload-plugin');
 
 module.exports = {
+    mode:"development",
     entry: {
         app: './client/index.js',
         'production-dependencies': ['phaser']
@@ -24,7 +25,7 @@ module.exports = {
             use: {
                 loader: 'babel-loader',
                 options: {
-                    presets: ['env']
+                    presets: ['@babel/preset-env']
                 }
             }
         }]
@@ -33,6 +34,18 @@ module.exports = {
     devServer: {
         contentBase: path.resolve(__dirname, 'build')
     },
+
+    optimization: {
+        splitChunks: {
+          cacheGroups: {
+            vendor: {              
+              chunks: "initial",
+              name: "production-dependencies",
+              enforce: true
+            }
+          }
+        }
+      },
 
     plugins: [
         new CopyWebpackPlugin([{
@@ -47,10 +60,6 @@ module.exports = {
         new webpack.DefinePlugin({
             'typeof CANVAS_RENDERER': JSON.stringify(true),
             'typeof WEBGL_RENDERER': JSON.stringify(true)
-        }),
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'production-dependencies',
-            filename: 'production-dependencies.bundle.js'
         }),
         new LiveReloadPlugin()
     ]

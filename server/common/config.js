@@ -10,7 +10,7 @@ module.exports = {
             height: 100
         },
         vicinityUpdate: true,
-        logLevel: 3
+        logLevel: 1
     },
     game: {
         bounds: {

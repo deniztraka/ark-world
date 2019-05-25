@@ -6,7 +6,7 @@ module.exports = {
     terminal: {
         debug: function(message) {
             if (config.server.logLevel >= 3) {
-                console.log((utils.time.getDateTimeText()).gray + (" || DEBUG ==> " + message).gray);
+                console.log((utils.time.getDateTimeText()).gray + (" || DEBUG ==> " + message).gray);                
             }
         },
 
