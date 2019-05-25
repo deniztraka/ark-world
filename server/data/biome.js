@@ -169,6 +169,26 @@ Biomes = {
             maxDistance: 0
         },
         tileIndex: 15
+    },
+    DungeonFloor : {
+        name: "Dungeon",
+        color: "rgb(60,60,102)",
+        treePlacement:{
+            enabled:false,
+            minDistance: 0,
+            maxDistance: 0
+        },
+        tileIndex: 7
+    },
+    DungeonWall : {
+        name: "DungeonWall",
+        color: "rgb(60,60,102)",
+        treePlacement:{
+            enabled:false,
+            minDistance: 0,
+            maxDistance: 0
+        },
+        tileIndex: 0
     }
 }
 

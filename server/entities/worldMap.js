@@ -1,9 +1,11 @@
 const WorldMapData = require('./worldMapData');
+const DungeonMapData = require('./dungeonMapData');
 
 class WorldMap {
 
     constructor(seed, width, height) {
-        this.worldMapData = new WorldMapData(seed, width, height, 32, 32);
+        //this.worldMapData = new WorldMapData(seed, width, height, 32, 32);
+        this.worldMapData = new DungeonMapData(seed, width, height, 32, 32);
     }
 
     generate() {
