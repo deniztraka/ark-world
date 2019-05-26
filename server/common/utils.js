@@ -1,80 +1,44 @@
-var config = require('./config.js');
+class Utils {
 
-Object.size = function(obj) {
-    var size = 0,
-        key;
-    for (key in obj) {
-        if (obj.hasOwnProperty(key)) size++;
+    static hashStr(str, bits) {
+        let hash = 5381;
+        let i = str.length;
+        bits = bits ? bits : 8;
+
+        while (i) {
+            hash = (hash * 33) ^ str.charCodeAt(--i);
+        }
+        hash = hash >>> 0;
+        hash = hash % (Math.pow(2, bits) - 1);
+
+        // JavaScript does bitwise operations (like XOR, above) on 32-bit signed
+        // integers. Since we want the results to be always positive, convert the
+        // signed int to an unsigned by doing an unsigned bitshift. */
+        return hash;
     }
-    return size;
-};
 
-// Converts from degrees to radians.
-Math.toRadians = function(degrees) {
-    return degrees * Math.PI / 180;
-};
-
-// Converts from radians to degrees.
-Math.toDegrees = function(radians) {
-    return radians * 180 / Math.PI;
-};
-
-// Converts from radians to degrees.
-Math.getAngle = function(pointOne, pointTwo) {
-    var deltaY = pointTwo.y - pointOne.y;
-    var deltaX = pointTwo.x - pointOne.x;
-
-    return Math.atan2(deltaY, deltaX);
-};
-
-module.exports = {
-    math: {
-        //This function generates floating-point between two numbers low (inclusive) and high (exclusive)([low, high))
-        random: function random(low, high) {
-            return Math.random() * (high - low) + low;
-        },
-        //This function generates random integer between two numbers low (inclusive) and high (exclusive) ([low, high))
-        randomInt: function(low, high) {
-            return Math.floor(Math.random() * (high - low) + low);
-        },
-        //This function generates random integer between two numbers low (inclusive) and high (inclusive) ([low, high])
-        randomIntInc: function(low, high) {
-            return Math.floor(Math.random() * (high - low + 1) + low);
+    static arrayBuffersEqual(buf1, buf2) {
+        if (buf1.byteLength !== buf2.byteLength) return false;
+        let dv1 = new Int8Array(buf1);
+        let dv2 = new Int8Array(buf2);
+        for (let i = 0; i !== buf1.byteLength; i++) {
+            if (dv1[i] !== dv2[i]) return false;
         }
-    },
-    time: {
-        getDateTimeText: function() {
-            var date = new Date();
-
-            var hour = date.getHours();
-            hour = (hour < 10 ? "0" : "") + hour;
-
-            var min = date.getMinutes();
-            min = (min < 10 ? "0" : "") + min;
-
-            var sec = date.getSeconds();
-            sec = (sec < 10 ? "0" : "") + sec;
-
-            var year = date.getFullYear();
-
-            var month = date.getMonth() + 1;
-            month = (month < 10 ? "0" : "") + month;
-
-            var day = date.getDate();
-            day = (day < 10 ? "0" : "") + day;
-
-            return year + "." + month + "." + day + " " + hour + ":" + min + ":" + sec;
-        }
-    },
-    timerMechanics: {
-        executeAfterSeconds: function(seconds, executeFunction) {
-            setTimeout(function() { executeFunction(); }, seconds * 1000);
-        },
-        executeByIntervalFromSeconds: function(totalElapsedTimeFromSeconds, frequency, functionToProcess) {
-            var mod = totalElapsedTimeFromSeconds % frequency;
-            if (mod < config.server.serverProcessFrequency) {
-                functionToProcess();
-            }
-        }
+        return true;
     }
-};
+
+    static httpGetPromise(url) {
+        return new Promise((resolve, reject) => {
+            let req = new XMLHttpRequest();
+            req.open('GET', url, true);
+            req.onload = () => {
+                if (req.status >= 200 && req.status < 400) resolve(JSON.parse(req.responseText));
+                else reject();
+            };
+            req.onerror = () => {};
+            req.send();
+        });
+    }
+}
+
+module.exports = Utils;
