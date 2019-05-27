@@ -20,8 +20,7 @@ export class LoginScreen extends Phaser.Scene {
         menuBackgroundImage.setOrigin(0.5, 0.5);
 
         $(".btnLogin").on("click", function() {
-
-
+ 
             const socket = io(window.location.origin);
             socket.on('connect', function() {
 

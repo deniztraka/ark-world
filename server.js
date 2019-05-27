@@ -25,7 +25,7 @@ var server = serv.listen(app.get('port'), function() {
 const ServerEngine = require('./server/engines/serverEngine');
 const GameEngine  = require( './server/engines/gameEngine');
 
-// Game Instances
+// Game Instancess
 const gameEngine = new GameEngine();
 const serverEngine = new ServerEngine(io, gameEngine, {
     debug: {},
