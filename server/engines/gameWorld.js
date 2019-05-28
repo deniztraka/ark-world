@@ -13,6 +13,7 @@ class GameWorld {
         this.objects = {};
         this.playerCount = 0;
         this.idCount = 0;
+        var a = 5;
     }
 
     /**
@@ -114,7 +115,7 @@ class GameWorld {
      */
     forEachObject(callback) {
         for (let id of Object.keys(this.objects)) {
-            let returnValue = callback(id, this.objects[id]);  // TODO: the key should be Number(id)
+            let returnValue = callback(id, this.objects[id]); // TODO: the key should be Number(id)
             if (returnValue === false) break;
         }
     }

@@ -7,7 +7,7 @@ const Scheduler = require('../lib/Scheduler');
 //import NetworkMonitor from './network/NetworkMonitor';
 
 
-class ServerEngine  {
+class ServerEngine {
     /**
      * create a ServerEngine instance
      *
@@ -36,12 +36,12 @@ class ServerEngine  {
                 serverSendLag: false
             }
         }, options);
-        
+
 
         this.io = io;
 
         this.gameEngine = gameEngine;
-       
+
 
         this.DEFAULT_ROOM_NAME = '/lobby';
         this.rooms = {};
@@ -273,8 +273,7 @@ class ServerEngine  {
     //     });
     // }
 
-    getPlayerId(socket) {
-    }
+    getPlayerId(socket) {}
 
     // handle new player connection
     onPlayerConnected(socket) {

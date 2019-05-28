@@ -20,18 +20,19 @@ export class LoginScreen extends Phaser.Scene {
         menuBackgroundImage.setOrigin(0.5, 0.5);
 
         $(".btnLogin").on("click", function() {
- 
             const socket = io(window.location.origin);
             socket.on('connect', function() {
+                var clientNameInputVal = $("#inputName").val();
+                socket.emit("hiFromClient", clientNameInputVal);
 
-                socket.emit("hiFrom", $("#inputName").val());
+                socket.on("handShaked", function(status) {
+                    if (status) {
+                        $(".form-signin").hide();
+                        self.scene.start("MainMenuScene", {
+                            socket: socket
+                        });
+                    }
 
-                socket.on("staticWorldData", function(data) {
-                    $(".form-signin").hide();
-                    self.scene.start("GameScene", {
-                        socket: socket,
-                        data: data
-                    });
                 })
             });
 

@@ -15,4 +15,19 @@ export class BaseMenuItem extends Phaser.GameObjects.Text {
         super(_scene, _x, _y, _text, style);
         _scene.add.displayList.add(this);
     }
+
+    setActive(status) {
+        if (status) {
+            this.alpha = 1;
+            this.setInteractive();
+
+        } else {
+            this.alpha = 0.5;
+            this.removeInteractive();
+            this.setStyle({
+                fill: "#ccc",
+                fontSize: '26px'
+            });
+        }
+    }
 }

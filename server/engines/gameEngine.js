@@ -1,5 +1,5 @@
 const GameWorld = require('../engines/gameWorld');
-const EventEmitter = require( 'event-emitter');
+const EventEmitter = require('event-emitter');
 const Timer = require('../engines/timer');
 const Trace = require('../lib/Trace');
 
@@ -25,22 +25,27 @@ const Trace = require('../lib/Trace');
 class GameEngine {
 
     /**
-      * Create a game engine instance.  This needs to happen
-      * once on the server, and once on each client.
-      *
-      * @param {Object} options - options object
-      * @param {Number} options.traceLevel - the trace level from 0 to 5.  Lower value traces more.
-      * @param {Number} options.delayInputCount - client side only.  Introduce an artificial delay on the client to better match the time it will occur on the server.  This value sets the number of steps the client will wait before applying the input locally
-      */
+     * Create a game engine instance.  This needs to happen
+     * once on the server, and once on each client.
+     *
+     * @param {Object} options - options object
+     * @param {Number} options.traceLevel - the trace level from 0 to 5.  Lower value traces more.
+     * @param {Number} options.delayInputCount - client side only.  Introduce an artificial delay on the client to better match the time it will occur on the server.  This value sets the number of steps the client will wait before applying the input locally
+     */
     constructor(options) {
 
         // place the game engine in the LANCE globals
         const isServerSide = (typeof window === 'undefined');
         const glob = isServerSide ? global : window;
-        glob.LANCE = { gameEngine: this };
+        glob.LANCE = {
+            gameEngine: this
+        };
 
         // set options
-        const defaultOpts = { GameWorld: GameWorld, traceLevel: Trace.TRACE_NONE };
+        const defaultOpts = {
+            GameWorld: GameWorld,
+            traceLevel: Trace.TRACE_NONE
+        };
         if (!isServerSide) defaultOpts.clientIDSpace = 1000000;
         this.options = Object.assign(defaultOpts, options);
 
@@ -90,7 +95,9 @@ class GameEngine {
         this.emit = eventEmitter.emit;
 
         // set up trace
-        this.trace = new Trace({ traceLevel: this.options.traceLevel });
+        this.trace = new Trace({
+            traceLevel: this.options.traceLevel
+        });
     }
 
     findLocalShadow(serverObj) {
@@ -115,21 +122,21 @@ class GameEngine {
         }
 
         /**
-        * The worldSettings defines the game world constants, such
-        * as width, height, depth, etc. such that all other classes
-        * can reference these values.
-        * @member {Object} worldSettings
-        * @memberof GameEngine
-        */
+         * The worldSettings defines the game world constants, such
+         * as width, height, depth, etc. such that all other classes
+         * can reference these values.
+         * @member {Object} worldSettings
+         * @memberof GameEngine
+         */
         this.worldSettings = Object.assign({}, worldSettings);
     }
 
     /**
-      * Start the game. This method runs on both server
-      * and client. Extending the start method is useful
-      * for setting up the game's worldSettings attribute,
-      * and registering methods on the event handler.
-      */
+     * Start the game. This method runs on both server
+     * and client. Extending the start method is useful
+     * for setting up the game's worldSettings attribute,
+     * and registering methods on the event handler.
+     */
     start() {
         this.trace.info(() => '========== game engine started ==========');
         this.initWorld();
@@ -141,17 +148,19 @@ class GameEngine {
             if (!isReenact) this.timer.tick();
         });
 
-        this.emit('start', { timestamp: (new Date()).getTime() });
+        this.emit('start', {
+            timestamp: (new Date()).getTime()
+        });
     }
 
     /**
-      * Single game step.
-      *
-      * @param {Boolean} isReenact - is this step a re-enactment of the past.
-      * @param {Number} t - the current time (optional)
-      * @param {Number} dt - elapsed time since last step was called.  (optional)
-      * @param {Boolean} physicsOnly - do a physics step only, no game logic
-      */
+     * Single game step.
+     *
+     * @param {Boolean} isReenact - is this step a re-enactment of the past.
+     * @param {Number} t - the current time (optional)
+     * @param {Number} dt - elapsed time since last step was called.  (optional)
+     * @param {Boolean} physicsOnly - do a physics step only, no game logic
+     */
     step(isReenact, t, dt, physicsOnly) {
         // physics-only step
         if (physicsOnly) {
@@ -167,7 +176,11 @@ class GameEngine {
         isReenact = Boolean(isReenact);
         let step = ++this.world.stepCount;
         let clientIDSpace = this.options.clientIDSpace;
-        this.emit('preStep', { step, isReenact, dt });
+        this.emit('preStep', {
+            step,
+            isReenact,
+            dt
+        });
 
         // skip physics for shadow objects during re-enactment
         function objectFilter(o) {
@@ -190,7 +203,10 @@ class GameEngine {
         });
 
         // emit postStep event
-        this.emit('postStep', { step, isReenact });
+        this.emit('postStep', {
+            step,
+            isReenact
+        });
     }
 
     /**
@@ -302,7 +318,7 @@ class GameEngine {
      * @param {Serializer} serializer - the serializer
      */
     registerClasses(serializer) {
-        
+
     }
 
     /**
@@ -378,14 +394,14 @@ class GameEngine {
  */
 
 /**
-  * A player has left on the server
-  *
-  * @event GameEngine#server__playerDisconnected
-  * @param {Number} joinTime - epoch of join time
-  * @param {Number} disconnectTime - epoch of disconnect time
-  * @param {Object} playerDesc - player descriptor
-  * @param {String} playerDesc.playerId - the player ID
-  */
+ * A player has left on the server
+ *
+ * @event GameEngine#server__playerDisconnected
+ * @param {Number} joinTime - epoch of join time
+ * @param {Number} disconnectTime - epoch of disconnect time
+ * @param {Object} playerDesc - player descriptor
+ * @param {String} playerDesc.playerId - the player ID
+ */
 
 /**
  * A synchronization update arrived from the server
@@ -394,17 +410,17 @@ class GameEngine {
  * @param {Object} sync - the synchronization object
  */
 
- /**
-  * Marks the beginning of a game step on the client
-  *
-  * @event GameEngine#client__preStep
-  */
+/**
+ * Marks the beginning of a game step on the client
+ *
+ * @event GameEngine#client__preStep
+ */
 
- /**
-  * Marks the end of a game step on the client
-  *
-  * @event GameEngine#client__postStep
-  */
+/**
+ * Marks the end of a game step on the client
+ *
+ * @event GameEngine#client__postStep
+ */
 
 /**
  * An input needs to be handled.  Emitted just before the GameEngine
@@ -433,14 +449,14 @@ class GameEngine {
  * @param {Number} playerId - the player ID
  */
 
- /**
-  * Client moved from one room to another
-  *
-  * @event GameEngine#server__roomUpdate
-  * @param {Number} playerId - the player ID
-  * @param {String} from - the room from which the client came
-  * @param {String} to - the room to which the client went
-  */
+/**
+ * Client moved from one room to another
+ *
+ * @event GameEngine#server__roomUpdate
+ * @param {Number} playerId - the player ID
+ * @param {String} from - the room from which the client came
+ * @param {String} to - the room to which the client went
+ */
 
 /**
  * An input needs to be handled.
@@ -465,23 +481,23 @@ class GameEngine {
  * @param {Number} maxStepCount - highest step in the sync
  */
 
- /**
-  * Client moved from one room to another
-  *
-  * @event GameEngine#client__roomUpdate
-  * @param {Number} playerId - the player ID
-  * @param {String} from - the room from which the client came
-  * @param {String} to - the room to which the client went
-  */
+/**
+ * Client moved from one room to another
+ *
+ * @event GameEngine#client__roomUpdate
+ * @param {Number} playerId - the player ID
+ * @param {String} from - the room from which the client came
+ * @param {String} to - the room to which the client went
+ */
 
- /**
-  * Client reset the world step
-  *
-  * @event GameEngine#client__stepReset
-  * @param {Object} resetDesc - sync from the server
-  * @param {Number} oldStep - the old step count
-  * @param {Number} newStep - the new step count
-  */
+/**
+ * Client reset the world step
+ *
+ * @event GameEngine#client__stepReset
+ * @param {Object} resetDesc - sync from the server
+ * @param {Number} oldStep - the old step count
+ * @param {Number} newStep - the new step count
+ */
 
 /**
  * Marks the beginning of a game step on the server
@@ -506,19 +522,19 @@ class GameEngine {
  * @param {String} input.playerId - player that sent the input
  */
 
- /**
-  * Report slow frame rate on the browser.
-  * The browser did not achieve a reasonable frame rate
-  *
-  * @event GameEngine#client__slowFrameRate
-  */
+/**
+ * Report slow frame rate on the browser.
+ * The browser did not achieve a reasonable frame rate
+ *
+ * @event GameEngine#client__slowFrameRate
+ */
 
-  /**
-   * server has started
-   *
-   * @event GameEngine#start
-   * @param {Number} timestamp - UTC epoch of start time
-   */
+/**
+ * server has started
+ *
+ * @event GameEngine#start
+ * @param {Number} timestamp - UTC epoch of start time
+ */
 
 // TODO: the declaration "export default" could be done as part of the class
 // declaration up above, but the current version of jsdoc doesn't support this.

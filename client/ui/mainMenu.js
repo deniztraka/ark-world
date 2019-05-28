@@ -63,6 +63,12 @@ export class MainMenu extends BaseMenu {
         }
     }
 
+    getMenuItem(title) {
+        return this.menuItems.find(function(item) {
+            return item.title == title;
+        });
+    }
+
     addMenuItem(_title, _onClickCallback, _scope) {
         this.menuItems.push(new MainMenuItem(this.phaserScene, this.menuItemPositionX, this.menuItemPositionY, _title));
         this.menuItems[this.menuItems.length - 1].setOrigin(0.5, 0.5);

@@ -22,12 +22,12 @@ var server = serv.listen(app.get('port'), function() {
 
 
 // Game Server
-const ServerEngine = require('./server/engines/serverEngine');
-const GameEngine  = require( './server/engines/gameEngine');
+const ArkServerEngine = require('./server/game/arkServerEngine');
+const ArkGameEngine = require('./server/game/arkGameEngine');
 
 // Game Instancess
-const gameEngine = new GameEngine();
-const serverEngine = new ServerEngine(io, gameEngine, {
+const gameEngine = new ArkGameEngine();
+const serverEngine = new ArkServerEngine(io, gameEngine, {
     debug: {},
     updateRate: 6,
     timeoutInterval: 0 // no timeout

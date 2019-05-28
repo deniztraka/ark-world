@@ -38,6 +38,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     init(obj) {
+        console.log("asd");
         var self = this;
         this.staticMapData = obj.data;
         this.socket = obj.socket;
