@@ -2,6 +2,7 @@
 //import mkdirp from 'mkdirp';
 //import Utils from '../common/utils';
 const Scheduler = require('../lib/Scheduler');
+const fs = require('fs');
 //import Serializer from './serialize/Serializer';
 //import NetworkTransmitter from './network/NetworkTransmitter';
 //import NetworkMonitor from './network/NetworkMonitor';
@@ -74,8 +75,10 @@ class ServerEngine {
     step() {
 
         // first update the trace state
-        // this.gameEngine.trace.setStep(this.gameEngine.world.stepCount + 1);
-        this.gameEngine.emit('server__preStep', this.gameEngine.world.stepCount + 1);
+        for (let world of Object.keys(this.gameEngine.worlds)) {
+            this.gameEngine.emit('server__preStep', world.stepCount + 1);
+            this.gameEngine.trace.setStep(world.stepCount + 1);
+        }
 
         this.serverTime = (new Date().getTime());
 
@@ -90,8 +93,14 @@ class ServerEngine {
             // and that we have reached/passed this step
             if (queueSteps.length > 0 && minStep <= this.gameEngine.world.stepCount) {
                 inputQueue[minStep].forEach(input => {
-                    this.gameEngine.emit('server__processInput', { input, playerId });
-                    this.gameEngine.emit('processInput', { input, playerId });
+                    this.gameEngine.emit('server__processInput', {
+                        input,
+                        playerId
+                    });
+                    this.gameEngine.emit('processInput', {
+                        input,
+                        playerId
+                    });
                     this.gameEngine.processInput(input, playerId, true);
                 });
                 delete inputQueue[minStep];
@@ -112,14 +121,23 @@ class ServerEngine {
         // }
 
         // step is done on the server side
-        this.gameEngine.emit('server__postStep', this.gameEngine.world.stepCount);
+        //this.gameEngine.emit('server__postStep', this.gameEngine.world.stepCount);
+        for (let world of Object.keys(this.gameEngine.worlds)) {
+            this.gameEngine.emit('server__postStep', world.stepCount);
 
-        // if (this.gameEngine.trace.length) {
-        //     let traceData = this.gameEngine.trace.rotate();
-        //     let traceString = '';
-        //     traceData.forEach(t => { traceString += `[${t.time.toISOString()}]${t.step}>${t.data}\n`; });
-        //     fs.appendFile(`${this.options.tracesPath}server.trace`, traceString, err => { if (err) throw err; });
-        // }
+        }
+
+
+        if (this.gameEngine.trace.length) {
+            let traceData = this.gameEngine.trace.rotate();
+            let traceString = '';
+            traceData.forEach(t => {
+                traceString += `[${t.time.toISOString()}]${t.step}>${t.data}\n`;
+            });
+            fs.appendFile(`${this.options.tracesPath}server.trace`, traceString, err => {
+                if (err) throw err;
+            });
+        }
     }
 
     // syncStateToClients(roomName) {
@@ -209,7 +227,11 @@ class ServerEngine {
      * @param {String} roomName - the new room name
      */
     createRoom(roomName) {
-        this.rooms[roomName] = { syncCounter: 0, requestImmediateSync: false };
+        this.rooms[roomName] = {
+            name: roomName,
+            syncCounter: 0,
+            requestImmediateSync: false
+        };
     }
 
     /**
@@ -228,29 +250,33 @@ class ServerEngine {
      * @param {Number} playerId - the playerId
      * @param {String} roomName - the target room
      */
-    // assignPlayerToRoom(playerId, roomName) {
-    //     const room = this.rooms[roomName];
-    //     let player = null;
-    //     if (!room) {
-    //         this.gameEngine.trace.error(() => `cannot assign player to non-existant room ${roomName}`);
-    //         console.error(`player ${playerId} assigned to room [${roomName}] which isn't defined`);
-    //         return;
-    //     }
-    //     for (const p of Object.keys(this.connectedPlayers)) {
-    //         if (this.connectedPlayers[p].socket.playerId === playerId)
-    //             player = this.connectedPlayers[p];
-    //     }
-    //     if (!player) {
-    //         this.gameEngine.trace.error(() => `cannot assign non-existant playerId ${playerId} to room ${roomName}`);
-    //     }
-    //     const roomUpdate = { playerId: playerId, from: player.roomName, to: roomName };
-    //     player.socket.emit('roomUpdate', roomUpdate);
-    //     this.gameEngine.emit('server__roomUpdate', roomUpdate);
-    //     this.gameEngine.trace.info(() => `ROOM UPDATE: playerId ${playerId} from room ${player.roomName} to room ${roomName}`);
-    //     player.roomName = roomName;
-    //     room.requestImmediateSync = true;
-    //     room.requestFullSync = true;
-    // }
+    assignPlayerToRoom(playerId, roomName) {
+        const room = this.rooms[roomName];
+        let player = null;
+        if (!room) {
+            this.gameEngine.trace.error(() => `cannot assign player to non-existant room ${roomName}`);
+            console.error(`player ${playerId} assigned to room [${roomName}] which isn't defined`);
+            return;
+        }
+        for (const p of Object.keys(this.connectedPlayers)) {
+            if (this.connectedPlayers[p].socket.playerId === playerId)
+                player = this.connectedPlayers[p];
+        }
+        if (!player) {
+            this.gameEngine.trace.error(() => `cannot assign non-existant playerId ${playerId} to room ${roomName}`);
+        }
+        const roomUpdate = {
+            playerId: playerId,
+            from: player.roomName,
+            to: roomName
+        };
+        player.socket.emit('roomUpdate', roomUpdate);
+        this.gameEngine.emit('server__roomUpdate', roomUpdate);
+        this.gameEngine.trace.info(() => `ROOM UPDATE: playerId ${playerId} from room ${player.roomName} to room ${roomName}`);
+        player.roomName = roomName;
+        room.requestImmediateSync = true;
+        room.requestFullSync = true;
+    }
 
     // handle the object creation
     // onObjectAdded(obj) {
@@ -273,7 +299,9 @@ class ServerEngine {
     //     });
     // }
 
-    getPlayerId(socket) {}
+    getPlayerId(socket) {
+        return socket.id;
+    }
 
     // handle new player connection
     onPlayerConnected(socket) {
@@ -289,9 +317,9 @@ class ServerEngine {
         };
 
         let playerId = this.getPlayerId(socket);
-        if (!playerId) {
-            playerId = ++this.gameEngine.world.playerCount;
-        }
+        // if (!playerId) {
+        //     playerId = ++this.gameEngine.world.playerCount;
+        // }
         socket.playerId = playerId;
 
         socket.lastHandledInput = null;
@@ -300,12 +328,17 @@ class ServerEngine {
 
         console.log('Client Connected', socket.id);
 
-        let playerEvent = { id: socket.id, playerId, joinTime: socket.joinTime, disconnectTime: 0 };
+        let playerEvent = {
+            id: socket.id,
+            playerId,
+            joinTime: socket.joinTime,
+            disconnectTime: 0
+        };
         this.gameEngine.emit('server__playerJoined', playerEvent);
         this.gameEngine.emit('playerJoined', playerEvent);
         socket.emit('playerJoined', playerEvent);
 
-        socket.on('disconnect', function() {
+        socket.on('disconnect', function () {
             playerEvent.disconnectTime = (new Date()).getTime();
             that.onPlayerDisconnected(socket.id, playerId);
             that.gameEngine.emit('server__playerDisconnected', playerEvent);
@@ -317,13 +350,17 @@ class ServerEngine {
         //     that.onReceivedInput(data, socket);
         // });
 
-        // // we got a packet of trace data, write it out to a side-file
-        // socket.on('trace', function(traceData) {
-        //     traceData = JSON.parse(traceData);
-        //     let traceString = '';
-        //     traceData.forEach(t => { traceString += `[${t.time}]${t.step}>${t.data}\n`; });
-        //     fs.appendFile(`${that.options.tracesPath}client.${playerId}.trace`, traceString, err => { if (err) throw err; });
-        // });
+        // we got a packet of trace data, write it out to a side-file
+        socket.on('trace', function (traceData) {
+            traceData = JSON.parse(traceData);
+            let traceString = '';
+            traceData.forEach(t => {
+                traceString += `[${t.time}]${t.step}>${t.data}\n`;
+            });
+            fs.appendFile(`${that.options.tracesPath}client.${playerId}.trace`, traceString, err => {
+                if (err) throw err;
+            });
+        });
 
         //this.networkMonitor.registerPlayerOnServer(socket);
     }

@@ -33,18 +33,18 @@ class ArkServerEngine extends ServerEngine {
         super.onPlayerConnected(socket);
         var self = this;
 
-        socket.on('hiFromClient', function(data) {
+        socket.on('hiFromClient', function (data) {
             //authentication needed
             socket.emit("handShaked", true);
 
             self.connectedPlayers[socket.id].playerName = data;
         });
 
-        socket.on('SearchForAnOpponent', function() {
+        socket.on('SearchForAnOpponent', function () {
             self.onPlayerSearchForAnOpponent(socket.id);
         });
 
-        socket.on('CancelSearchForAnOpponent', function() {
+        socket.on('CancelSearchForAnOpponent', function () {
             self.onCancelSearchForAnOpponent(socket.id);
         });
 
@@ -72,7 +72,7 @@ class ArkServerEngine extends ServerEngine {
     searchForAMatch() {
         if (this.currentlySearchingPlayers.length > 1) {
             var results = this.currentlySearchingPlayers
-                .sort(function() {
+                .sort(function () {
                     return .5 - Math.random()
                 }) // Shuffle array
                 .slice(0, 2); // Get first 2 items
@@ -87,11 +87,35 @@ class ArkServerEngine extends ServerEngine {
             this.connectedPlayers[client1socketId].isSearching = false;
             this.connectedPlayers[client0socketId].socket.emit("MatchResult", true);
             this.connectedPlayers[client1socketId].socket.emit("MatchResult", true);
+
+            //create world and room with the same id
+            var createdWorld = this.gameEngine.createWorld();
+            this.createRoom(createdWorld.id);
+
+            this.gameEngine.trace.info(() => `========== matching players ${client0socketId}&${client1socketId} to room ${createdWorld.id} ==========`);
+
+            //add player to world and assign it to room
+            let playerId = this.connectedPlayers[client0socketId].socket.playerId;
+            this.gameEngine.addObjectToWorld(createdWorld.id, {
+                id: client0socketId,
+                playerId
+            });
+            this.assignPlayerToRoom(playerId, createdWorld.id);
+
+            //add the other player to world and assign it to room
+            playerId = this.connectedPlayers[client1socketId].socket.playerId;
+            this.gameEngine.addObjectToWorld(createdWorld.id, {
+                id: client1socketId,
+                playerId
+            });
+            this.assignPlayerToRoom(playerId, createdWorld.id);
         }
     }
 
     onPlayerDisconnected(socketId, playerId) {
         super.onPlayerDisconnected(socketId, playerId);
+        
+        //remove from currently searching players
         var index = this.currentlySearchingPlayers.indexOf(socketId);
         if (index != -1) {
             this.currentlySearchingPlayers.splice(index, 1);

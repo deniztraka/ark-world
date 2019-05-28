@@ -98,6 +98,11 @@ class GameEngine {
         this.trace = new Trace({
             traceLevel: this.options.traceLevel
         });
+
+
+        this.worlds = {};
+
+        this.stepCount = 0;
     }
 
     findLocalShadow(serverObj) {
@@ -139,7 +144,7 @@ class GameEngine {
      */
     start() {
         this.trace.info(() => '========== game engine started ==========');
-        this.initWorld();
+        //this.initWorld();
 
         // create the default timer
         this.timer = new Timer();
@@ -162,6 +167,7 @@ class GameEngine {
      * @param {Boolean} physicsOnly - do a physics step only, no game logic
      */
     step(isReenact, t, dt, physicsOnly) {
+        var self = this;
         // physics-only step
         if (physicsOnly) {
             if (dt) dt /= 1000; // physics engines work in seconds
@@ -174,7 +180,7 @@ class GameEngine {
             throw new Error('game engine does not forward argument isReenact to super class');
 
         isReenact = Boolean(isReenact);
-        let step = ++this.world.stepCount;
+        let step = ++this.stepCount;
         let clientIDSpace = this.options.clientIDSpace;
         this.emit('preStep', {
             step,
@@ -196,11 +202,15 @@ class GameEngine {
         // for each object
         // - apply incremental bending
         // - refresh object positions after physics
-        this.world.forEachObject((id, o) => {
-            if (typeof o.refreshFromPhysics === 'function')
-                o.refreshFromPhysics();
-            this.trace.trace(() => `object[${id}] after ${isReenact ? 'reenact' : 'step'} : ${o.toString()}`);
-        });
+        for (let worldId of Object.keys(this.worlds)) {
+            this.worlds[worldId].forEachObject((id, o) => {
+                if (typeof o.refreshFromPhysics === 'function')
+                    o.refreshFromPhysics();
+                this.trace.trace(() => `object[${id}] after ${isReenact ? 'reenact' : 'step'} : ${o.toString()}`);
+            });
+        }
+
+
 
         // emit postStep event
         this.emit('postStep', {
@@ -218,13 +228,13 @@ class GameEngine {
      * @param {Object} object - the object.
      * @return {Object} object - the final object.
      */
-    addObjectToWorld(object) {
+    addObjectToWorld(worldId, object) {
 
         // if we are asked to create a local shadow object
         // the server copy may already have arrived.
         if (Number(object.id) >= this.options.clientIDSpace) {
             let serverCopyArrived = false;
-            this.world.forEachObject((id, o) => {
+            this.worlds[worldId].forEachObject((id, o) => {
                 if (o.hasOwnProperty('inputId') && o.inputId === object.inputId) {
                     serverCopyArrived = true;
                     return false;
@@ -236,7 +246,7 @@ class GameEngine {
             }
         }
 
-        this.world.addObject(object);
+        this.worlds[worldId].addObject(object);
 
         // tell the object to join the game, by creating
         // its corresponding physical entities and renderer entities.

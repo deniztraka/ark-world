@@ -13,7 +13,6 @@ class GameWorld {
         this.objects = {};
         this.playerCount = 0;
         this.idCount = 0;
-        var a = 5;
     }
 
     /**
@@ -97,6 +96,11 @@ class GameWorld {
      */
     addObject(object) {
         this.objects[object.id] = object;
+
+        // player id condition
+        if ('playerId' in object && object.playerId !== null) {
+            this.playerCount++;
+        }
     }
 
     /**
