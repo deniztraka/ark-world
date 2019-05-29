@@ -6,11 +6,13 @@ class ArkWorld extends GameWorld {
     constructor(options) {
         super(options);
         this.id = uuidv1();
+        this.mapData = [];
     }
 
     start() {
         super.start();
     }
+
 }
 
 module.exports = ArkWorld;

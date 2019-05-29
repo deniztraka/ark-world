@@ -30,6 +30,10 @@ export class MainMenuScene extends Phaser.Scene {
         this.socket.on("MatchResult", function(result) {
             self.onMatchResult(result);
         });
+
+        this.socket.on("message", function(result) {
+            console.log(result);
+        });
     }
 
     preload() {

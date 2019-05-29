@@ -23,32 +23,26 @@ class ArkServerEngine extends ServerEngine {
 
     step() {
         super.step();
-
-        //console.log(this.lastMatchTime - this.serverTime);
-
-
     }
 
     onPlayerConnected(socket) {
         super.onPlayerConnected(socket);
         var self = this;
 
-        socket.on('hiFromClient', function (data) {
+        socket.on('hiFromClient', function(data) {
             //authentication needed
             socket.emit("handShaked", true);
 
             self.connectedPlayers[socket.id].playerName = data;
         });
 
-        socket.on('SearchForAnOpponent', function () {
+        socket.on('SearchForAnOpponent', function() {
             self.onPlayerSearchForAnOpponent(socket.id);
         });
 
-        socket.on('CancelSearchForAnOpponent', function () {
+        socket.on('CancelSearchForAnOpponent', function() {
             self.onCancelSearchForAnOpponent(socket.id);
         });
-
-
     }
 
     onCancelSearchForAnOpponent(searchingSocketId) {
@@ -72,7 +66,7 @@ class ArkServerEngine extends ServerEngine {
     searchForAMatch() {
         if (this.currentlySearchingPlayers.length > 1) {
             var results = this.currentlySearchingPlayers
-                .sort(function () {
+                .sort(function() {
                     return .5 - Math.random()
                 }) // Shuffle array
                 .slice(0, 2); // Get first 2 items
@@ -101,6 +95,7 @@ class ArkServerEngine extends ServerEngine {
                 playerId
             });
             this.assignPlayerToRoom(playerId, createdWorld.id);
+            this.connectedPlayers[client0socketId].socket.join(createdWorld.id);
 
             //add the other player to world and assign it to room
             playerId = this.connectedPlayers[client1socketId].socket.playerId;
@@ -109,12 +104,14 @@ class ArkServerEngine extends ServerEngine {
                 playerId
             });
             this.assignPlayerToRoom(playerId, createdWorld.id);
+            this.connectedPlayers[client1socketId].socket.join(createdWorld.id);
+            this.io.sockets.in(createdWorld.id).emit('message', 'what is going on, party people?');
         }
     }
 
     onPlayerDisconnected(socketId, playerId) {
         super.onPlayerDisconnected(socketId, playerId);
-        
+
         //remove from currently searching players
         var index = this.currentlySearchingPlayers.indexOf(socketId);
         if (index != -1) {
