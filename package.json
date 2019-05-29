@@ -36,7 +36,7 @@
     "dependencies": {},
     "scripts": {
         "start:devOld": "webpack-dev-server",
-        "start": "npm-run-all build server",
+        "start": "npm run build && npm run server",
         "server": "node server.js",
         "devServer": "nodemon --inspect server.js",
         "build": "webpack",
