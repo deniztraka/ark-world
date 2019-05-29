@@ -11,7 +11,7 @@ class ArkGameEngine extends GameEngine {
         super.start();
     }
 
-    step(isReenact, t, dt, physicsOnly){
+    step(isReenact, t, dt, physicsOnly) {
         super.step(isReenact, t, dt, physicsOnly);
     }
 
@@ -19,6 +19,11 @@ class ArkGameEngine extends GameEngine {
         var world = new ArkWorld();
         this.worlds[world.id] = world;
         return this.worlds[world.id];
+    }
+
+    initWorld(worldId) {
+        this.worlds[worldId].initWorld();
+        this.emit('worldInitialized', worldId);
     }
 }
 

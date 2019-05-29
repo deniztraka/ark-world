@@ -16,7 +16,7 @@ export class MainMenuScene extends Phaser.Scene {
 
     init(obj) {
         var self = this;
-        this.staticMapData = obj.data;
+        this.io = obj.io;
         this.socket = obj.socket;
 
         this.socket.on("disconnect", function() {
@@ -29,11 +29,7 @@ export class MainMenuScene extends Phaser.Scene {
 
         this.socket.on("MatchResult", function(result) {
             self.onMatchResult(result);
-        });
-
-        this.socket.on("message", function(result) {
-            console.log(result);
-        });
+        });       
     }
 
     preload() {
@@ -84,8 +80,9 @@ export class MainMenuScene extends Phaser.Scene {
         }
 
         if (result) {
-            this.scene.start("GameSceen", {
-                socket: this.socket
+            this.scene.start("PvpInitializingScene", {
+                socket: this.socket,
+                io:this.io
             });
         }
 

@@ -29,7 +29,8 @@ export class LoginScreen extends Phaser.Scene {
                     if (status) {
                         $(".form-signin").hide();
                         self.scene.start("MainMenuScene", {
-                            socket: socket
+                            socket: socket,
+                            io:io
                         });
                     }
 

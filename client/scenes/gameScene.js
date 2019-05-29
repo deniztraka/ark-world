@@ -99,6 +99,14 @@ export class GameScene extends Phaser.Scene {
 
         }, this);
 
+
+        var titleText = this.add.text(this.scene.manager.game.renderer.width / 2, this.scene.manager.game.renderer.height / 2 - 15, '', {
+            fontWeight: "bold",
+            font: '30px Courier',
+            fill: '#ffffff'
+        });
+        titleText.setOrigin(0.5, 0.5);
+        titleText.setText("Fight!");
     }
 
     update(time, delta) {

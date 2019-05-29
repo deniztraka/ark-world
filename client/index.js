@@ -23,7 +23,9 @@ import {
 import {
     GameScene
 } from './scenes/gameScene';
-
+import {
+    PvpInitializingScene
+} from './scenes/pvpInitializingScene';
 import {
     LoginScreen
 } from './scenes/loginScreen';
@@ -47,13 +49,20 @@ const gameConfig = {
     title: 'World.IO', // 'My Phaser 3 Game'    
     version: '0.0.1',
     plugins: {
-        scene: [
-            { key: 'IsoPlugin', plugin: IsoPlugin, mapping: 'isoPlugin' },
-            { key: 'IsoPhysics', plugin: IsoPhysics, mapping: 'isoPhysics' },
+        scene: [{
+                key: 'IsoPlugin',
+                plugin: IsoPlugin,
+                mapping: 'isoPlugin'
+            },
+            {
+                key: 'IsoPhysics',
+                plugin: IsoPhysics,
+                mapping: 'isoPhysics'
+            },
 
         ]
     },
-    scene: [BootScene, PreloaderScene, LoginScreen, MainMenuScene, SettingsScene, CharacterSelectionScene, GameScene, CreateWorldScene],
+    scene: [BootScene, PreloaderScene, LoginScreen, MainMenuScene, SettingsScene, PvpInitializingScene, GameScene, CharacterSelectionScene, , CreateWorldScene],
     loader: {
         // baseURL: '',
         path: 'assets/',

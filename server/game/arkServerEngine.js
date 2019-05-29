@@ -8,6 +8,8 @@ class ArkServerEngine extends ServerEngine {
         this.currentlySearchingPlayers = [];
         this.lastMatchTime = this.serverTime;
         this.frequencyForMatch = 1000;
+
+        this.gameEngine.on('worldInitialized', this.onworldInitialized.bind(this));
     }
 
     start() {
@@ -79,8 +81,7 @@ class ArkServerEngine extends ServerEngine {
 
             this.connectedPlayers[client0socketId].isSearching = false;
             this.connectedPlayers[client1socketId].isSearching = false;
-            this.connectedPlayers[client0socketId].socket.emit("MatchResult", true);
-            this.connectedPlayers[client1socketId].socket.emit("MatchResult", true);
+            
 
             //create world and room with the same id
             var createdWorld = this.gameEngine.createWorld();
@@ -105,8 +106,22 @@ class ArkServerEngine extends ServerEngine {
             });
             this.assignPlayerToRoom(playerId, createdWorld.id);
             this.connectedPlayers[client1socketId].socket.join(createdWorld.id);
-            this.io.sockets.in(createdWorld.id).emit('message', 'what is going on, party people?');
+
+            //match result found is sent as true
+            //TODO: Handle client side for pvp splash screen on this event
+            this.io.sockets.in(createdWorld.id).emit('MatchResult', true);
+            this.gameEngine.initWorld(createdWorld.id);
         }
+    }
+
+    onworldInitialized(worldId){
+        //worldId is same as roomId
+        var staticWorldData = this.gameEngine.worlds[worldId].getWorldStaticData();
+        //World initialized in here and mapStaticData is sent to client
+        //Handle clientSide game sceen
+        
+        this.io.sockets.in(worldId).emit('onWorldReady', staticWorldData);
+        this.gameEngine.worlds[worldId].start();
     }
 
     onPlayerDisconnected(socketId, playerId) {
