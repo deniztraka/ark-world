@@ -12,7 +12,7 @@ export class GameScene extends Phaser.Scene {
 
         var self = this;
         this.eventEmitter = new Phaser.Events.EventEmitter();
-        this.eventEmitter.on("playerPositionChanged!", function(newIsoTileData) {
+        this.eventEmitter.on("playerPositionChanged!", function (newIsoTileData) {
             self.cullMap(newIsoTileData);
         });
 
@@ -28,7 +28,7 @@ export class GameScene extends Phaser.Scene {
         this.staticMapData = obj.staticMapData;
         this.socket = obj.socket;
 
-        this.socket.on("disconnect", function() {
+        this.socket.on("disconnect", function () {
             self.scene.start("LoginScreen");
         });
     }
@@ -59,7 +59,7 @@ export class GameScene extends Phaser.Scene {
         this.isoGroup = this.add.group();
         if (this.staticMapData) {
             this.createWorld();
-            //this.createPlayer();
+            this.createPlayer();
         }
 
         var help = this.add.text(16, 16, 'W/A/S/D to keys to move', {
@@ -110,8 +110,8 @@ export class GameScene extends Phaser.Scene {
         var self = this;
 
         this.map = this.make.tilemap({
-            tileWidth: 16,
-            tileHeight: 16,
+            tileWidth: self.staticMapData.environment.tileWidth,
+            tileHeight: self.staticMapData.environment.tileHeight,
             width: self.staticMapData.width,
             height: self.staticMapData.height
         });
@@ -120,16 +120,62 @@ export class GameScene extends Phaser.Scene {
             layer0: self.map.createBlankDynamicLayer('layer0', tiles),
         };
 
+        //var tile = this.map.putTileAt(56,0, 0, true, this.mapLayers["layer0"]);
+
+        var staticLayer = this.mapLayers["layer0"]
         for (var x = 0; x < self.staticMapData.width; x++) {
             for (var y = 0; y < self.staticMapData.height; y++) {
-
-                var tile = this.map.putTileAt(
-                    self.staticMapData.tiles[x][y] == this.staticMapData.indexes.wall ? self.getWallIndex(x, y) : self.staticMapData.tiles[x][y],
-                    x, y, true, this.mapLayers["layer0"]);
+                //debugger;
+                if (self.staticMapData.tiles[x][y] == this.staticMapData.indexes.wall) {
+                    this.map.putTileAt(self.getWallIndex(x, y), x, y, true, staticLayer);
+                } else if (self.staticMapData.tiles[x][y] == this.staticMapData.indexes.floor) {
+                    this.map.putTileAt(self.getFloorIndex(x, y), x, y, true, staticLayer);
+                } else if (self.staticMapData.tiles[x][y] == this.staticMapData.indexes.door) {
+                    this.map.putTileAt(self.getFloorIndex(x, y), x, y, true, staticLayer);
+                } else {
+                    this.map.putTileAt(self.getEmptyIndex(x, y), x, y, true, staticLayer);
+                }
             }
         }
 
         this.mapLayers["layer0"].setCollision(self.staticMapData.collisionIndexes);
+    }
+
+    getFloorIndex(x, y) {
+        return this.staticMapData.environment.indices.floors.outer.sort(function() {
+            return .5 - Math.random()
+        })[0];
+    }
+
+    getDoorIndex(x, y) {
+        const neighbours = {
+            n: this.staticMapData.tiles[x][y - 1],
+            s: this.staticMapData.tiles[x][y + 1],
+            w: this.staticMapData.tiles[x - 1][y],
+            e: this.staticMapData.tiles[x + 1][y],
+            nw: this.staticMapData.tiles[x - 1][y - 1],
+            ne: this.staticMapData.tiles[x + 1][y - 1],
+            sw: this.staticMapData.tiles[x - 1][y + 1],
+            se: this.staticMapData.tiles[x + 1][y + 1]
+        };
+
+        const n = neighbours.n && neighbours.n === this.staticMapData.indexes.wall;
+        const s = neighbours.s && neighbours.s === this.staticMapData.indexes.wall;
+        const w = neighbours.w && neighbours.w === this.staticMapData.indexes.wall;
+        const e = neighbours.e && neighbours.e === this.staticMapData.indexes.wall;
+
+        const i = this.staticMapData.environment.indices.doors;
+
+        if (n && e) {
+            return i.ne;
+        }
+        if (s && e) {
+            return i.s_e;
+        }
+    }
+
+    getEmptyIndex(x, y) {
+        return this.staticMapData.indexes.empty;
     }
 
     getWallIndex(x, y) {
@@ -201,6 +247,8 @@ export class GameScene extends Phaser.Scene {
 
         return i.alone;
     }
+
+    
 
     updateShadows() {
         var self = this;

@@ -41,7 +41,7 @@ export class PreloaderScene extends Phaser.Scene {
         this.load.image('base_tiles_extended', 'tiles/tileBaseExtended.png');
         //this.load.image('real_tiles_extended', 'tiles/tileRealExtended.png');
         this.load.image('real_tiles_extended', 'tiles/tileRealExtendedSmall.png');
-        this.load.image('rogueLike_tiles_extended', 'tiles/RogueEnvironment.png');
+        this.load.image('rogueLike_tiles_extended', 'tiles/RogueEnvironment32.png');
         //this.load.image('real_tiles_extended', 'tiles/tileRealExtendedSaturatedSmall.png');
         //this.load.image('real_tiles_extended', 'tiles/tileRealExtendedBigs.png');
         this.load.image('tree_GrassLand', 'tiles/tree_GrassLand.png');

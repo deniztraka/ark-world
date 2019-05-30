@@ -44,7 +44,6 @@ export class PvpInitializingScene extends Phaser.Scene {
     }
 
     onWorldInitialized(staticMapData) {
-        console.log(staticMapData);
         if (staticMapData) {
             this.scene.start("GameScene", {
                 socket: this.socket,
