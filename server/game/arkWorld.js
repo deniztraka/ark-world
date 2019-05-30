@@ -10,12 +10,9 @@ class ArkWorld extends GameWorld {
         this.id = uuidv1();
         this.worldState = WorldState.Initializing;
         this.mapData = [];
-        // setTimeout(function(){
-        //     self.initWorld();
-        // },1000)
     }
 
-    initWorld(){
+    initWorld() {
         //CreateMap in here
         this.worldState = WorldState.Ready;
     }
@@ -24,7 +21,7 @@ class ArkWorld extends GameWorld {
         this.worldState = WorldState.Started;
     }
 
-    getWorldStaticData(){
+    getWorldStaticData() {
         return this.mapData;
     }
 

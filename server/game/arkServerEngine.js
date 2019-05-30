@@ -81,7 +81,7 @@ class ArkServerEngine extends ServerEngine {
 
             this.connectedPlayers[client0socketId].isSearching = false;
             this.connectedPlayers[client1socketId].isSearching = false;
-            
+
 
             //create world and room with the same id
             var createdWorld = this.gameEngine.createWorld();
@@ -114,14 +114,17 @@ class ArkServerEngine extends ServerEngine {
         }
     }
 
-    onworldInitialized(worldId){
+    onworldInitialized(worldId) {
+        var self = this;
         //worldId is same as roomId
         var staticWorldData = this.gameEngine.worlds[worldId].getWorldStaticData();
         //World initialized in here and mapStaticData is sent to client
         //Handle clientSide game sceen
-        
-        this.io.sockets.in(worldId).emit('onWorldReady', staticWorldData);
-        this.gameEngine.worlds[worldId].start();
+        setTimeout(function() {
+            self.io.sockets.in(worldId).emit('onWorldReady', staticWorldData);
+            self.gameEngine.worlds[worldId].start();
+        }, 1000);
+
     }
 
     onPlayerDisconnected(socketId, playerId) {

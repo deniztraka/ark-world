@@ -3,17 +3,19 @@ export class PvpInitializingScene extends Phaser.Scene {
         super({
             key: "PvpInitializingScene"
         });
-        
+
     }
 
     init(obj) {
         var self = this;
         this.io = obj.io;
         this.socket = obj.socket;
-        
+
         var self = this;
+        console.log("asdad");
+
         this.socket.on("onWorldReady", function(staticMapData) {
-            
+
             self.onWorldInitialized(staticMapData);
         });
 
@@ -36,7 +38,7 @@ export class PvpInitializingScene extends Phaser.Scene {
         titleText.setText("Fight Incoming!");
     }
 
-    
+
 
     update() {
 
