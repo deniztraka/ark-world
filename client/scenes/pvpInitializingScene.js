@@ -12,7 +12,6 @@ export class PvpInitializingScene extends Phaser.Scene {
         this.socket = obj.socket;
 
         var self = this;
-        console.log("asdad");
 
         this.socket.on("onWorldReady", function(staticMapData) {
 

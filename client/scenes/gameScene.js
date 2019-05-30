@@ -38,9 +38,9 @@ export class GameScene extends Phaser.Scene {
     }
 
     init(obj) {
-        console.log("asd");
+
         var self = this;
-        this.staticMapData = obj.data;
+        this.staticMapData = obj.staticMapData;
         this.socket = obj.socket;
 
         this.socket.on("disconnect", function() {
@@ -72,10 +72,9 @@ export class GameScene extends Phaser.Scene {
 
         this.tileStackData = {};
         this.isoGroup = this.add.group();
-
         if (this.staticMapData) {
             this.createWorld();
-            this.createPlayer();
+            //this.createPlayer();
         }
 
         var help = this.add.text(16, 16, 'W/A/S/D to keys to move', {
@@ -90,14 +89,14 @@ export class GameScene extends Phaser.Scene {
 
         help.setScrollFactor(0);
 
-        this.input.on('pointerdown', function(pointer) {
+        // this.input.on('pointerdown', function(pointer) {
 
 
-            var tile = this.map.getTileAtWorldXY(pointer.x, pointer.y, true, this.cam, this.mapLayers["layer0"]);
-            console.log(tile.x + "," + tile.y + " " + tile.properties.biome.name + " index:" + tile.index + " elevation:" + tile.properties.elevation);
+        //     var tile = this.map.getTileAtWorldXY(pointer.x, pointer.y, true, this.cam, this.mapLayers["layer0"]);
+        //     console.log(tile.x + "," + tile.y + " " + tile.properties.biome.name + " index:" + tile.index + " elevation:" + tile.properties.elevation);
 
 
-        }, this);
+        // }, this);
 
 
         var titleText = this.add.text(this.scene.manager.game.renderer.width / 2, this.scene.manager.game.renderer.height / 2 - 15, '', {
@@ -126,59 +125,25 @@ export class GameScene extends Phaser.Scene {
         var self = this;
 
         this.map = this.make.tilemap({
-            tileWidth: self.staticMapData.cellWidth,
-            tileHeight: self.staticMapData.cellHeight,
+            tileWidth: 16,
+            tileHeight: 16,
             width: self.staticMapData.width,
             height: self.staticMapData.height
         });
         var tiles = this.map.addTilesetImage('real_tiles_extended');
         this.mapLayers = {
             layer0: self.map.createBlankDynamicLayer('layer0', tiles),
-            layer0object: self.map.createBlankDynamicLayer('layer0object', tiles),
-            layer1: self.map.createBlankDynamicLayer('layer1', tiles),
-            layer1object: self.map.createBlankDynamicLayer('layer1object', tiles),
-            layer2: self.map.createBlankDynamicLayer('layer2', tiles),
-            layer2object: self.map.createBlankDynamicLayer('layer2object', tiles),
-            layer3: self.map.createBlankDynamicLayer('layer3', tiles),
-            layer3object: self.map.createBlankDynamicLayer('layer3object', tiles),
-            layer4: self.map.createBlankDynamicLayer('layer4', tiles),
-            layer4object: self.map.createBlankDynamicLayer('layer4object', tiles),
-            layer5: self.map.createBlankDynamicLayer('layer5', tiles),
-            layer5object: self.map.createBlankDynamicLayer('layer5object', tiles)
         };
 
         for (var x = 0; x < self.staticMapData.width; x++) {
             for (var y = 0; y < self.staticMapData.height; y++) {
-                var tile = this.map.putTileAt(self.staticMapData.tileData[x][y].index, x, y, true, this.mapLayers["layer0"]);
-                tile.properties.biome = {
-                    name: self.staticMapData.tileData[x][y].name
-                };
-                tile.properties = {
-                    biome: {
-                        name: self.staticMapData.tileData[x][y].name
-                    },
-                    elevation: self.staticMapData.tileData[x][y].elevation
-                };
 
-                if (tile.properties.elevation == 5) {
-                    tile.tint = 0xffffff;
-                } else if (tile.properties.elevation == 4) {
-                    tile.tint = 0xeeeeee;
-                } else if (tile.properties.elevation == 3) {
-                    tile.tint = 0xdddddd;
-                } else if (tile.properties.elevation == 2) {
-                    tile.tint = 0xcccccc;
-                } else if (tile.properties.elevation == 1) {
-                    tile.tint = 0xcccccc;
-                } else if (tile.properties.elevation == 0) {
-                    tile.tint = 0xcccccc;
-                }
+                var tile = this.map.putTileAt(self.staticMapData.tiles[x][y], x, y, true, this.mapLayers["layer0"]);
             }
         }
 
         this.mapLayers["layer0"].setCollision(self.staticMapData.collisionIndexes);
 
-        this.updateShadows();
 
     }
 
