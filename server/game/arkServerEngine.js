@@ -107,19 +107,17 @@ class ArkServerEngine extends ServerEngine {
             this.assignPlayerToRoom(playerId, createdWorld.id);
             this.connectedPlayers[client1socketId].socket.join(createdWorld.id);
 
-            //match result found is sent as true
-            //TODO: Handle client side for pvp splash screen on this event
+            //match result found is sent as true            
             this.io.sockets.in(createdWorld.id).emit('MatchResult', true);
             this.gameEngine.initWorld(createdWorld.id);
         }
     }
 
-    onworldInitialized(worldId) {
+    onworldInitialized(worldId, client0socketId, client1socketId) {
         var self = this;
         //worldId is same as roomId
         var staticWorldData = this.gameEngine.worlds[worldId].getWorldStaticData();
         //World initialized in here and mapStaticData is sent to client
-        //Handle clientSide game sceen
         setTimeout(function() {
             self.io.sockets.in(worldId).emit('onWorldReady', staticWorldData);
             self.gameEngine.worlds[worldId].start();

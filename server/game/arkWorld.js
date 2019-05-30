@@ -34,46 +34,52 @@ class ArkWorld extends GameWorld {
                     onlyOdd: true // Or onlyEven: true
                 },
                 maxArea: 150,
-                maxRooms: 3
+                maxRooms: 25
             }
         };
         this.dungeon = new Dungeon(options);
+        var indexData = {
+            empty: 159,
+            floor: 5,
+            door: 21,
+            wall: 1
+        };
+        
         this.mapData = {
-            tiles: self.dungeon.tiles,
+            tiles: self.dungeon.getMappedTiles(indexData),
             rooms: self.dungeon.rooms,
-            indexes: {
-                empty: 0x9a,
-                floor: 0x05,
-                door: 0x81,
-                wall: 0x14
-            },
-            collisionIndexes: [0x14],
+            indexes: indexData,
+            collisionIndexes: [0,1,2,3,16,17,18,19,32,33,34,48,49,50,51],
             environment: {
-                width: 16,
-                height: 16,
+                tileWidth: 32,
+                tileHeight: 32,
                 indices: {
-                    floor: {
-                        outer: [0x05, 0x05, 0x05, 0x15, 0x07, 0x17]
+                    floors: {
+                        outer: [5, 6, 7, 21, 22, 23]
                     },
-                    block: 0x17,
+                    doors:{
+                        n_e:21,
+                        s_w:22
+                    },
+                    block: 23,
                     walls: {
-                        alone: 0x14,
+                        alone: 19,
                         intersections: {
-                            e_s: 0x00,
-                            n_e_s_w: 0x01,
-                            e_w: 0x02,
-                            s_w: 0x03,
-                            n_e_s: 0x10,
-                            w: 0x11,
-                            e: 0x12,
-                            n_s_w: 0x13,
-                            n_s: 0x20,
-                            s: 0x21,
-                            e_s_w: 0x22,
-                            n_e: 0x30,
-                            n_e_w: 0x31,
-                            n: 0x32,
-                            n_w: 0x33
+                            e_s: 0,
+                            n_e_s_w: 1,
+                            e_w: 2,
+                            s_w: 3,
+                            n_e_s: 16,
+                            w: 17,
+                            e: 18,
+                            n_s_w: 19,
+                            n_s: 32,
+                            s: 33,
+                            e_s_w: 34,
+                            n_e: 48,
+                            n_e_w: 49,
+                            n: 50,
+                            n_w: 51
                         }
                     }
                 }
