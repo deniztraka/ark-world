@@ -1,21 +1,6 @@
 import {
-    WorldData
-} from '../data/worldData';
-import {
-    Tree
-} from '../entities/tree';
-import {
-    Brick
-} from '../entities/brick';
-import {
-    Biomes
-} from '../data/biomes';
-
-import {
     Player
 } from '../entities/mobiles/basicPlayer';
-
-import * as IsoTileHelper from '../core/tilemap/isoTileHelper';
 
 export class GameScene extends Phaser.Scene {
     constructor() {
@@ -130,7 +115,7 @@ export class GameScene extends Phaser.Scene {
             width: self.staticMapData.width,
             height: self.staticMapData.height
         });
-        var tiles = this.map.addTilesetImage('real_tiles_extended');
+        var tiles = this.map.addTilesetImage('rogueLike_tiles_extended');
         this.mapLayers = {
             layer0: self.map.createBlankDynamicLayer('layer0', tiles),
         };
@@ -138,13 +123,83 @@ export class GameScene extends Phaser.Scene {
         for (var x = 0; x < self.staticMapData.width; x++) {
             for (var y = 0; y < self.staticMapData.height; y++) {
 
-                var tile = this.map.putTileAt(self.staticMapData.tiles[x][y], x, y, true, this.mapLayers["layer0"]);
+                var tile = this.map.putTileAt(
+                    self.staticMapData.tiles[x][y] == this.staticMapData.indexes.wall ? self.getWallIndex(x, y) : self.staticMapData.tiles[x][y],
+                    x, y, true, this.mapLayers["layer0"]);
             }
         }
 
         this.mapLayers["layer0"].setCollision(self.staticMapData.collisionIndexes);
+    }
 
+    getWallIndex(x, y) {
+        const neighbours = {
+            n: this.staticMapData.tiles[x][y - 1],
+            s: this.staticMapData.tiles[x][y + 1],
+            w: this.staticMapData.tiles[x - 1][y],
+            e: this.staticMapData.tiles[x + 1][y],
+            nw: this.staticMapData.tiles[x - 1][y - 1],
+            ne: this.staticMapData.tiles[x + 1][y - 1],
+            sw: this.staticMapData.tiles[x - 1][y + 1],
+            se: this.staticMapData.tiles[x + 1][y + 1]
+        };
 
+        const n = neighbours.n && neighbours.n === this.staticMapData.indexes.wall;
+        const s = neighbours.s && neighbours.s === this.staticMapData.indexes.wall;
+        const w = neighbours.w && neighbours.w === this.staticMapData.indexes.wall;
+        const e = neighbours.e && neighbours.e === this.staticMapData.indexes.wall;
+
+        const i = this.staticMapData.environment.indices.walls;
+
+        if (n && e && s && w) {
+            return i.intersections.n_e_s_w;
+        }
+        if (n && e && s) {
+            return i.intersections.n_e_s;
+        }
+        if (n && s && w) {
+            return i.intersections.n_s_w;
+        }
+        if (e && s && w) {
+            return i.intersections.e_s_w;
+        }
+        if (n && e && w) {
+            return i.intersections.n_e_w;
+        }
+
+        if (e && s) {
+            return i.intersections.e_s;
+        }
+        if (e && w) {
+            return i.intersections.e_w;
+        }
+        if (s && w) {
+            return i.intersections.s_w;
+        }
+        if (n && s) {
+            return i.intersections.n_s;
+        }
+        if (n && e) {
+            return i.intersections.n_e;
+        }
+        if (n && w) {
+            return i.intersections.n_w;
+        }
+
+        if (n) {
+            return i.intersections.n;
+        }
+        if (s) {
+            return i.intersections.s;
+        }
+        if (e) {
+            return i.intersections.e;
+        }
+        if (w) {
+            return i.intersections.w;
+        }
+
+        return i.alone;
     }
 
     updateShadows() {

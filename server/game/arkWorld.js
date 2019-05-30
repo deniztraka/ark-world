@@ -24,17 +24,17 @@ class ArkWorld extends GameWorld {
             //randomSeed: 0, // Leave undefined if you don't want to control the seed
             rooms: {
                 width: {
-                    min: 5,
-                    max: 10,
+                    min: 10,
+                    max: 30,
                     onlyOdd: true // Or onlyEven: true
                 },
                 height: {
-                    min: 8,
-                    max: 20,
+                    min: 10,
+                    max: 30,
                     onlyOdd: true // Or onlyEven: true
                 },
                 maxArea: 150,
-                maxRooms: 50
+                maxRooms: 3
             }
         };
         this.dungeon = new Dungeon(options);
@@ -42,10 +42,41 @@ class ArkWorld extends GameWorld {
             tiles: self.dungeon.tiles,
             rooms: self.dungeon.rooms,
             indexes: {
-                empty: 0,
-                floor: 1,
-                door: 2,
-                wall: 3
+                empty: 0x9a,
+                floor: 0x05,
+                door: 0x81,
+                wall: 0x14
+            },
+            collisionIndexes: [0x14],
+            environment: {
+                width: 16,
+                height: 16,
+                indices: {
+                    floor: {
+                        outer: [0x05, 0x05, 0x05, 0x15, 0x07, 0x17]
+                    },
+                    block: 0x17,
+                    walls: {
+                        alone: 0x14,
+                        intersections: {
+                            e_s: 0x00,
+                            n_e_s_w: 0x01,
+                            e_w: 0x02,
+                            s_w: 0x03,
+                            n_e_s: 0x10,
+                            w: 0x11,
+                            e: 0x12,
+                            n_s_w: 0x13,
+                            n_s: 0x20,
+                            s: 0x21,
+                            e_s_w: 0x22,
+                            n_e: 0x30,
+                            n_e_w: 0x31,
+                            n: 0x32,
+                            n_w: 0x33
+                        }
+                    }
+                }
             },
             width: options.width,
             height: options.height
