@@ -12,11 +12,11 @@ export class GameScene extends Phaser.Scene {
 
         var self = this;
         this.eventEmitter = new Phaser.Events.EventEmitter();
-        this.eventEmitter.on("playerPositionChanged!", function (newIsoTileData) {
+        this.eventEmitter.on("playerPositionChanged!", function(newIsoTileData) {
             self.cullMap(newIsoTileData);
         });
 
-        this.renderSize = 10;
+        //this.renderSize = 10;
 
         this.shadows = [];
         this.staticMapData = null;
@@ -27,8 +27,9 @@ export class GameScene extends Phaser.Scene {
         var self = this;
         this.staticMapData = obj.staticMapData;
         this.socket = obj.socket;
+        console.log(this.staticMapData);
 
-        this.socket.on("disconnect", function () {
+        this.socket.on("disconnect", function() {
             self.scene.start("LoginScreen");
         });
     }
@@ -74,14 +75,14 @@ export class GameScene extends Phaser.Scene {
 
         help.setScrollFactor(0);
 
-        // this.input.on('pointerdown', function(pointer) {
+        this.input.on('pointerdown', function(pointer) {
 
 
-        //     var tile = this.map.getTileAtWorldXY(pointer.x, pointer.y, true, this.cam, this.mapLayers["layer0"]);
-        //     console.log(tile.x + "," + tile.y + " " + tile.properties.biome.name + " index:" + tile.index + " elevation:" + tile.properties.elevation);
+            var tile = this.map.getTileAtWorldXY(pointer.x, pointer.y, true, this.cam, this.mapLayers["layer0"]);
+            console.log(tile.x + "," + tile.y);
 
 
-        // }, this);
+        }, this);
 
 
         var titleText = this.add.text(this.scene.manager.game.renderer.width / 2, this.scene.manager.game.renderer.height / 2 - 15, '', {
@@ -91,6 +92,31 @@ export class GameScene extends Phaser.Scene {
         });
         titleText.setOrigin(0.5, 0.5);
         titleText.setText("Fight!");
+
+        // for (let x = 0; x < 50; x++) {
+        //     for (let y = 0; y < 50; y++) {
+        //         var titleText = this.add.text(x * 32 + 16, y * 32 + 16, '', {
+        //             fontWeight: "bold",
+        //             font: '10px Courier',
+        //             fill: '#ffffff'
+        //         });
+        //         titleText.setOrigin(0.5, 0.5);
+        //         titleText.setText("|" + x + "," + y + "|");
+        //     }
+        // }
+
+
+        // for (let x = 0; x < 50; x++) {
+        //     for (let y = 0; y < 50; y++) {
+        //         var titleText = this.add.text(x * 32 + 16, y * 32 + 16, '', {
+        //             fontWeight: "bold",
+        //             font: '10px Courier',
+        //             fill: '#ffffff'
+        //         });
+        //         titleText.setOrigin(0.5, 0.5);
+        //         titleText.setText(this.map.getTileAt(x, y).index);
+        //     }
+        // }
     }
 
     update(time, delta) {
@@ -103,7 +129,9 @@ export class GameScene extends Phaser.Scene {
     }
 
     createPlayer() {
-        this.player = new Player(this, 0, 10);
+        // console.log(this.socket.id);
+        // console.log(this.staticMapData.startingPoints[this.socket.id]);
+        this.player = new Player(this, this.staticMapData.startingPoints[this.socket.id].x, this.staticMapData.startingPoints[this.socket.id].y);
     }
 
     createWorld() {
@@ -248,7 +276,7 @@ export class GameScene extends Phaser.Scene {
         return i.alone;
     }
 
-    
+
 
     updateShadows() {
         var self = this;

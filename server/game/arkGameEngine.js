@@ -21,9 +21,9 @@ class ArkGameEngine extends GameEngine {
         return this.worlds[world.id];
     }
 
-    initWorld(worldId) {
+    initWorld(worldId, client0socketId, client1socketId) {
         this.worlds[worldId].initWorld();
-        this.emit('worldInitialized', worldId);
+        this.emit('worldInitialized', worldId, client0socketId, client1socketId);
     }
 }
 

@@ -107,16 +107,39 @@ class ArkServerEngine extends ServerEngine {
             this.assignPlayerToRoom(playerId, createdWorld.id);
             this.connectedPlayers[client1socketId].socket.join(createdWorld.id);
 
-            //match result found is sent as true            
+            //match result found is sent as true
             this.io.sockets.in(createdWorld.id).emit('MatchResult', true);
-            this.gameEngine.initWorld(createdWorld.id);
+            this.gameEngine.initWorld(createdWorld.id, client0socketId, client1socketId);
         }
     }
 
     onworldInitialized(worldId, client0socketId, client1socketId) {
         var self = this;
+
+        // var world = this.gameEngine.worlds[worldId];
+        // var player1 = world.queryObjects({
+        //     playerId:
+        // });
+
         //worldId is same as roomId
         var staticWorldData = this.gameEngine.worlds[worldId].getWorldStaticData();
+
+        staticWorldData.startingPoints = this.gameEngine.worlds[worldId].getStartingPoints();
+
+        var mappedStartingPoints = {};
+        mappedStartingPoints[client0socketId] = {
+            x: staticWorldData.startingPoints.player1.x,
+            y: staticWorldData.startingPoints.player1.y
+        };
+
+        mappedStartingPoints[client1socketId] = {
+            x: staticWorldData.startingPoints.player2.x,
+            y: staticWorldData.startingPoints.player2.y
+        };
+
+        staticWorldData.startingPoints = mappedStartingPoints;
+
+        console.log(staticWorldData.startingPoints);
         //World initialized in here and mapStaticData is sent to client
         setTimeout(function() {
             self.io.sockets.in(worldId).emit('onWorldReady', staticWorldData);
