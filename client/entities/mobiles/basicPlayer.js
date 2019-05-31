@@ -11,7 +11,7 @@ export class Player {
     constructor(scene, x, y) {
         this.currentMapPosition = new Phaser.Math.Vector2(x, y);
         this.phaserScene = scene;
-        this.sprite = scene.add.sprite(x * 16 + 8, y * 16 + 8, 'hero', 5);
+        this.sprite = scene.add.sprite(x * 32 + 16, y * 32 + 16, 'hero', 5);
         this.sprite.setOrigin(0.5, 1);
 
         this.map = scene.map;
