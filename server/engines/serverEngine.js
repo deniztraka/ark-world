@@ -3,9 +3,9 @@
 //import Utils from '../common/utils';
 const Scheduler = require('../lib/Scheduler');
 const fs = require('fs');
-//import Serializer from './serialize/Serializer';
-//import NetworkTransmitter from './network/NetworkTransmitter';
-//import NetworkMonitor from './network/NetworkMonitor';
+const Serializer = require("./../serialize/serializer")
+const NetworkTransmitter = require('./../network/networkTransmitter');
+const NetworkMonitor = require('./../network/networkMonitor');
 
 
 class ServerEngine {
@@ -40,8 +40,11 @@ class ServerEngine {
 
 
         this.io = io;
-
+        this.serializer = new Serializer();
         this.gameEngine = gameEngine;
+        this.gameEngine.registerClasses(this.serializer);
+        this.networkTransmitter = new NetworkTransmitter(this.serializer);
+        this.networkMonitor = new NetworkMonitor(this);
 
 
         this.DEFAULT_ROOM_NAME = '/lobby';
@@ -52,8 +55,8 @@ class ServerEngine {
         this.objMemory = {};
 
         io.on('connection', this.onPlayerConnected.bind(this));
-        // this.gameEngine.on('objectAdded', this.onObjectAdded.bind(this));
-        // this.gameEngine.on('objectDestroyed', this.onObjectDestroyed.bind(this));
+        this.gameEngine.on('objectAdded', this.onObjectAdded.bind(this));
+        this.gameEngine.on('objectDestroyed', this.onObjectDestroyed.bind(this));
 
         return this;
     }
@@ -111,9 +114,9 @@ class ServerEngine {
         this.gameEngine.step(false, this.serverTime / 1000);
 
         // synchronize the state to all clients
-        //Object.keys(this.rooms).map(this.syncStateToClients.bind(this));
+        Object.keys(this.rooms).map(this.syncStateToClients.bind(this));
 
-        // remove memory-objects which no longer exist
+        //remove memory-objects which no longer exist
         // for (let objId of Object.keys(this.objMemory)) {
         //     if (!(objId in this.gameEngine.world.objects)) {
         //         delete this.objMemory[objId];
@@ -140,81 +143,84 @@ class ServerEngine {
         }
     }
 
-    // syncStateToClients(roomName) {
+    syncStateToClients(roomName) {
 
-    //     // update clients only at the specified step interval, as defined in options
-    //     // or if this room needs to sync
-    //     const room = this.rooms[roomName];
-    //     if (room.requestImmediateSync ||
-    //         this.gameEngine.world.stepCount % this.options.updateRate === 0) {
+        // update clients only at the specified step interval, as defined in options
+        // or if this room needs to sync
+        const room = this.rooms[roomName];
+        if (roomName != "/lobby" && (room.requestImmediateSync ||
+                this.gameEngine.worlds[roomName].stepCount % this.options.updateRate === 0)) {
 
-    //         const roomPlayers = Object.keys(this.connectedPlayers)
-    //             .filter(p => this.connectedPlayers[p].roomName === roomName);
+            const roomPlayers = Object.keys(this.connectedPlayers)
+                .filter(p => this.connectedPlayers[p].roomName === roomName);
 
-    //         // if at least one player is new, we should send a full payload
-    //         let diffUpdate = true;
-    //         for (const socketId of roomPlayers) {
-    //             const player = this.connectedPlayers[socketId];
-    //             if (player.state === 'new') {
-    //                 player.state = 'synced';
-    //                 diffUpdate = false;
-    //             }
-    //         }
+            // if at least one player is new, we should send a full payload
+            let diffUpdate = true;
+            for (const socketId of roomPlayers) {
+                const player = this.connectedPlayers[socketId];
+                if (player.state === 'new') {
+                    player.state = 'synced';
+                    diffUpdate = false;
+                }
+            }
 
-    //         // also, one in N syncs is a full update, or a special request
-    //         if ((room.syncCounter++ % this.options.fullSyncRate === 0) || room.requestFullSync)
-    //             diffUpdate = false;
+            // also, one in N syncs is a full update, or a special request
+            if ((room.syncCounter++ % this.options.fullSyncRate === 0) || room.requestFullSync)
+                diffUpdate = false;
 
-    //         const payload = this.serializeUpdate(roomName, { diffUpdate });
-    //         this.gameEngine.trace.info(() => `========== sending world update ${this.gameEngine.world.stepCount} to room ${roomName} is delta update: ${diffUpdate} ==========`);
-    //         for (const socketId of roomPlayers)
-    //             this.connectedPlayers[socketId].socket.emit('worldUpdate', payload);
-    //         this.networkTransmitter.clearPayload();
-    //         room.requestImmediateSync = false;
-    //         room.requestFullSync = false;
-    //     }
-    // }
+            const payload = this.serializeUpdate(roomName, {
+                diffUpdate
+            });
+            this.gameEngine.trace.info(() => `========== sending world update ${this.gameEngine.worlds[roomName].stepCount} to room ${roomName} is delta update: ${diffUpdate} ==========`);
+            for (const socketId of roomPlayers) {
+                this.connectedPlayers[socketId].socket.emit('worldUpdate', payload);
+            }
+            this.networkTransmitter.clearPayload();
+            room.requestImmediateSync = false;
+            room.requestFullSync = false;
+        }
+    }
 
     // create a serialized package of the game world
     // TODO: this process could be made much much faster if the buffer creation and
     //       size calculation are done in a single phase, along with string pruning.
-    // serializeUpdate(roomName, options) {
-    //     let world = this.gameEngine.world;
-    //     let diffUpdate = Boolean(options && options.diffUpdate);
+    serializeUpdate(roomName, options) {
+        let world = this.gameEngine.worlds[roomName];
+        let diffUpdate = Boolean(options && options.diffUpdate);
 
-    //     // add this sync header
-    //     // currently this is just the sync step count
-    //     this.networkTransmitter.addNetworkedEvent('syncHeader', {
-    //         stepCount: world.stepCount,
-    //         fullUpdate: Number(!diffUpdate)
-    //     });
+        // add this sync header
+        // currently this is just the sync step count
+        this.networkTransmitter.addNetworkedEvent('syncHeader', {
+            stepCount: world.stepCount,
+            fullUpdate: Number(!diffUpdate)
+        });
 
-    //     const roomObjects = Object.keys(world.objects)
-    //         .filter(o => world.objects[o]._roomName === roomName);
-    //     for (let objId of roomObjects) {
-    //         let obj = world.objects[objId];
-    //         let prevObject = this.objMemory[objId];
+        // const roomObjects = Object.keys(world.objects)
+        //     .filter(o => world.objects[o]._roomName === roomName);
+        for (let objId of Object.keys(world.objects)) {
+            let obj = world.objects[objId];
+            let prevObject = this.objMemory[objId];
 
-    //         // if the object (in serialized form) hasn't changed, move on
-    //         // if (diffUpdate) {
-    //         //     let s = obj.serialize(this.serializer);
-    //         //     if (prevObject && Utils.arrayBuffersEqual(s.dataBuffer, prevObject))
-    //         //         continue;
-    //         //     else
-    //         //         this.objMemory[objId] = s.dataBuffer;
+            // if the object (in serialized form) hasn't changed, move on
+            if (diffUpdate) {
+                let s = obj.serialize(this.serializer);
+                if (prevObject && Utils.arrayBuffersEqual(s.dataBuffer, prevObject))
+                    continue;
+                else
+                    this.objMemory[objId] = s.dataBuffer;
 
-    //         //     // prune strings which haven't changed
-    //         //     obj = obj.prunedStringsClone(this.serializer, prevObject);
-    //         // }
+                // prune strings which haven't changed
+                obj = obj.prunedStringsClone(this.serializer, prevObject);
+            }
 
-    //         this.networkTransmitter.addNetworkedEvent('objectUpdate', {
-    //             stepCount: world.stepCount,
-    //             objectInstance: obj
-    //         });
-    //     }
+            this.networkTransmitter.addNetworkedEvent('objectUpdate', {
+                stepCount: world.stepCount,
+                objectInstance: obj
+            });
+        }
 
-    //     return this.networkTransmitter.serializePayload();
-    // }
+        return this.networkTransmitter.serializePayload();
+    }
 
     /**
      * Create a room
@@ -278,26 +284,26 @@ class ServerEngine {
         room.requestFullSync = true;
     }
 
-    // handle the object creation
-    // onObjectAdded(obj) {
-    //     obj._roomName = obj._roomName || this.DEFAULT_ROOM_NAME;
-    //     this.networkTransmitter.addNetworkedEvent('objectCreate', {
-    //         stepCount: this.gameEngine.world.stepCount,
-    //         objectInstance: obj
-    //     });
+    //handle the object creation
+    onObjectAdded(obj) {
+        obj._roomName = obj._roomName || this.DEFAULT_ROOM_NAME;
+        this.networkTransmitter.addNetworkedEvent('objectCreate', {
+            stepCount: this.gameEngine.worlds[obj._roomName].stepCount,
+            objectInstance: obj
+        });
 
-    //     if (this.options.updateOnObjectCreation) {
-    //         this.rooms[obj._roomName].requestImmediateSync = true;
-    //     }
-    // }
+        if (this.options.updateOnObjectCreation) {
+            this.rooms[obj._roomName].requestImmediateSync = true;
+        }
+    }
 
-    // handle the object creation
-    // onObjectDestroyed(obj) {
-    //     this.networkTransmitter.addNetworkedEvent('objectDestroy', {
-    //         stepCount: this.gameEngine.world.stepCount,
-    //         objectInstance: obj
-    //     });
-    // }
+    //handle the object creation
+    onObjectDestroyed(obj) {
+        this.networkTransmitter.addNetworkedEvent('objectDestroy', {
+            stepCount: this.gameEngine.worlds[obj._roomName].stepCount,
+            objectInstance: obj
+        });
+    }
 
     getPlayerId(socket) {
         return socket.id;
@@ -307,7 +313,7 @@ class ServerEngine {
     onPlayerConnected(socket) {
         let that = this;
 
-        console.log('Client connected');
+        //console.log('Client connected');
 
         // save player
         this.connectedPlayers[socket.id] = {
@@ -338,7 +344,7 @@ class ServerEngine {
         this.gameEngine.emit('playerJoined', playerEvent);
         socket.emit('playerJoined', playerEvent);
 
-        socket.on('disconnect', function () {
+        socket.on('disconnect', function() {
             playerEvent.disconnectTime = (new Date()).getTime();
             that.onPlayerDisconnected(socket.id, playerId);
             that.gameEngine.emit('server__playerDisconnected', playerEvent);
@@ -351,7 +357,7 @@ class ServerEngine {
         // });
 
         // we got a packet of trace data, write it out to a side-file
-        socket.on('trace', function (traceData) {
+        socket.on('trace', function(traceData) {
             traceData = JSON.parse(traceData);
             let traceString = '';
             traceData.forEach(t => {
@@ -362,7 +368,7 @@ class ServerEngine {
             });
         });
 
-        //this.networkMonitor.registerPlayerOnServer(socket);
+        this.networkMonitor.registerPlayerOnServer(socket);
     }
 
     // handle player timeout

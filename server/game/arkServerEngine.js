@@ -91,19 +91,19 @@ class ArkServerEngine extends ServerEngine {
 
             //add player to world and assign it to room
             let playerId = this.connectedPlayers[client0socketId].socket.playerId;
-            this.gameEngine.addObjectToWorld(createdWorld.id, {
-                id: client0socketId,
-                playerId
-            });
+            // this.gameEngine.addObjectToWorld(createdWorld.id, {
+            //     id: client0socketId,
+            //     playerId
+            // });
             this.assignPlayerToRoom(playerId, createdWorld.id);
             this.connectedPlayers[client0socketId].socket.join(createdWorld.id);
 
             //add the other player to world and assign it to room
             playerId = this.connectedPlayers[client1socketId].socket.playerId;
-            this.gameEngine.addObjectToWorld(createdWorld.id, {
-                id: client1socketId,
-                playerId
-            });
+            // this.gameEngine.addObjectToWorld(createdWorld.id, {
+            //     id: client1socketId,
+            //     playerId
+            // });
             this.assignPlayerToRoom(playerId, createdWorld.id);
             this.connectedPlayers[client1socketId].socket.join(createdWorld.id);
 

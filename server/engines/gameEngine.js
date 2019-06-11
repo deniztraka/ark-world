@@ -246,6 +246,7 @@ class GameEngine {
             }
         }
 
+        object._roomName = worldId;
         this.worlds[worldId].addObject(object);
 
         // tell the object to join the game, by creating

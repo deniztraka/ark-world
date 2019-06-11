@@ -1,247 +1,146 @@
-[2019-05-28T23:01:52.770Z]initializing>========== game engine started ==========
-[2019-05-28T23:02:04.794Z]initializing>========== object added [object Object] ==========
-[2019-05-28T23:02:04.795Z]initializing>ROOM UPDATE: playerId iyBuuoUofI6ARPXcAAAB from room /lobby to room 9c417e90-819c-11e9-a429-c76cd0f681bc
-[2019-05-28T23:02:04.795Z]initializing>========== object added [object Object] ==========
-[2019-05-28T23:02:04.795Z]initializing>ROOM UPDATE: playerId 85Ecw1z1jL7wwqFBAAAA from room /lobby to room 9c417e90-819c-11e9-a429-c76cd0f681bc
-[2019-05-28T23:08:41.102Z]initializing>========== game engine started ==========
-[2019-05-28T23:10:32.934Z]initializing>========== game engine started ==========
-[2019-05-28T23:12:00.999Z]initializing>========== game engine started ==========
-[2019-05-28T23:12:04.303Z]initializing>========== game engine started ==========
-[2019-05-28T23:12:20.070Z]initializing>========== game engine started ==========
-[2019-05-28T23:13:00.747Z]initializing>========== game engine started ==========
-[2019-05-28T23:14:14.844Z]initializing>========== game engine started ==========
-[2019-05-28T23:15:17.857Z]initializing>========== game engine started ==========
-[2019-05-28T23:15:32.870Z]initializing>========== matching players tJA7Vi4Veuee2kdKAAAA&YrBrMz1HK3RmsV83AAAB  0 to room 7de7f440-819e-11e9-b9d4-2763d6604e29 ==========
-[2019-05-28T23:15:32.870Z]initializing>========== object added [object Object] ==========
-[2019-05-28T23:15:32.870Z]initializing>ROOM UPDATE: playerId tJA7Vi4Veuee2kdKAAAA from room /lobby to room 7de7f440-819e-11e9-b9d4-2763d6604e29
-[2019-05-28T23:15:32.870Z]initializing>========== object added [object Object] ==========
-[2019-05-28T23:15:32.870Z]initializing>ROOM UPDATE: playerId YrBrMz1HK3RmsV83AAAB from room /lobby to room 7de7f440-819e-11e9-b9d4-2763d6604e29
-[2019-05-28T23:16:21.674Z]initializing>========== game engine started ==========
-[2019-05-29T13:49:26.835Z]initializing>========== game engine started ==========
-[2019-05-29T13:51:27.197Z]initializing>========== game engine started ==========
-[2019-05-29T13:52:35.229Z]initializing>========== matching players CvSH5c0CdonFpWIvAAAC&m9IrmyRDFYCUSe4RAAAD to room 0346ddc0-8219-11e9-a1d8-8f082451a45f ==========
-[2019-05-29T13:52:35.229Z]initializing>========== object added [object Object] ==========
-[2019-05-29T13:52:35.230Z]initializing>ROOM UPDATE: playerId CvSH5c0CdonFpWIvAAAC from room /lobby to room 0346ddc0-8219-11e9-a1d8-8f082451a45f
-[2019-05-29T13:52:35.230Z]initializing>========== object added [object Object] ==========
-[2019-05-29T13:52:35.230Z]initializing>ROOM UPDATE: playerId m9IrmyRDFYCUSe4RAAAD from room /lobby to room 0346ddc0-8219-11e9-a1d8-8f082451a45f
-[2019-05-29T17:35:43.141Z]initializing>========== game engine started ==========
-[2019-05-29T17:55:11.667Z]initializing>========== matching players e3nlCzMGkzcF2QmjAAAA&_jXsAgIjAGFJctNBAAAB to room e7970920-823a-11e9-a5f0-5b99a3cf2c35 ==========
-[2019-05-29T17:55:11.667Z]initializing>========== object added [object Object] ==========
-[2019-05-29T17:55:11.667Z]initializing>ROOM UPDATE: playerId e3nlCzMGkzcF2QmjAAAA from room /lobby to room e7970920-823a-11e9-a5f0-5b99a3cf2c35
-[2019-05-29T17:55:11.668Z]initializing>========== object added [object Object] ==========
-[2019-05-29T17:55:11.668Z]initializing>ROOM UPDATE: playerId _jXsAgIjAGFJctNBAAAB from room /lobby to room e7970920-823a-11e9-a5f0-5b99a3cf2c35
-[2019-05-29T17:55:27.008Z]initializing>========== game engine started ==========
-[2019-05-29T18:10:01.451Z]initializing>========== game engine started ==========
-[2019-05-29T18:11:24.803Z]initializing>========== game engine started ==========
-[2019-05-29T18:11:30.989Z]initializing>========== game engine started ==========
-[2019-05-29T18:11:35.455Z]initializing>========== game engine started ==========
-[2019-05-29T18:12:24.385Z]initializing>========== game engine started ==========
-[2019-05-29T18:12:43.464Z]initializing>========== game engine started ==========
-[2019-05-29T18:16:26.945Z]initializing>========== game engine started ==========
-[2019-05-29T18:16:28.888Z]initializing>========== game engine started ==========
-[2019-05-29T18:20:10.988Z]initializing>========== game engine started ==========
-[2019-05-29T18:21:04.237Z]initializing>========== game engine started ==========
-[2019-05-29T18:21:50.886Z]initializing>========== game engine started ==========
-[2019-05-29T18:25:16.690Z]initializing>========== game engine started ==========
-[2019-05-29T18:26:18.225Z]initializing>========== game engine started ==========
-[2019-05-29T18:28:08.518Z]initializing>========== game engine started ==========
-[2019-05-29T18:29:12.365Z]initializing>========== game engine started ==========
-[2019-05-29T18:29:34.695Z]initializing>========== game engine started ==========
-[2019-05-29T18:30:04.149Z]initializing>========== game engine started ==========
-[2019-05-29T18:30:47.965Z]initializing>========== game engine started ==========
-[2019-05-29T18:30:52.377Z]initializing>========== game engine started ==========
-[2019-05-29T18:31:32.250Z]initializing>========== game engine started ==========
-[2019-05-29T18:31:44.412Z]initializing>========== game engine started ==========
-[2019-05-29T18:32:17.465Z]initializing>========== game engine started ==========
-[2019-05-29T18:33:15.053Z]initializing>========== game engine started ==========
-[2019-05-29T18:35:15.065Z]initializing>========== game engine started ==========
-[2019-05-29T18:35:47.673Z]initializing>========== game engine started ==========
-[2019-05-29T18:36:07.511Z]initializing>========== game engine started ==========
-[2019-05-29T18:37:13.288Z]initializing>========== game engine started ==========
-[2019-05-29T18:42:49.852Z]initializing>========== game engine started ==========
-[2019-05-29T18:43:42.865Z]initializing>========== game engine started ==========
-[2019-05-29T18:47:11.090Z]initializing>========== game engine started ==========
-[2019-05-29T18:52:57.070Z]initializing>========== game engine started ==========
-[2019-05-29T18:53:02.112Z]initializing>========== matching players 0IBUOGBMHMHgz1d_AAAF&INx9nEs_RnzBVsvRAAAB to room fc22eaf0-8242-11e9-8088-934f1fb1716b ==========
-[2019-05-29T18:53:02.113Z]initializing>========== object added [object Object] ==========
-[2019-05-29T18:53:02.114Z]initializing>ROOM UPDATE: playerId 0IBUOGBMHMHgz1d_AAAF from room /lobby to room fc22eaf0-8242-11e9-8088-934f1fb1716b
-[2019-05-29T18:53:02.114Z]initializing>========== object added [object Object] ==========
-[2019-05-29T18:53:02.114Z]initializing>ROOM UPDATE: playerId INx9nEs_RnzBVsvRAAAB from room /lobby to room fc22eaf0-8242-11e9-8088-934f1fb1716b
-[2019-05-29T19:16:19.238Z]initializing>========== game engine started ==========
-[2019-05-29T19:16:58.419Z]initializing>========== matching players qQxdwR5nKOchInvXAAAA&xhpPjpzBPQvejbWfAAAB to room 543df920-8246-11e9-825c-ff4848bb56d4 ==========
-[2019-05-29T19:16:58.419Z]initializing>========== object added [object Object] ==========
-[2019-05-29T19:16:58.420Z]initializing>ROOM UPDATE: playerId qQxdwR5nKOchInvXAAAA from room /lobby to room 543df920-8246-11e9-825c-ff4848bb56d4
-[2019-05-29T19:16:58.420Z]initializing>========== object added [object Object] ==========
-[2019-05-29T19:16:58.420Z]initializing>ROOM UPDATE: playerId xhpPjpzBPQvejbWfAAAB from room /lobby to room 543df920-8246-11e9-825c-ff4848bb56d4
-[2019-05-29T19:18:08.169Z]initializing>========== game engine started ==========
-[2019-05-29T19:18:38.049Z]initializing>========== game engine started ==========
-[2019-05-29T19:20:04.506Z]initializing>========== game engine started ==========
-[2019-05-29T19:21:48.869Z]initializing>========== game engine started ==========
-[2019-05-29T19:22:25.636Z]initializing>========== game engine started ==========
-[2019-05-29T19:22:38.785Z]initializing>========== game engine started ==========
-[2019-05-29T19:23:22.880Z]initializing>========== matching players 4eBSiNW5IeZZudc-AAAA&LNWjGo0nPqvwObUkAAAB to room 39663800-8247-11e9-869c-ef07a5beff44 ==========
-[2019-05-29T19:23:22.881Z]initializing>========== object added [object Object] ==========
-[2019-05-29T19:23:22.881Z]initializing>ROOM UPDATE: playerId 4eBSiNW5IeZZudc-AAAA from room /lobby to room 39663800-8247-11e9-869c-ef07a5beff44
-[2019-05-29T19:23:22.881Z]initializing>========== object added [object Object] ==========
-[2019-05-29T19:23:22.881Z]initializing>ROOM UPDATE: playerId LNWjGo0nPqvwObUkAAAB from room /lobby to room 39663800-8247-11e9-869c-ef07a5beff44
-[2019-05-29T19:23:52.513Z]initializing>========== game engine started ==========
-[2019-05-29T19:24:25.784Z]initializing>========== matching players nVh1K4JzjWkbPA12AAAA&lFoKT6sMSGTH8x-FAAAB to room 5ee47470-8247-11e9-9781-937120b8fc0d ==========
-[2019-05-29T19:24:25.784Z]initializing>========== object added [object Object] ==========
-[2019-05-29T19:24:25.785Z]initializing>ROOM UPDATE: playerId nVh1K4JzjWkbPA12AAAA from room /lobby to room 5ee47470-8247-11e9-9781-937120b8fc0d
-[2019-05-29T19:24:25.785Z]initializing>========== object added [object Object] ==========
-[2019-05-29T19:24:25.785Z]initializing>ROOM UPDATE: playerId lFoKT6sMSGTH8x-FAAAB from room /lobby to room 5ee47470-8247-11e9-9781-937120b8fc0d
-[2019-05-29T19:25:15.283Z]initializing>========== game engine started ==========
-[2019-05-29T19:25:25.622Z]initializing>========== game engine started ==========
-[2019-05-29T19:26:11.829Z]initializing>========== matching players LAfUiLOxsR0YjSsCAAAC&tVsHiv5kePaN5FdSAAAD to room 9e19ca50-8247-11e9-bc1e-2155339f736d ==========
-[2019-05-29T19:26:11.830Z]initializing>========== object added [object Object] ==========
-[2019-05-29T19:26:11.830Z]initializing>ROOM UPDATE: playerId LAfUiLOxsR0YjSsCAAAC from room /lobby to room 9e19ca50-8247-11e9-bc1e-2155339f736d
-[2019-05-29T19:26:11.830Z]initializing>========== object added [object Object] ==========
-[2019-05-29T19:26:11.830Z]initializing>ROOM UPDATE: playerId tVsHiv5kePaN5FdSAAAD from room /lobby to room 9e19ca50-8247-11e9-bc1e-2155339f736d
-[2019-05-29T19:27:16.983Z]initializing>========== game engine started ==========
-[2019-05-29T19:28:32.241Z]initializing>========== matching players Ox53LH8lIlKGtQx3AAAD&mR5yldW3EegnyfdFAAAC to room f1cacf00-8247-11e9-9e1c-6d429c6bd065 ==========
-[2019-05-29T19:28:32.241Z]initializing>========== object added [object Object] ==========
-[2019-05-29T19:28:32.241Z]initializing>ROOM UPDATE: playerId Ox53LH8lIlKGtQx3AAAD from room /lobby to room f1cacf00-8247-11e9-9e1c-6d429c6bd065
-[2019-05-29T19:28:32.242Z]initializing>========== object added [object Object] ==========
-[2019-05-29T19:28:32.242Z]initializing>ROOM UPDATE: playerId mR5yldW3EegnyfdFAAAC from room /lobby to room f1cacf00-8247-11e9-9e1c-6d429c6bd065
-[2019-05-29T19:28:37.251Z]NaN>========== matching players tCqkzuz9pXEeLXQqAAAE&GpL220g5AKB6u2z1AAAF to room f4c76d30-8247-11e9-9e1c-6d429c6bd065 ==========
-[2019-05-29T19:28:37.251Z]NaN>========== object added [object Object] ==========
-[2019-05-29T19:28:37.251Z]NaN>ROOM UPDATE: playerId tCqkzuz9pXEeLXQqAAAE from room /lobby to room f4c76d30-8247-11e9-9e1c-6d429c6bd065
-[2019-05-29T19:28:37.251Z]NaN>========== object added [object Object] ==========
-[2019-05-29T19:28:37.252Z]NaN>ROOM UPDATE: playerId GpL220g5AKB6u2z1AAAF from room /lobby to room f4c76d30-8247-11e9-9e1c-6d429c6bd065
-[2019-05-29T19:33:38.362Z]initializing>========== game engine started ==========
-[2019-05-29T19:34:24.858Z]initializing>========== game engine started ==========
-[2019-05-29T19:35:06.022Z]initializing>========== matching players zugxRxu7wmHoA8mCAAAC&kAdFYewnlEYLyud-AAAB to room dc810550-8248-11e9-be04-5340fcf1bf2a ==========
-[2019-05-29T19:35:06.023Z]initializing>========== object added [object Object] ==========
-[2019-05-29T19:35:06.023Z]initializing>ROOM UPDATE: playerId zugxRxu7wmHoA8mCAAAC from room /lobby to room dc810550-8248-11e9-be04-5340fcf1bf2a
-[2019-05-29T19:35:06.023Z]initializing>========== object added [object Object] ==========
-[2019-05-29T19:35:06.023Z]initializing>ROOM UPDATE: playerId kAdFYewnlEYLyud-AAAB from room /lobby to room dc810550-8248-11e9-be04-5340fcf1bf2a
-[2019-05-29T19:35:19.043Z]NaN>========== matching players ogJqvpRm9tNMy44kAAAD&4ZyTYJODELIHhF4WAAAE to room e4440530-8248-11e9-be04-5340fcf1bf2a ==========
-[2019-05-29T19:35:19.043Z]NaN>========== object added [object Object] ==========
-[2019-05-29T19:35:19.043Z]NaN>ROOM UPDATE: playerId ogJqvpRm9tNMy44kAAAD from room /lobby to room e4440530-8248-11e9-be04-5340fcf1bf2a
-[2019-05-29T19:35:19.044Z]NaN>========== object added [object Object] ==========
-[2019-05-29T19:35:19.044Z]NaN>ROOM UPDATE: playerId 4ZyTYJODELIHhF4WAAAE from room /lobby to room e4440530-8248-11e9-be04-5340fcf1bf2a
-[2019-05-29T19:36:18.656Z]initializing>========== game engine started ==========
-[2019-05-29T19:37:34.023Z]initializing>========== matching players iW8IOcXmOkwl0DsqAAAB&yKiVxvl3h6X77rfuAAAA to room 34b80750-8249-11e9-9d6e-55646bd3864e ==========
-[2019-05-29T19:37:34.023Z]initializing>========== object added [object Object] ==========
-[2019-05-29T19:37:34.024Z]initializing>ROOM UPDATE: playerId iW8IOcXmOkwl0DsqAAAB from room /lobby to room 34b80750-8249-11e9-9d6e-55646bd3864e
-[2019-05-29T19:37:34.024Z]initializing>========== object added [object Object] ==========
-[2019-05-29T19:37:34.024Z]initializing>ROOM UPDATE: playerId yKiVxvl3h6X77rfuAAAA from room /lobby to room 34b80750-8249-11e9-9d6e-55646bd3864e
-[2019-05-29T19:38:20.044Z]initializing>========== game engine started ==========
-[2019-05-29T19:38:52.199Z]initializing>========== matching players dG_XXQSJb2qqpvLTAAAA&hjwtGuLincZVjDYLAAAB to room 6350e460-8249-11e9-9db4-25f49f76b0b9 ==========
-[2019-05-29T19:38:52.199Z]initializing>========== object added [object Object] ==========
-[2019-05-29T19:38:52.200Z]initializing>ROOM UPDATE: playerId dG_XXQSJb2qqpvLTAAAA from room /lobby to room 6350e460-8249-11e9-9db4-25f49f76b0b9
-[2019-05-29T19:38:52.200Z]initializing>========== object added [object Object] ==========
-[2019-05-29T19:38:52.200Z]initializing>ROOM UPDATE: playerId hjwtGuLincZVjDYLAAAB from room /lobby to room 6350e460-8249-11e9-9db4-25f49f76b0b9
-[2019-05-29T19:40:28.919Z]initializing>========== game engine started ==========
-[2019-05-29T19:41:57.305Z]initializing>========== game engine started ==========
-[2019-05-29T19:42:28.446Z]initializing>========== matching players cuXKtFDnF3hPGi-oAAAB&XGfP_V16wrYb-R1HAAAA to room e43590d0-8249-11e9-aea7-7be4c6bb2ee5 ==========
-[2019-05-29T19:42:28.446Z]initializing>========== object added [object Object] ==========
-[2019-05-29T19:42:28.446Z]initializing>ROOM UPDATE: playerId cuXKtFDnF3hPGi-oAAAB from room /lobby to room e43590d0-8249-11e9-aea7-7be4c6bb2ee5
-[2019-05-29T19:42:28.446Z]initializing>========== object added [object Object] ==========
-[2019-05-29T19:42:28.447Z]initializing>ROOM UPDATE: playerId XGfP_V16wrYb-R1HAAAA from room /lobby to room e43590d0-8249-11e9-aea7-7be4c6bb2ee5
-[2019-05-29T19:45:29.143Z]initializing>========== game engine started ==========
-[2019-05-29T19:46:37.102Z]initializing>========== game engine started ==========
-[2019-05-29T19:47:15.336Z]initializing>========== matching players JU3yjA52kCQSu9BLAAAA&ZEy5tAha63iDxxWgAAAB to room 8f358170-824a-11e9-a9f6-c9590cbc1efc ==========
-[2019-05-29T19:47:15.336Z]initializing>========== object added [object Object] ==========
-[2019-05-29T19:47:15.336Z]initializing>ROOM UPDATE: playerId JU3yjA52kCQSu9BLAAAA from room /lobby to room 8f358170-824a-11e9-a9f6-c9590cbc1efc
-[2019-05-29T19:47:15.336Z]initializing>========== object added [object Object] ==========
-[2019-05-29T19:47:15.337Z]initializing>ROOM UPDATE: playerId ZEy5tAha63iDxxWgAAAB from room /lobby to room 8f358170-824a-11e9-a9f6-c9590cbc1efc
-[2019-05-29T19:50:32.170Z]initializing>========== game engine started ==========
-[2019-05-29T19:54:31.015Z]initializing>========== matching players 2Lk1JvcR3mVYgCPDAAAA&JsVcmGU4dgH5LTDRAAAB to room 92e4ff70-824b-11e9-a568-2db0498fe8a8 ==========
-[2019-05-29T19:54:31.016Z]initializing>========== object added [object Object] ==========
-[2019-05-29T19:54:31.017Z]initializing>ROOM UPDATE: playerId 2Lk1JvcR3mVYgCPDAAAA from room /lobby to room 92e4ff70-824b-11e9-a568-2db0498fe8a8
-[2019-05-29T19:54:31.018Z]initializing>========== object added [object Object] ==========
-[2019-05-29T19:54:31.019Z]initializing>ROOM UPDATE: playerId JsVcmGU4dgH5LTDRAAAB from room /lobby to room 92e4ff70-824b-11e9-a568-2db0498fe8a8
-[2019-05-29T19:56:04.491Z]initializing>========== game engine started ==========
-[2019-05-29T19:56:36.022Z]initializing>========== game engine started ==========
-[2019-05-29T19:56:46.176Z]initializing>========== game engine started ==========
-[2019-05-29T19:57:01.128Z]initializing>========== game engine started ==========
-[2019-05-29T19:57:29.072Z]initializing>========== game engine started ==========
-[2019-05-29T19:57:47.310Z]initializing>========== matching players MuhO_t8W65mkgvsNAAAB&WKwzH4VwS3dgyAViAAAA to room 07e515d0-824c-11e9-bc7f-cb10242ba642 ==========
-[2019-05-29T19:57:47.310Z]initializing>========== object added [object Object] ==========
-[2019-05-29T19:57:47.311Z]initializing>ROOM UPDATE: playerId MuhO_t8W65mkgvsNAAAB from room /lobby to room 07e515d0-824c-11e9-bc7f-cb10242ba642
-[2019-05-29T19:57:47.311Z]initializing>========== object added [object Object] ==========
-[2019-05-29T19:57:47.311Z]initializing>ROOM UPDATE: playerId WKwzH4VwS3dgyAViAAAA from room /lobby to room 07e515d0-824c-11e9-bc7f-cb10242ba642
-[2019-05-29T19:58:22.776Z]initializing>========== game engine started ==========
-[2019-05-29T19:58:40.843Z]initializing>========== matching players gqbW3sR9YLaKhYPuAAAB&vRZql7XoPL6H6fH7AAAA to room 27cd92a0-824c-11e9-89e3-c77491f048ce ==========
-[2019-05-29T19:58:40.844Z]initializing>========== object added [object Object] ==========
-[2019-05-29T19:58:40.847Z]initializing>ROOM UPDATE: playerId gqbW3sR9YLaKhYPuAAAB from room /lobby to room 27cd92a0-824c-11e9-89e3-c77491f048ce
-[2019-05-29T19:58:40.847Z]initializing>========== object added [object Object] ==========
-[2019-05-29T19:58:40.848Z]initializing>ROOM UPDATE: playerId vRZql7XoPL6H6fH7AAAA from room /lobby to room 27cd92a0-824c-11e9-89e3-c77491f048ce
-[2019-05-29T20:02:48.483Z]initializing>========== game engine started ==========
-[2019-05-29T20:03:14.816Z]initializing>========== game engine started ==========
-[2019-05-29T20:05:01.342Z]initializing>========== game engine started ==========
-[2019-05-29T20:05:49.537Z]initializing>========== matching players ydbBGOQ1AbtTEf2oAAAB&vdxIsE5coD1QxNEjAAAA to room 27531600-824d-11e9-9e7b-3973425577d5 ==========
-[2019-05-29T20:05:49.537Z]initializing>========== object added [object Object] ==========
-[2019-05-29T20:05:49.537Z]initializing>ROOM UPDATE: playerId ydbBGOQ1AbtTEf2oAAAB from room /lobby to room 27531600-824d-11e9-9e7b-3973425577d5
-[2019-05-29T20:05:49.538Z]initializing>========== object added [object Object] ==========
-[2019-05-29T20:05:49.539Z]initializing>ROOM UPDATE: playerId vdxIsE5coD1QxNEjAAAA from room /lobby to room 27531600-824d-11e9-9e7b-3973425577d5
-[2019-05-29T20:06:12.728Z]initializing>========== game engine started ==========
-[2019-05-29T20:06:16.769Z]initializing>========== game engine started ==========
-[2019-05-29T20:06:23.835Z]initializing>========== matching players Qzw7k4hscMXTG6eEAAAA&vSrky4au6ypfysv5AAAB to room 3bc48ba0-824d-11e9-8703-75fcd6194499 ==========
-[2019-05-29T20:06:23.835Z]initializing>========== object added [object Object] ==========
-[2019-05-29T20:06:23.835Z]initializing>ROOM UPDATE: playerId Qzw7k4hscMXTG6eEAAAA from room /lobby to room 3bc48ba0-824d-11e9-8703-75fcd6194499
-[2019-05-29T20:06:23.835Z]initializing>========== object added [object Object] ==========
-[2019-05-29T20:06:23.836Z]initializing>ROOM UPDATE: playerId vSrky4au6ypfysv5AAAB from room /lobby to room 3bc48ba0-824d-11e9-8703-75fcd6194499
-[2019-05-29T20:06:47.838Z]initializing>========== game engine started ==========
-[2019-05-29T20:06:56.857Z]initializing>========== matching players opCJKdG1ScGeCzVLAAAB&KQtY2C8Yfr6Cb3lqAAAA to room 4f734d80-824d-11e9-ad8d-8ff8bd37510c ==========
-[2019-05-29T20:06:56.858Z]initializing>========== object added [object Object] ==========
-[2019-05-29T20:06:56.858Z]initializing>ROOM UPDATE: playerId opCJKdG1ScGeCzVLAAAB from room /lobby to room 4f734d80-824d-11e9-ad8d-8ff8bd37510c
-[2019-05-29T20:06:56.858Z]initializing>========== object added [object Object] ==========
-[2019-05-29T20:06:56.859Z]initializing>ROOM UPDATE: playerId KQtY2C8Yfr6Cb3lqAAAA from room /lobby to room 4f734d80-824d-11e9-ad8d-8ff8bd37510c
-[2019-05-29T20:07:24.082Z]initializing>========== game engine started ==========
-[2019-05-29T20:08:40.396Z]initializing>========== matching players K5qnmHB6Fw08SLWGAAAD&eYFO7csk7v_23UZbAAAC to room 8d2a19b0-824d-11e9-8b39-8d4893b3a778 ==========
-[2019-05-29T20:08:40.396Z]initializing>========== object added [object Object] ==========
-[2019-05-29T20:08:40.397Z]initializing>ROOM UPDATE: playerId K5qnmHB6Fw08SLWGAAAD from room /lobby to room 8d2a19b0-824d-11e9-8b39-8d4893b3a778
-[2019-05-29T20:08:40.397Z]initializing>========== object added [object Object] ==========
-[2019-05-29T20:08:40.397Z]initializing>ROOM UPDATE: playerId eYFO7csk7v_23UZbAAAC from room /lobby to room 8d2a19b0-824d-11e9-8b39-8d4893b3a778
-[2019-05-29T20:09:08.972Z]initializing>========== game engine started ==========
-[2019-05-29T20:10:00.218Z]initializing>========== matching players tpt67wvyTSBfpZDAAAAB&8ixR-zk6fqR-Xhd5AAAA to room bcbe1fa0-824d-11e9-b4c5-edf1fc632f3c ==========
-[2019-05-29T20:10:00.219Z]initializing>========== object added [object Object] ==========
-[2019-05-29T20:10:00.219Z]initializing>ROOM UPDATE: playerId tpt67wvyTSBfpZDAAAAB from room /lobby to room bcbe1fa0-824d-11e9-b4c5-edf1fc632f3c
-[2019-05-29T20:10:00.219Z]initializing>========== object added [object Object] ==========
-[2019-05-29T20:10:00.220Z]initializing>ROOM UPDATE: playerId 8ixR-zk6fqR-Xhd5AAAA from room /lobby to room bcbe1fa0-824d-11e9-b4c5-edf1fc632f3c
-[2019-05-29T20:10:20.443Z]initializing>========== game engine started ==========
-[2019-05-29T20:10:55.400Z]initializing>========== game engine started ==========
-[2019-05-29T20:11:08.449Z]initializing>========== matching players FBxbe5pY39oF0LD6AAAA&QugeqhmzbCDX6Wk8AAAB to room e5693200-824d-11e9-b74a-2f8c9600733c ==========
-[2019-05-29T20:11:08.449Z]initializing>========== object added [object Object] ==========
-[2019-05-29T20:11:08.449Z]initializing>ROOM UPDATE: playerId FBxbe5pY39oF0LD6AAAA from room /lobby to room e5693200-824d-11e9-b74a-2f8c9600733c
-[2019-05-29T20:11:08.449Z]initializing>========== object added [object Object] ==========
-[2019-05-29T20:11:08.449Z]initializing>ROOM UPDATE: playerId QugeqhmzbCDX6Wk8AAAB from room /lobby to room e5693200-824d-11e9-b74a-2f8c9600733c
-[2019-05-29T20:11:20.596Z]initializing>========== game engine started ==========
-[2019-05-29T20:11:25.612Z]initializing>========== matching players NTt_P0YXER-OEdUEAAAB&U5s65vuwcxw2UQk-AAAA to room efa40fb0-824d-11e9-911a-2f0fa79d37ec ==========
-[2019-05-29T20:11:25.613Z]initializing>========== object added [object Object] ==========
-[2019-05-29T20:11:25.613Z]initializing>ROOM UPDATE: playerId NTt_P0YXER-OEdUEAAAB from room /lobby to room efa40fb0-824d-11e9-911a-2f0fa79d37ec
-[2019-05-29T20:11:25.613Z]initializing>========== object added [object Object] ==========
-[2019-05-29T20:11:25.613Z]initializing>ROOM UPDATE: playerId U5s65vuwcxw2UQk-AAAA from room /lobby to room efa40fb0-824d-11e9-911a-2f0fa79d37ec
-[2019-05-29T20:12:06.732Z]NaN>========== matching players omDhOz4bQJ4JQYv5AAAC&jg0oIL4bos4IQ92_AAAD to room 0826a0c0-824e-11e9-911a-2f0fa79d37ec ==========
-[2019-05-29T20:12:06.732Z]NaN>========== object added [object Object] ==========
-[2019-05-29T20:12:06.732Z]NaN>ROOM UPDATE: playerId omDhOz4bQJ4JQYv5AAAC from room /lobby to room 0826a0c0-824e-11e9-911a-2f0fa79d37ec
-[2019-05-29T20:12:06.732Z]NaN>========== object added [object Object] ==========
-[2019-05-29T20:12:06.732Z]NaN>ROOM UPDATE: playerId jg0oIL4bos4IQ92_AAAD from room /lobby to room 0826a0c0-824e-11e9-911a-2f0fa79d37ec
-[2019-05-29T20:12:48.831Z]NaN>========== matching players YTxjVbtvYJ95ZsDDAAAE&NQRKZNqNddc3R7rrAAAF to room 213e6cf0-824e-11e9-911a-2f0fa79d37ec ==========
-[2019-05-29T20:12:48.831Z]NaN>========== object added [object Object] ==========
-[2019-05-29T20:12:48.831Z]NaN>ROOM UPDATE: playerId YTxjVbtvYJ95ZsDDAAAE from room /lobby to room 213e6cf0-824e-11e9-911a-2f0fa79d37ec
-[2019-05-29T20:12:48.831Z]NaN>========== object added [object Object] ==========
-[2019-05-29T20:12:48.831Z]NaN>ROOM UPDATE: playerId NQRKZNqNddc3R7rrAAAF from room /lobby to room 213e6cf0-824e-11e9-911a-2f0fa79d37ec
-[2019-05-29T20:13:09.632Z]initializing>========== game engine started ==========
-[2019-05-29T20:13:56.822Z]initializing>========== matching players kfCalW-eN_IYCHqGAAAC&tkwWMw_NRy4ZLhA_AAAB to room 49c4e050-824e-11e9-a633-4d65de2fdcbd ==========
-[2019-05-29T20:13:56.822Z]initializing>========== object added [object Object] ==========
-[2019-05-29T20:13:56.823Z]initializing>ROOM UPDATE: playerId kfCalW-eN_IYCHqGAAAC from room /lobby to room 49c4e050-824e-11e9-a633-4d65de2fdcbd
-[2019-05-29T20:13:56.823Z]initializing>========== object added [object Object] ==========
-[2019-05-29T20:13:56.823Z]initializing>ROOM UPDATE: playerId tkwWMw_NRy4ZLhA_AAAB from room /lobby to room 49c4e050-824e-11e9-a633-4d65de2fdcbd
-[2019-05-29T20:14:35.998Z]NaN>========== matching players ZZJ_FysXIuVATc75AAAE&Jjuc97_12lIKICLUAAAD to room 611ecfe0-824e-11e9-a633-4d65de2fdcbd ==========
-[2019-05-29T20:14:35.998Z]NaN>========== object added [object Object] ==========
-[2019-05-29T20:14:35.998Z]NaN>ROOM UPDATE: playerId ZZJ_FysXIuVATc75AAAE from room /lobby to room 611ecfe0-824e-11e9-a633-4d65de2fdcbd
-[2019-05-29T20:14:35.998Z]NaN>========== object added [object Object] ==========
-[2019-05-29T20:14:35.998Z]NaN>ROOM UPDATE: playerId Jjuc97_12lIKICLUAAAD from room /lobby to room 611ecfe0-824e-11e9-a633-4d65de2fdcbd
-[2019-05-29T20:15:21.170Z]NaN>========== matching players phwyXUXvZ12RKaq7AAAF&mwrpEMVbeq-eG9UHAAAG to room 7c0b8320-824e-11e9-a633-4d65de2fdcbd ==========
-[2019-05-29T20:15:21.171Z]NaN>========== object added [object Object] ==========
-[2019-05-29T20:15:21.171Z]NaN>ROOM UPDATE: playerId phwyXUXvZ12RKaq7AAAF from room /lobby to room 7c0b8320-824e-11e9-a633-4d65de2fdcbd
-[2019-05-29T20:15:21.171Z]NaN>========== object added [object Object] ==========
-[2019-05-29T20:15:21.171Z]NaN>ROOM UPDATE: playerId mwrpEMVbeq-eG9UHAAAG from room /lobby to room 7c0b8320-824e-11e9-a633-4d65de2fdcbd
-[2019-05-29T20:16:01.327Z]NaN>========== matching players wQHQKF4uea2FkWMyAAAH&RaPS3gDiRb0fMV3OAAAI to room 93fafbf0-824e-11e9-a633-4d65de2fdcbd ==========
-[2019-05-29T20:16:01.327Z]NaN>========== object added [object Object] ==========
-[2019-05-29T20:16:01.328Z]NaN>ROOM UPDATE: playerId wQHQKF4uea2FkWMyAAAH from room /lobby to room 93fafbf0-824e-11e9-a633-4d65de2fdcbd
-[2019-05-29T20:16:01.328Z]NaN>========== object added [object Object] ==========
-[2019-05-29T20:16:01.328Z]NaN>ROOM UPDATE: playerId RaPS3gDiRb0fMV3OAAAI from room /lobby to room 93fafbf0-824e-11e9-a633-4d65de2fdcbd
+[2019-06-11T10:44:40.146Z]initializing>========== game engine started ==========
+[2019-06-11T10:45:48.180Z]initializing>========== matching players SSzo4ukDU1MHD0RXAAAB&lu4Ndw5pFoiiEZ__AAAA to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 ==========
+[2019-06-11T10:45:48.180Z]initializing>ROOM UPDATE: playerId SSzo4ukDU1MHD0RXAAAB from room /lobby to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7
+[2019-06-11T10:45:48.181Z]initializing>ROOM UPDATE: playerId lu4Ndw5pFoiiEZ__AAAA from room /lobby to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7
+[2019-06-11T10:46:59.390Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: false ==========
+[2019-06-11T10:48:14.824Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:17.888Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:17.872Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:17.908Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:17.928Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:17.947Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:17.962Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:17.981Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:17.996Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.013Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.030Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.046Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.064Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.082Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.098Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.117Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.135Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.151Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.167Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.184Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: false ==========
+[2019-06-11T10:48:18.200Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.216Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.233Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.250Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.268Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.286Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.304Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.320Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.340Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.355Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.372Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.389Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.407Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.423Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.440Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.455Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.471Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.487Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.506Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.523Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: false ==========
+[2019-06-11T10:48:18.540Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.559Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.577Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.594Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.613Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.628Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.644Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.664Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.680Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.697Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.717Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.735Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.751Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.770Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.786Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.803Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.821Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.839Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.855Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.872Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: false ==========
+[2019-06-11T10:48:18.889Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.905Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.922Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.939Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.956Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.977Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:18.993Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.012Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.030Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.049Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.067Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.086Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.101Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.118Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.136Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.156Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.174Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.190Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.208Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.225Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: false ==========
+[2019-06-11T10:48:19.242Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.260Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.275Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.293Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.310Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.329Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.347Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.364Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.380Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.397Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.414Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.432Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.449Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.467Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.483Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.502Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.517Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.534Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.551Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.567Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: false ==========
+[2019-06-11T10:48:19.587Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.602Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.619Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.636Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.653Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.670Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.687Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.706Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.723Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.741Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.757Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.776Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.793Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.809Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.827Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.843Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.861Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.876Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.895Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.912Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: false ==========
+[2019-06-11T10:48:19.929Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.946Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.963Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.983Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:19.999Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:20.014Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:20.031Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:20.050Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:20.067Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:20.086Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:20.101Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:20.120Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:20.135Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:20.151Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:20.167Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:20.186Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:20.203Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:20.221Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:20.238Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
+[2019-06-11T10:48:20.254Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: false ==========
+[2019-06-11T10:48:20.271Z]NaN>========== sending world update 0 to room 12b9cd40-8c36-11e9-b4e3-fbbe501527d7 is delta update: true ==========
