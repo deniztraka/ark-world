@@ -1,7 +1,7 @@
 const GameWorld = require('../engines/gameWorld');
 const EventEmitter = require('event-emitter');
 const Timer = require('../engines/timer');
-const Trace = require('../lib/Trace');
+const Trace = require('../../shared/lib/Trace');
 
 /**
  * The GameEngine contains the game logic.  Extend this class

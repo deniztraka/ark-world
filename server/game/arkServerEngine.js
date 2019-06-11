@@ -1,5 +1,5 @@
 const ServerEngine = require('../engines/serverEngine');
-const Scheduler = require('../lib/Scheduler');
+const Scheduler = require('../../shared/lib/Scheduler');
 
 class ArkServerEngine extends ServerEngine {
 

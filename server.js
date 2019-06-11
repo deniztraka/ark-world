@@ -24,7 +24,7 @@ var server = serv.listen(app.get('port'), function() {
 // Game Server
 const ArkServerEngine = require('./server/game/arkServerEngine');
 const ArkGameEngine = require('./server/game/arkGameEngine');
-const Trace = require('./server/lib/Trace');
+const Trace = require('./shared/lib/Trace');
 
 // Game Instancess
 const gameEngine = new ArkGameEngine({ traceLevel: Trace.TRACE_INFO });

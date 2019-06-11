@@ -1,5 +1,5 @@
-const BaseTypes = require("./../serialize/baseTypes");
-const Serializable = require("./../serialize/serializable");
+const BaseTypes = require("./../../shared/serialize/baseTypes");
+const Serializable = require("./../../shared/serialize/serializable");
 
 /**
  * Defines a collection of NetworkEvents to be transmitted over the wire

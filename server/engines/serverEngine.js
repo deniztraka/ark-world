@@ -1,9 +1,9 @@
 //import fs from 'fs';
 //import mkdirp from 'mkdirp';
 //import Utils from '../common/utils';
-const Scheduler = require('../lib/Scheduler');
+const Scheduler = require('../../shared/lib/Scheduler');
 const fs = require('fs');
-const Serializer = require("./../serialize/serializer")
+const Serializer = require("./../../shared/serialize/serializer")
 const NetworkTransmitter = require('./../network/networkTransmitter');
 const NetworkMonitor = require('./../network/networkMonitor');
 

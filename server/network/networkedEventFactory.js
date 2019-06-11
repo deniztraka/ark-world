@@ -1,5 +1,5 @@
-const Serializable = require("./../serialize/serializable");
-const Utils = require("./../lib/utils");
+const Serializable = require("./../../shared/serialize/serializable");
+const Utils = require("../../shared/lib/utils");
 
 class NetworkedEventFactory {
 

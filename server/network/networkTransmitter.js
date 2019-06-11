@@ -1,7 +1,7 @@
-const BaseTypes = require("./../serialize/baseTypes");
+const BaseTypes = require("./../../shared/serialize/baseTypes");
 const NetworkedEventCollection = require("./networkdEventCollection");
 const NetworkedEventFactory = require("./networkedEventFactory");
-const Utils = require("./../lib/utils");
+const Utils = require("../../shared/lib/utils");
 
 class NetworkTransmitter {
 
