@@ -1,5 +1,5 @@
-const GameEngine = require('../engines/gameEngine');
-const ArkWorld = require('../game/arkWorld');
+const GameEngine = require('../shared/engines/gameEngine');
+const ArkWorld = require('./arkWorld');
 
 class ArkGameEngine extends GameEngine {
 

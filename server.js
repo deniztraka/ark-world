@@ -22,8 +22,8 @@ var server = serv.listen(app.get('port'), function() {
 
 
 // Game Server
-const ArkServerEngine = require('./server/game/arkServerEngine');
-const ArkGameEngine = require('./server/game/arkGameEngine');
+const ArkServerEngine = require('./server/arkServerEngine');
+const ArkGameEngine = require('./server/arkGameEngine');
 const Trace = require('./shared/lib/Trace');
 
 // Game Instancess

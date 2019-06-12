@@ -2,6 +2,9 @@ import {
     Player
 } from '../entities/mobiles/basicPlayer';
 
+import Serializer from './../../shared/serialize/serializer';
+import NetworkTransmitter from './../../shared/network/networkTransmitter';
+
 export class GameScene extends Phaser.Scene {
     constructor() {
 
@@ -12,9 +15,12 @@ export class GameScene extends Phaser.Scene {
 
         var self = this;
         this.eventEmitter = new Phaser.Events.EventEmitter();
-        this.eventEmitter.on("playerPositionChanged!", function(newIsoTileData) {
-            self.cullMap(newIsoTileData);
-        });
+        this.serializer = new Serializer();
+        this.networkTransmitter = new NetworkTransmitter(this.serializer);
+
+        // this.eventEmitter.on("playerPositionChanged!", function(newIsoTileData) {
+        //     self.cullMap(newIsoTileData);
+        // });
 
         //this.renderSize = 10;
 
@@ -29,6 +35,10 @@ export class GameScene extends Phaser.Scene {
         this.socket = obj.socket;
         console.log(this.staticMapData);
 
+        this.socket.on("worldUpdate", function(data) {
+            let syncEvents = self.networkTransmitter.deserializePayload(data).events;
+            console.log(syncEvents);
+        });
         this.socket.on("disconnect", function() {
             self.scene.start("LoginScreen");
         });

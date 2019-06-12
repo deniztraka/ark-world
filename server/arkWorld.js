@@ -1,4 +1,4 @@
-const GameWorld = require('../engines/gameWorld');
+const GameWorld = require('../shared/engines/gameWorld');
 const uuidv1 = require('uuid/v1');
 const WorldState = require('./worldState');
 const Dungeon = require("@mikewesthad/dungeon");
