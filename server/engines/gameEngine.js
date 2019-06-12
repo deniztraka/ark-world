@@ -181,6 +181,10 @@ class GameEngine {
 
         isReenact = Boolean(isReenact);
         let step = ++this.stepCount;
+        for (let worldId of Object.keys(this.worlds)) {
+            this.worlds[worldId].stepCount = step;
+        }
+
         let clientIDSpace = this.options.clientIDSpace;
         this.emit('preStep', {
             step,
