@@ -4,6 +4,8 @@ import {
 
 import Serializer from './../../shared/serialize/serializer';
 import NetworkTransmitter from './../../shared/network/networkTransmitter';
+import NetworkMonitor from './../../shared/network/networkMonitor';
+import ClientGameEngine from './../core/clientGameEngine';
 
 export class GameScene extends Phaser.Scene {
     constructor() {
@@ -24,8 +26,34 @@ export class GameScene extends Phaser.Scene {
 
         //this.renderSize = 10;
 
+        this.options = Object.assign({
+            autoConnect: true,
+            healthCheckInterval: 1000,
+            healthCheckRTTSample: 10,
+            stepPeriod: 1000 / GAME_UPS,
+            scheduler: 'render-schedule',
+            serverURL: null,
+        }, inputOptions);
+
+
         this.shadows = [];
         this.staticMapData = null;
+
+        this.gameEngine = new ClientGameEngine({}, this);
+
+        this.serializer = new Serializer();
+        this.gameEngine.registerClasses(this.serializer);
+        this.networkTransmitter = new NetworkTransmitter(this.serializer);
+        this.networkMonitor = new NetworkMonitor();
+        this.inboundMessages = [];
+        this.outboundMessages = [];
+
+        // step scheduler
+        this.scheduler = null;
+        this.lastStepTime = 0;
+        this.correction = 0;
+
+
     }
 
     init(obj) {
@@ -33,15 +61,26 @@ export class GameScene extends Phaser.Scene {
         var self = this;
         this.staticMapData = obj.staticMapData;
         this.socket = obj.socket;
-        console.log(this.staticMapData);
+        //console.log(this.staticMapData);
 
-        this.socket.on("worldUpdate", function(data) {
-            let syncEvents = self.networkTransmitter.deserializePayload(data).events;
-            console.log(syncEvents);
-        });
+        // this.socket.on("worldUpdate", function(data) {
+        //     let syncEvents = self.networkTransmitter.deserializePayload(data).events;
+        //     console.log(syncEvents);
+        // });
         this.socket.on("disconnect", function() {
             self.scene.start("LoginScreen");
         });
+
+        this.configureSynchronization();
+
+        // create a buffer of delayed inputs (fifo)
+        if (inputOptions && inputOptions.delayInputCount) {
+            this.delayedInputs = [];
+            for (let i = 0; i < inputOptions.delayInputCount; i++)
+                this.delayedInputs[i] = [];
+        }
+
+        this.gameEngine.emit('client__init');
     }
 
     preload() {
