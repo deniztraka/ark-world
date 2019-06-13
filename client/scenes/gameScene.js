@@ -1,3 +1,7 @@
+const GAME_UPS = 60; // default number of game steps per second
+const STEP_DELAY_MSEC = 12; // if forward drift detected, delay next execution by this amount
+const STEP_HURRY_MSEC = 8; // if backward drift detected, hurry next execution by this amount
+
 import {
     Player
 } from '../entities/mobiles/basicPlayer';
@@ -6,10 +10,10 @@ import Serializer from './../../shared/serialize/serializer';
 import NetworkTransmitter from './../../shared/network/networkTransmitter';
 import NetworkMonitor from './../../shared/network/networkMonitor';
 import ClientGameEngine from './../core/clientGameEngine';
+import Synchronizer from './../../shared/engines/syncronizer';
 
 export class GameScene extends Phaser.Scene {
     constructor() {
-
         super({
             key: "GameScene"
         });
@@ -25,6 +29,7 @@ export class GameScene extends Phaser.Scene {
         // });
 
         //this.renderSize = 10;
+        this.inputOptions = {};
 
         this.options = Object.assign({
             autoConnect: true,
@@ -33,14 +38,21 @@ export class GameScene extends Phaser.Scene {
             stepPeriod: 1000 / GAME_UPS,
             scheduler: 'render-schedule',
             serverURL: null,
-        }, inputOptions);
+            delayInputCount: 3,
+            syncOptions: {
+                sync: 'extrapolate',
+                localObjBending: 0.0,
+                remoteObjBending: 0.8,
+                bendingIncrements: 6
+            }
+        }, this.inputOptions);
 
 
         this.shadows = [];
         this.staticMapData = null;
 
-        this.gameEngine = new ClientGameEngine({}, this);
-
+        this.gameEngine = new ClientGameEngine(this.options, this);
+        
         this.serializer = new Serializer();
         this.gameEngine.registerClasses(this.serializer);
         this.networkTransmitter = new NetworkTransmitter(this.serializer);
@@ -67,20 +79,35 @@ export class GameScene extends Phaser.Scene {
         //     let syncEvents = self.networkTransmitter.deserializePayload(data).events;
         //     console.log(syncEvents);
         // });
-        this.socket.on("disconnect", function() {
+        this.socket.on("disconnect", function () {
             self.scene.start("LoginScreen");
         });
 
         this.configureSynchronization();
 
         // create a buffer of delayed inputs (fifo)
-        if (inputOptions && inputOptions.delayInputCount) {
+        if (this.inputOptions && this.inputOptions.delayInputCount) {
             this.delayedInputs = [];
             for (let i = 0; i < inputOptions.delayInputCount; i++)
                 this.delayedInputs[i] = [];
         }
 
         this.gameEngine.emit('client__init');
+
+
+
+        // this.socket.on('playerJoined', (playerData) => {
+        //     this.gameEngine.playerId = playerData.playerId;
+        //     this.messageIndex = Number(this.gameEngine.playerId) * 10000;
+        // });
+
+        // this.socket.on('worldUpdate', (worldData) => {
+        //     this.inboundMessages.push(worldData);
+        // });
+
+        // this.socket.on('roomUpdate', (roomData) => {
+        //     this.gameEngine.emit('client__roomUpdate', roomData);
+        // });
     }
 
     preload() {
@@ -88,93 +115,30 @@ export class GameScene extends Phaser.Scene {
     }
 
     create() {
-        var self = this;
-
-        var controlConfig = {
-            camera: this.cameras.main,
-            left: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT),
-            right: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT),
-            up: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP),
-            down: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN),
-            speed: 1,
-            zoomIn: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q),
-            zoomOut: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E),
-        };
-        this.controls = new Phaser.Cameras.Controls.FixedKeyControl(controlConfig);
-
         this.map = null;
         this.mapLayers = null;
 
         this.tileStackData = {};
-        this.isoGroup = this.add.group();
+
         if (this.staticMapData) {
             this.createWorld();
             this.createPlayer();
         }
-
-        var help = this.add.text(16, 16, 'W/A/S/D to keys to move', {
-            fontSize: '18px',
-            padding: {
-                x: 10,
-                y: 5
-            },
-            backgroundColor: '#ffffff',
-            fill: '#000000'
-        });
-
-        help.setScrollFactor(0);
-
-        this.input.on('pointerdown', function(pointer) {
+        // this.input.on('pointerdown', function (pointer) {
 
 
-            var tile = this.map.getTileAtWorldXY(pointer.x, pointer.y, true, this.cam, this.mapLayers["layer0"]);
-            console.log(tile.x + "," + tile.y);
+        //     var tile = this.map.getTileAtWorldXY(pointer.x, pointer.y, true, this.cam, this.mapLayers["layer0"]);
+        //     console.log(tile.x + "," + tile.y);
 
 
-        }, this);
-
-
-        var titleText = this.add.text(this.scene.manager.game.renderer.width / 2, this.scene.manager.game.renderer.height / 2 - 15, '', {
-            fontWeight: "bold",
-            font: '30px Courier',
-            fill: '#ffffff'
-        });
-        titleText.setOrigin(0.5, 0.5);
-        titleText.setText("Fight!");
-
-        // for (let x = 0; x < 50; x++) {
-        //     for (let y = 0; y < 50; y++) {
-        //         var titleText = this.add.text(x * 32 + 16, y * 32 + 16, '', {
-        //             fontWeight: "bold",
-        //             font: '10px Courier',
-        //             fill: '#ffffff'
-        //         });
-        //         titleText.setOrigin(0.5, 0.5);
-        //         titleText.setText("|" + x + "," + y + "|");
-        //     }
-        // }
-
-
-        // for (let x = 0; x < 50; x++) {
-        //     for (let y = 0; y < 50; y++) {
-        //         var titleText = this.add.text(x * 32 + 16, y * 32 + 16, '', {
-        //             fontWeight: "bold",
-        //             font: '10px Courier',
-        //             fill: '#ffffff'
-        //         });
-        //         titleText.setOrigin(0.5, 0.5);
-        //         titleText.setText(this.map.getTileAt(x, y).index);
-        //     }
-        // }
+        // }, this);
     }
 
     update(time, delta) {
         var self = this;
 
-        if (this.controls) {
-            this.controls.update(delta);
-        }
-        this.eventEmitter.emit("gameSceneUpdate!", time, delta);
+        this.gameEngine.step(time,delta);
+
     }
 
     createPlayer() {
@@ -219,7 +183,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     getFloorIndex(x, y) {
-        return this.staticMapData.environment.indices.floors.outer.sort(function() {
+        return this.staticMapData.environment.indices.floors.outer.sort(function () {
             return .5 - Math.random()
         })[0];
     }
@@ -325,93 +289,118 @@ export class GameScene extends Phaser.Scene {
         return i.alone;
     }
 
+    configureSynchronization() {
 
-
-    updateShadows() {
-        var self = this;
-        var shadowTiles = [];
-        var shadowFillStyle = "rgba(0,0,0,0.1)";
-
-        for (var x = 0; x < self.staticMapData.width; x++) {
-            for (var y = 0; y < self.staticMapData.height; y++) {
-
-                var tile = self.map.getTileAt(x, y, false, self.mapLayers["layer0"]);
-
-                var leftTile = self.map.getTileAt(x - 1, y, false, self.mapLayers["layer0"]);
-                var rightTile = self.map.getTileAt(x + 1, y, false, self.mapLayers["layer0"]);
-                var topTile = self.map.getTileAt(x, y - 1, false, self.mapLayers["layer0"]);
-                var bottomTile = self.map.getTileAt(x, y + 1, false, self.mapLayers["layer0"]);
-
-                if (tile.canCollide || tile.properties.biome.name == "Snow") {
-                    shadowTiles.push({
-                        centerX: tile.getCenterX(),
-                        centerY: tile.getCenterY(),
-                        left: tile.getLeft(),
-                        right: tile.getRight(),
-                        top: tile.getTop(),
-                        bottom: tile.getBottom(),
-                        faceLeft: tile.faceLeft || (leftTile != null && leftTile.properties.elevation < tile.properties.elevation),
-                        faceRight: tile.faceRight || (rightTile != null && rightTile.properties.elevation < tile.properties.elevation),
-                        faceBottom: tile.faceBottom || (bottomTile != null && bottomTile.properties.elevation < tile.properties.elevation),
-                        faceTop: tile.faceTop || (topTile != null && topTile.properties.elevation < tile.properties.elevation),
-                        hasShadow: !(tile.properties.biome.name === "Sea" || tile.properties.biome.name === "DeepSea" || tile.properties.biome.name === "River")
-                    });
-                }
-            }
-        }
-        this.textures.remove("shadowTexture");
-
-        var shadowTexture = this.textures.createCanvas('shadowTexture', this.staticMapData.width * 16, this.staticMapData.height * 16);
-        shadowTiles.forEach(tileShadowInfo => {
-            if (tileShadowInfo.hasShadow) {
-                if (tileShadowInfo.faceLeft) {
-                    shadowTexture.context.fillStyle = shadowFillStyle;
-                    shadowTexture.context.fillRect(tileShadowInfo.left - 4, tileShadowInfo.top, 4, 16);
-                }
-
-                if (tileShadowInfo.faceRight) {
-                    shadowTexture.context.fillStyle = shadowFillStyle;
-                    shadowTexture.context.fillRect(tileShadowInfo.left + 16, tileShadowInfo.top, 4, 16);
-                }
-
-                if (tileShadowInfo.faceBottom) {
-                    shadowTexture.context.fillStyle = shadowFillStyle;
-                    shadowTexture.context.fillRect(tileShadowInfo.left, tileShadowInfo.top + 16, 16, 4);
-                }
-
-                if (tileShadowInfo.faceTop) {
-                    shadowTexture.context.fillStyle = shadowFillStyle;
-                    shadowTexture.context.fillRect(tileShadowInfo.left, tileShadowInfo.top - 4, 16, 4);
-                }
-            }
-        });
-        shadowTexture.refresh();
-        var shadowImg = this.add.image(0, 0, 'shadowTexture');
-        shadowImg.setOrigin(0, 0);
-    }
-
-    createTexture(worldData, useColor) {
-        var gridSize = 8;
-
-        var texture = this.textures.createCanvas('mapTexture', worldData.width * gridSize, worldData.height * gridSize);
-        for (var x = 0; x < worldData.width; x++) {
-            for (var y = 0; y < worldData.height; y++) {
-                var biome = worldData.getBiome(worldData.elevationData[x][y], worldData.moistureData[x][y], useColor);
-                texture.context.fillStyle = biome.color;
-                texture.context.fillRect(x * gridSize, y * gridSize, gridSize, gridSize);
-            }
+        // the reflect syncronizer is just interpolate strategy,
+        // configured to show server syncs
+        let syncOptions = this.options.syncOptions;
+        if (syncOptions.sync === 'reflect') {
+            syncOptions.sync = 'interpolate';
+            syncOptions.reflect = true;
         }
 
-        //tree placement
-        worldData.treePositions.forEach(point => {
-            texture.context.fillStyle = "rgb(0,0,0)";
-            texture.context.fillRect(point.x * gridSize, point.y * gridSize, gridSize, gridSize);
+        this.synchronizer = new Synchronizer(this, syncOptions);
+    }
+
+     // apply a user input on the client side
+     doInputLocal(message) {
+
+        // some synchronization strategies (interpolate) ignore inputs on client side
+        if (this.gameEngine.ignoreInputs) {
+            return;
+        }
+
+        const inputEvent = { input: message.data, playerId: this.gameEngine.playerId };
+        this.gameEngine.emit('client__processInput', inputEvent);
+        this.gameEngine.emit('processInput', inputEvent);
+        this.gameEngine.processInput(message.data, this.gameEngine.playerId, false);
+    }
+
+    // apply user inputs which have been queued in order to create
+    // an artificial delay
+    applyDelayedInputs() {
+        if (!this.delayedInputs) {
+            return;
+        }
+        let that = this;
+        let delayed = this.delayedInputs.shift();
+        if (delayed && delayed.length) {
+            delayed.forEach(that.doInputLocal.bind(that));
+        }
+        this.delayedInputs.push([]);
+    }
+
+    /**
+     * This function should be called by the client whenever a user input
+     * occurs.  This function will emit the input event,
+     * forward the input to the client's game engine (with a delay if
+     * so configured) and will transmit the input to the server as well.
+     *
+     * This function can be called by the extended client engine class,
+     * typically at the beginning of client-side step processing (see event client__preStep)
+     *
+     * @param {String} input - string representing the input
+     * @param {Object} inputOptions - options for the input
+     */
+    sendInput(input, inputOptions) {
+        let inputEvent = {
+            command: 'move',
+            data: {
+                messageIndex: this.messageIndex,
+                step: this.gameEngine.world.stepCount,
+                input: input,
+                options: inputOptions
+            }
+        };
+
+        this.gameEngine.trace.info(() => `USER INPUT[${this.messageIndex}]: ${input} ${inputOptions ? JSON.stringify(inputOptions) : '{}'}`);
+
+        // if we delay input application on client, then queue it
+        // otherwise apply it now
+        if (this.delayedInputs) {
+            this.delayedInputs[this.delayedInputs.length - 1].push(inputEvent);
+        } else {
+            this.doInputLocal(inputEvent);
+        }
+
+        if (this.options.standaloneMode !== true) {
+            this.outboundMessages.push(inputEvent);
+        }
+
+        this.messageIndex++;
+    }
+
+    // handle a message that has been received from the server
+    handleInboundMessage(syncData) {
+
+        let syncEvents = this.networkTransmitter.deserializePayload(syncData).events;
+        let syncHeader = syncEvents.find((e) => e.eventName === 'syncHeader');
+
+        // emit that a snapshot has been received
+        if (!this.gameEngine.highestServerStep || syncHeader.stepCount > this.gameEngine.highestServerStep)
+            this.gameEngine.highestServerStep = syncHeader.stepCount;
+        this.gameEngine.emit('client__syncReceived', {
+            syncEvents: syncEvents,
+            stepCount: syncHeader.stepCount,
+            fullUpdate: syncHeader.fullUpdate
         });
 
-        texture.refresh();
-        var image = this.add.image(this.scene.manager.game.renderer.width / 2, this.scene.manager.game.renderer.height / 2, 'mapTexture');
-        image.setOrigin(0.5, 0.5);
+        this.gameEngine.trace.info(() => `========== inbound world update ${syncHeader.stepCount} ==========`);
 
-
+        // finally update the stepCount
+        if (syncHeader.stepCount > this.gameEngine.world.stepCount + this.synchronizer.syncStrategy.STEP_DRIFT_THRESHOLDS.clientReset) {
+            this.gameEngine.trace.info(() => `========== world step count updated from ${this.gameEngine.world.stepCount} to  ${syncHeader.stepCount} ==========`);
+            this.gameEngine.emit('client__stepReset', { oldStep: this.gameEngine.world.stepCount, newStep: syncHeader.stepCount });
+            this.gameEngine.world.stepCount = syncHeader.stepCount;
+        }
     }
+
+    // emit an input to the authoritative server
+    handleOutboundInput() {
+        for (var x = 0; x < this.outboundMessages.length; x++) {
+            this.socket.emit(this.outboundMessages[x].command, this.outboundMessages[x].data);
+        }
+        this.outboundMessages = [];
+    }
+
 }
