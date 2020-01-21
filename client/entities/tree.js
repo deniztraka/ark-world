@@ -3,6 +3,9 @@ import {
 } from '../data/biomes';
 
 function getBiomeTextureKey(biome) {
+
+    return "tree_"+biome;
+
     switch (biome) {
         case Biomes.TropicalSeasonalForest:
             return 'tree_TropicalSeasonalForest';
@@ -23,7 +26,7 @@ function getBiomeTextureKey(biome) {
 
         case Biomes.GrassLand:
             return 'tree_GrassLand';
-            // default: return Math.random() > 0.5 ? 'tree1' : 'tree2';
+        // default: return Math.random() > 0.5 ? 'tree1' : 'tree2';
         default:
             return 'tree';
     }
@@ -31,12 +34,15 @@ function getBiomeTextureKey(biome) {
 
 export class Tree extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y, biome) {
-        super(scene, x, y);
+        super(scene, (x * 16) + 8, (y * 16) + 8);
 
         this.biome = biome;
-        this.setTexture(getBiomeTextureKey(biome));
+        var biomeTextureKey = getBiomeTextureKey(biome);
+        //console.log(biomeTextureKey);
+
+        this.setTexture(biomeTextureKey);
         //this.setPosition(x, y);
-        this.setOrigin(0.5, 1);
+        this.setOrigin(0.5, 0.9);
         this.depth = y;
 
         scene.add.existing(this);
@@ -46,6 +52,8 @@ export class Tree extends Phaser.GameObjects.Sprite {
         //origin poin debugger
         // var graphics = scene.add.graphics();
         // graphics.fillStyle(0x00ff00, 1);
-        // graphics.fillCircle(x, y, 3);    
+        // graphics.fillCircle((x * 16) + 8, (y * 16) + 8, 3);    
+
+        
     }
 }

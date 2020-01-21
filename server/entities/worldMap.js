@@ -18,6 +18,7 @@ class WorldMap {
             width: self.worldMapData.width,
             height: self.worldMapData.height,
             tileData: [...Array(this.worldMapData.width)].map(x => Array(this.worldMapData.height).fill(0)),
+            treePositions: self.worldMapData.treePositions,
             collisionIndexes: [15, 14, 0]
         };
 

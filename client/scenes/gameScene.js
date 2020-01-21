@@ -27,7 +27,7 @@ export class GameScene extends Phaser.Scene {
 
         var self = this;
         this.eventEmitter = new Phaser.Events.EventEmitter();
-        this.eventEmitter.on("playerPositionChanged!", function(newIsoTileData) {
+        this.eventEmitter.on("playerPositionChanged!", function (newIsoTileData) {
             self.cullMap(newIsoTileData);
         });
 
@@ -42,7 +42,7 @@ export class GameScene extends Phaser.Scene {
         this.staticMapData = obj.data;
         this.socket = obj.socket;
 
-        this.socket.on("disconnect", function() {
+        this.socket.on("disconnect", function () {
             self.scene.start("LoginScreen");
         });
     }
@@ -73,6 +73,7 @@ export class GameScene extends Phaser.Scene {
         this.isoGroup = this.add.group();
 
         if (this.staticMapData) {
+
             this.createWorld();
             this.createPlayer();
         }
@@ -89,7 +90,7 @@ export class GameScene extends Phaser.Scene {
 
         help.setScrollFactor(0);
 
-        this.input.on('pointerdown', function(pointer) {
+        this.input.on('pointerdown', function (pointer) {
 
 
             var tile = this.map.getTileAtWorldXY(pointer.x, pointer.y, true, this.cam, this.mapLayers["layer0"]);
@@ -110,7 +111,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     createPlayer() {
-        this.player = new Player(this, 0, 10);
+        this.player = new Player(this, 20, 20);
     }
 
     createWorld() {
@@ -166,6 +167,11 @@ export class GameScene extends Phaser.Scene {
                 }
             }
         }
+
+        self.staticMapData.treePositions.forEach(point => {
+            var tree = new Tree(self, point.x, point.y, self.staticMapData.tileData[point.x][point.y].name);
+        });
+
 
         this.mapLayers["layer0"].setCollision(self.staticMapData.collisionIndexes);
 
@@ -253,6 +259,8 @@ export class GameScene extends Phaser.Scene {
             texture.context.fillStyle = "rgb(0,0,0)";
             texture.context.fillRect(point.x * gridSize, point.y * gridSize, gridSize, gridSize);
         });
+
+        console.log(worldData.treePositions.length);
 
         texture.refresh();
         var image = this.add.image(this.scene.manager.game.renderer.width / 2, this.scene.manager.game.renderer.height / 2, 'mapTexture');

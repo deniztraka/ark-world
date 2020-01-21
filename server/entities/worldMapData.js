@@ -41,7 +41,7 @@ class WorldMapData {
         }
         this.generateWith(0.001, 2, 0.5, 6, libnoise.QualityMode.HIGH, this.seed);
         this.generateBiomeData();
-        this.generateRivers();
+        //this.generateRivers();
         this.generateTreePositions();
     }
 
