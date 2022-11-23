@@ -23,7 +23,7 @@
         "phaser": "^3.17.0",
         "poisson-disk-sampling": "^1.0.3",
         "raw-loader": "^2.0.0",
-        "socket.io": "^2.2.0",
+        "socket.io": "^2.5.0",
         "webpack": "^4.32.2",
         "webpack-dev-server": "^3.4.1",
         "webpack-livereload-plugin": "^2.2.0"
